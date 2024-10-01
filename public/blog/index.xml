@@ -1,47 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Roxo Blog on Marit&#39;s notebook</title>
+    <title>Blogs on Congo</title>
     <link>http://localhost:1313/blog/</link>
-    <description>Recent content in Roxo Blog on Marit&#39;s notebook</description>
+    <description>Recent content in Blogs on Congo</description>
     <generator>Hugo</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 24 Dec 2019 13:45:06 +0600</lastBuildDate>
+    <language>en</language>
+    <lastBuildDate>Tue, 01 Oct 2024 15:10:14 +0200</lastBuildDate>
     <atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Design Inspiration: The Best Projects From December</title>
-      <link>http://localhost:1313/blog/design-inspiration-the-best-projects-from-december/</link>
-      <pubDate>Tue, 24 Dec 2019 13:45:06 +0600</pubDate>
-      <guid>http://localhost:1313/blog/design-inspiration-the-best-projects-from-december/</guid>
-      <description>&lt;h3 id=&#34;black-lines-brand-identity-by--smith&#34;&gt;Black Lines brand identity, by &amp;amp; Smith&lt;/h3&gt;&#xA;&lt;p&gt;Black Lines wants it to be as easy to serve a Negroni as it is a pint of lager. The drinks company is seeking to revolutionise the bar experience by serving cocktails by draught with a changing menu of drinks (as well as same favourite stand-bys). A pink grapefruit spritz was served through the summer while a new pear and white tea fizz joins the line-up for winter.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>The 10 Biggest Rebrands and Logo Designs of 2019</title>
-      <link>http://localhost:1313/blog/the-10-biggest-rebrands-and-logo-designs-of-2019/</link>
-      <pubDate>Tue, 24 Dec 2019 13:40:00 +0600</pubDate>
-      <guid>http://localhost:1313/blog/the-10-biggest-rebrands-and-logo-designs-of-2019/</guid>
-      <description>&lt;h3 id=&#34;black-lines-brand-identity-by--smith&#34;&gt;Black Lines brand identity, by &amp;amp; Smith&lt;/h3&gt;&#xA;&lt;p&gt;Black Lines wants it to be as easy to serve a Negroni as it is a pint of lager. The drinks company is seeking to revolutionise the bar experience by serving cocktails by draught with a changing menu of drinks (as well as same favourite stand-bys). A pink grapefruit spritz was served through the summer while a new pear and white tea fizz joins the line-up for winter.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Design Inspiration: The Best Projects From November</title>
-      <link>http://localhost:1313/blog/design-inspiration-the-best-projects-from-november/</link>
-      <pubDate>Tue, 24 Dec 2019 13:36:06 +0600</pubDate>
-      <guid>http://localhost:1313/blog/design-inspiration-the-best-projects-from-november/</guid>
-      <description>&lt;h3 id=&#34;black-lines-brand-identity-by--smith&#34;&gt;Black Lines brand identity, by &amp;amp; Smith&lt;/h3&gt;&#xA;&lt;p&gt;Black Lines wants it to be as easy to serve a Negroni as it is a pint of lager. The drinks company is seeking to revolutionise the bar experience by serving cocktails by draught with a changing menu of drinks (as well as same favourite stand-bys). A pink grapefruit spritz was served through the summer while a new pear and white tea fizz joins the line-up for winter.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Pt Chooses Classic Blue for Its Colour of the Year 2020</title>
-      <link>http://localhost:1313/blog/pt-chooses-classic-blue-for-its-colour-of-the-year-2020/</link>
-      <pubDate>Tue, 24 Dec 2019 13:32:54 +0600</pubDate>
-      <guid>http://localhost:1313/blog/pt-chooses-classic-blue-for-its-colour-of-the-year-2020/</guid>
-      <description>&lt;h3 id=&#34;black-lines-brand-identity-by--smith&#34;&gt;Black Lines brand identity, by &amp;amp; Smith&lt;/h3&gt;&#xA;&lt;p&gt;Black Lines wants it to be as easy to serve a Negroni as it is a pint of lager. The drinks company is seeking to revolutionise the bar experience by serving cocktails by draught with a changing menu of drinks (as well as same favourite stand-bys). A pink grapefruit spritz was served through the summer while a new pear and white tea fizz joins the line-up for winter.&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>The 10 Biggest Product Stories of 2019</title>
-      <link>http://localhost:1313/blog/the-10-biggest-product-stories-of-2019/</link>
-      <pubDate>Tue, 24 Dec 2019 12:58:17 +0600</pubDate>
-      <guid>http://localhost:1313/blog/the-10-biggest-product-stories-of-2019/</guid>
-      <description>&lt;h3 id=&#34;black-lines-brand-identity-by--smith&#34;&gt;Black Lines brand identity, by &amp;amp; Smith&lt;/h3&gt;&#xA;&lt;p&gt;Black Lines wants it to be as easy to serve a Negroni as it is a pint of lager. The drinks company is seeking to revolutionise the bar experience by serving cocktails by draught with a changing menu of drinks (as well as same favourite stand-bys). A pink grapefruit spritz was served through the summer while a new pear and white tea fizz joins the line-up for winter.&lt;/p&gt;</description>
+      <title>Kind Cluster With Local Registry</title>
+      <link>http://localhost:1313/blog/kind-cluster-with-local-registry/</link>
+      <pubDate>Tue, 01 Oct 2024 15:10:14 +0200</pubDate>
+      <guid>http://localhost:1313/blog/kind-cluster-with-local-registry/</guid>
+      <description></description>
     </item>
   </channel>
 </rss>

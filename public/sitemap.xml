@@ -1,54 +1,43 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <url>
-    <loc>http://localhost:1313/</loc>
-    <lastmod>2024-10-01T11:37:26+02:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/blog/design-inspiration-the-best-projects-from-december/</loc>
-    <lastmod>2019-12-24T13:45:06+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/blog/the-10-biggest-rebrands-and-logo-designs-of-2019/</loc>
-    <lastmod>2019-12-24T13:40:00+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/blog/design-inspiration-the-best-projects-from-november/</loc>
-    <lastmod>2019-12-24T13:36:06+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/blog/pt-chooses-classic-blue-for-its-colour-of-the-year-2020/</loc>
-    <lastmod>2019-12-24T13:32:54+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/blog/the-10-biggest-product-stories-of-2019/</loc>
-    <lastmod>2019-12-24T12:58:17+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/portfolio/kio-tape-2/</loc>
-    <lastmod>2019-12-23T20:56:42+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/contact/</loc>
-    <lastmod>2019-12-23T20:17:01+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/blog/</loc>
-    <lastmod>2019-12-23T20:17:01+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/portfolio/</loc>
-    <lastmod>2019-12-23T16:48:28+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/portfolio/use-less-brand/</loc>
-    <lastmod>2019-12-23T15:58:10+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/portfolio/osen-clock/</loc>
-    <lastmod>2019-12-23T15:56:43+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/portfolio/seamless-watch/</loc>
-    <lastmod>2019-12-23T15:55:44+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/portfolio/kio-tape/</loc>
-    <lastmod>2019-12-23T15:44:46+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/about/</loc>
-    <lastmod>2018-07-12T18:19:33+06:00</lastmod>
-  </url><url>
-    <loc>http://localhost:1313/categories/</loc>
-  </url><url>
-    <loc>http://localhost:1313/tags/</loc>
-  </url>
+  
+    
+      <url>
+            <loc>http://localhost:1313/posts/</loc>
+            <lastmod>2024-10-01T15:10:14+02:00</lastmod>
+          </url>
+    
+  
+    
+      <url>
+            <loc>http://localhost:1313/posts/kind-cluster-with-local-registry/</loc>
+            <lastmod>2024-10-01T15:10:14+02:00</lastmod>
+          </url>
+    
+  
+    
+      <url>
+            <loc>http://localhost:1313/</loc>
+            <lastmod>2024-10-01T15:10:14+02:00</lastmod>
+          </url>
+    
+  
+    
+  
+    
+      <url>
+            <loc>http://localhost:1313/posts/kubernetes/</loc>
+            <lastmod>2024-10-01T14:33:44+02:00</lastmod>
+          </url>
+    
+  
+    
+  
+    
+  
+    
+  
+    
+  
 </urlset>

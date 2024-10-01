@@ -1,3 +1,4 @@
-[submodule "themes/roxo-hugo"]
-	path = themes/roxo-hugo
-	url = git@github.com:StaticMania/roxo-hugo.git
+[submodule "themes/congo"]
+	path = themes/congo
+	url = https://github.com/jpanther/congo.git
+	branch = stable
