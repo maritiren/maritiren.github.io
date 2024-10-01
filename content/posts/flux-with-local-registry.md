@@ -9,16 +9,6 @@ tags: ["k8s", "kind", "local registry", "flux"]
 ---
 
 
-1. [Setup cluster with local registry](#setup-cluster)
-2. [Run Flux](#run-flux)
-3. [Setup secrets](#setup-secrets)
-4. [Push to local registry](#push-image)
-5. [Check contents of registry](#check-reg-contents)
-6. [Cleanup](#cleanup)
-7. [Debugging](#debugging)
-8. [Resources](#resources)
-
-
 <a id="setup-cluster"></a>
 ## 1. Setup Kind cluster with local registry
 Find the script in the post [Kind Cluster with Local Registry]({{< ref "kind-cluster-with-local-registry" >}})
@@ -54,14 +44,14 @@ flux bootstrap github \
 
 
 <a id="setup-secrets"></a>
-## 3. Setup secrets
-Add secret for flux-system and the namespace you use to fetch an image:
+## 3. Setup secrets for namespaces to fetch images
+Add secret for the namespaces you use to fetch an image:
 ```sh
 ✗ k create secret docker-registry regcred --docker-server="kind-registry:5000" --docker-username=myuser --docker-password=myuser -n my-api
 ✗ k create secret docker-registry regcred2 --docker-server="kind-registry:5000" --docker-username=myuser --docker-password=myuser -n flux-system
 ```
 
-Watch image repository to see status
+Watch the image repositories to see status
 ```sh
 watch flux get image repository --all-namespaces
 ```

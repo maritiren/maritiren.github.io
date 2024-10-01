@@ -20,7 +20,7 @@ enableImageWebp = true
 fingerprintAlgorithm = "sha256"
 
 [header]
-  layout = "basic" # valid options: basic, hamburger, hybrid, custom
+  layout = "hybrid" # valid options: basic, hamburger, hybrid, custom
   # logo = "img/logo.jpg"
   # logoDark = "img/dark-logo.jpg"
   showTitle = true
@@ -28,11 +28,11 @@ fingerprintAlgorithm = "sha256"
 [footer]
   showCopyright = true
   showThemeAttribution = true
-  showAppearanceSwitcher = false
+  showAppearanceSwitcher = true
   showScrollToTop = true
 
 [homepage]
-  layout = "page" # valid options: page, profile, custom
+  layout = "profile" # valid options: page, profile, custom
   showRecent = false
   recentLimit = 5
 
@@ -43,13 +43,13 @@ fingerprintAlgorithm = "sha256"
   showBreadcrumbs = false
   showDraftLabel = true
   showEdit = false
-  # editURL = "https://github.com/username/repo/"
+  editURL = "https://github.com/maritiren/blog/"
   editAppendPath = true
   showHeadingAnchors = true
   showPagination = true
   invertPagination = false
   showReadingTime = true
-  showTableOfContents = false
+  showTableOfContents = true
   showTaxonomies = false
   showWordCount = false
   showComments = false
@@ -57,7 +57,7 @@ fingerprintAlgorithm = "sha256"
 
 [list]
   showBreadcrumbs = false
-  showSummary = false
+  showSummary = true
   showTableOfContents = false
   showTaxonomies = false
   groupByYear = true

@@ -5,7 +5,16 @@
     
       <url>
             <loc>http://localhost:1313/posts/</loc>
-            <lastmod>2024-10-01T15:10:14+02:00</lastmod>
+            <lastmod>2024-10-01T15:33:44+02:00</lastmod>
+          </url>
+    
+  
+    
+  
+    
+      <url>
+            <loc>http://localhost:1313/posts/flux-kind-localregistry/</loc>
+            <lastmod>2024-10-01T15:33:44+02:00</lastmod>
           </url>
     
   
@@ -13,6 +22,15 @@
   
     
   
+    
+  
+    
+  
+    
+      <url>
+            <loc>http://localhost:1313/</loc>
+            <lastmod>2024-10-01T15:33:44+02:00</lastmod>
+          </url>
     
   
     
@@ -23,20 +41,8 @@
     
   
     
-  
-    
-  
-    
       <url>
-            <loc>http://localhost:1313/</loc>
-            <lastmod>2024-10-01T15:10:14+02:00</lastmod>
-          </url>
-    
-  
-    
-      <url>
-            <loc>http://localhost:1313/posts/flux-kind-localregistry/</loc>
-            <lastmod>2024-10-01T14:33:44+02:00</lastmod>
+            <loc>http://localhost:1313/about/</loc>
           </url>
     
   
