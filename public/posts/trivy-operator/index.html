@@ -1,0 +1,1031 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FFFFFF" />
+  
+  <title>Trivy scan for Kubernetes &middot; Techkroken</title>
+    <meta name="title" content="Trivy scan for Kubernetes &middot; Techkroken" />
+  
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/appearance.min.8a082f81b27f3cb2ee528df0b0bdc39787034cf2cc34d4669fbc9977c929023c.js"
+    integrity="sha256-iggvgbJ/PLLuUo3wsL3Dl4cDTPLMNNRmn7yZd8kpAjw="
+  ></script>
+  
+  
+  
+  
+  
+  
+  
+  
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="/css/main.bundle.min.b0785c8131a75f72b211435af86269eb2d4b81dda03a8f2cf5ccb1c967747167.css"
+    integrity="sha256-sHhcgTGnX3KyEUNa&#43;GJp6y1Lgd2gOo8s9cyxyWd0cWc="
+  />
+  
+  
+  
+  
+    
+    
+  
+  
+  
+    
+    <script
+      defer
+      type="text/javascript"
+      id="script-bundle"
+      src="/js/main.bundle.min.d4b727caf411cb5c3b421d0d427ed1e3daeafe0d04840327efad4978430edb8c.js"
+      integrity="sha256-1LcnyvQRy1w7Qh0NQn7R49rq/g0EhAMn761JeEMO24w="
+      data-copy="Copy"
+      data-copied="Copied"
+    ></script>
+  
+  
+  <meta
+    name="description"
+    content="
+      How to setup the Trivy Operator in K8s
+    "
+  />
+  
+  
+  
+  <link rel="canonical" href="http://localhost:1313/posts/trivy-operator/" />
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:url" content="http://localhost:1313/posts/trivy-operator/">
+  <meta property="og:site_name" content="Techkroken">
+  <meta property="og:title" content="Trivy scan for Kubernetes">
+  <meta property="og:description" content="How to setup the Trivy Operator in K8s">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-10-01T17:15:18+02:00">
+    <meta property="article:modified_time" content="2024-10-01T17:15:18+02:00">
+    <meta property="article:tag" content="K8s">
+    <meta property="article:tag" content="Trivy">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Trivy scan for Kubernetes">
+  <meta name="twitter:description" content="How to setup the Trivy Operator in K8s">
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Blog posts",
+    "name": "Trivy scan for Kubernetes",
+    "headline": "Trivy scan for Kubernetes",
+    "description": "How to setup the Trivy Operator in K8s",
+    "abstract": "A step-by-step guide to setup the Trivy Operator in Kubernetes.",
+    "inLanguage": "en",
+    "url" : "http:\/\/localhost:1313\/posts\/trivy-operator\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Marit Iren R. Tokle"
+    },
+    "copyrightYear": "2024",
+    "dateCreated": "2024-10-01T17:15:18\u002b02:00",
+    "datePublished": "2024-10-01T17:15:18\u002b02:00",
+    
+    "dateModified": "2024-10-01T17:15:18\u002b02:00",
+    
+    "keywords": ["K8s","Trivy"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "2163"
+  }
+  </script>
+    
+    <script type="application/ld+json">
+    {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+     {
+       "@type": "ListItem",
+       "item": "http://localhost:1313/",
+       "name": "Welcome to My Notes! Tada",
+       "position": 1
+     },
+     {
+       "@type": "ListItem",
+       "item": "http://localhost:1313/posts/",
+       "name": "Blog Posts",
+       "position": 2
+     },
+     {
+       "@type": "ListItem",
+       "name": "Trivy Scan for Kubernetes",
+       "position": 3
+     }
+   ]
+ }
+  </script>
+
+  
+  <meta name="author" content="Marit Iren R. Tokle" />
+  
+    
+      <link href="mailto:marit@tokle.dev" rel="me" />
+    
+      <link href="https://github.com/maritiren" rel="me" />
+    
+  
+  
+  
+
+
+
+
+
+
+  
+  
+
+  
+  
+</head>
+<body
+    class="m-auto flex h-screen max-w-7xl flex-col bg-neutral px-6 text-lg leading-7 text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="-translate-y-8 rounded-b-lg bg-primary-200 px-3 py-1 text-sm focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="pe-2 font-bold text-primary-600 dark:text-primary-400">&darr;</span
+        >Skip to main content</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral sm:py-10 print:hidden">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="z-40 flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Techkroken</a
+  >
+
+    </div>
+    
+      
+      <label id="menu-button" for="menu-controller" class="block sm:hidden">
+        <input type="checkbox" id="menu-controller" class="hidden" />
+        <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+          <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+</span>
+        </div>
+        <div
+          id="menu-wrapper"
+          class="invisible fixed inset-0 z-30 m-auto h-full w-full cursor-default overflow-auto bg-neutral-100/50 opacity-0 backdrop-blur-sm transition-opacity dark:bg-neutral-900/50"
+        >
+          <ul
+            class="mx-auto flex w-full max-w-7xl list-none flex-col overflow-visible px-6 py-6 text-end sm:px-14 sm:py-10 sm:pt-10 md:px-24 lg:px-32"
+          >
+            <li class="mb-1">
+              <span class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400"
+                ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span></span
+              >
+            </li>
+            
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="/posts/"
+                      title=""
+                      onclick="close_menu()"
+                      
+                      ><span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Blog</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="/categories/"
+                      title=""
+                      onclick="close_menu()"
+                      
+                      ><span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Categories</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="/tags/"
+                      title=""
+                      onclick="close_menu()"
+                      
+                      ><span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Tags</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="https://github.com/maritiren/blog"
+                      title=""
+                      onclick="close_menu()"
+                      target="_blank"
+                      >
+                        <span
+                          class="group-dark:hover:text-primary-400 transition-colors group-hover:text-primary-600"
+                        ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></span></a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    
+                    
+                  
+                </li>
+              
+                
+                  
+              
+            
+          </ul>
+        </div>
+      </label>
+      
+      <ul class="hidden list-none flex-row text-end sm:flex">
+        
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="/posts/"
+                  title=""
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Blog</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="/categories/"
+                  title=""
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Categories</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="/tags/"
+                  title=""
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Tags</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="https://github.com/maritiren/blog"
+                  title=""
+                  target="_blank"
+                  >
+                    <span
+                      class="group-dark:hover:text-primary-400 transition-colors group-hover:text-primary-600"
+                    ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></span></a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                
+                
+              
+            </li>
+          
+            
+              
+          
+
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex grow flex-col">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mb-8 mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Trivy scan for Kubernetes
+      </h1>
+      
+        <div class="mb-10 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+          
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      <span title="Reading time">11 mins</span><span class="px-2 text-primary-500">&middot;</span>
+
+
+  
+  
+
+<span class="mb-[2px]">
+  <a
+    href="https://github.com/maritiren/blog/posts/trivy-operator.md"
+    class="text-lg hover:text-primary-500"
+    rel="noopener noreferrer"
+    target="_blank"
+    title="Edit content"
+    ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M490.3 40.4C512.2 62.27 512.2 97.73 490.3 119.6L460.3 149.7L362.3 51.72L392.4 21.66C414.3-.2135 449.7-.2135 471.6 21.66L490.3 40.4zM172.4 241.7L339.7 74.34L437.7 172.3L270.3 339.6C264.2 345.8 256.7 350.4 248.4 353.2L159.6 382.8C150.1 385.6 141.5 383.4 135 376.1C128.6 370.5 126.4 361 129.2 352.4L158.8 263.6C161.6 255.3 166.2 247.8 172.4 241.7V241.7zM192 63.1C209.7 63.1 224 78.33 224 95.1C224 113.7 209.7 127.1 192 127.1H96C78.33 127.1 64 142.3 64 159.1V416C64 433.7 78.33 448 96 448H352C369.7 448 384 433.7 384 416V319.1C384 302.3 398.3 287.1 416 287.1C433.7 287.1 448 302.3 448 319.1V416C448 469 405 512 352 512H96C42.98 512 0 469 0 416V159.1C0 106.1 42.98 63.1 96 63.1H192z"/></svg>
+</span></a
+  >
+</span>
+    
+
+    
+    
+      <span class="ps-2"><span class="flex">
+  <span
+    class="ms-1 rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400"
+  >
+    Draft
+  </span>
+</span>
+</span>
+    
+  </div>
+
+  
+  
+
+
+        </div>
+      
+      
+    </header>
+    <section class="prose mt-0 flex max-w-full flex-col dark:prose-invert lg:flex-row">
+      
+        <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
+          <div class="toc pe-5 lg:sticky lg:top-10 print:hidden">
+            <details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5">
+  <summary
+    class="block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden"
+  >
+    Table of Contents
+  </summary>
+  <div class="border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#setup-local-cluster">Setup local cluster</a></li>
+    <li><a href="#optional-test-trivy-operator-locally">(optional) Test Trivy Operator locally</a></li>
+    <li><a href="#play-with-the-in-cluster-api">Play with the in-cluster API</a>
+      <ul>
+        <li><a href="#get-an-overview">Get an overview</a></li>
+        <li><a href="#dive-deeper-into-findings">Dive deeper into findings</a></li>
+      </ul>
+    </li>
+    <li><a href="#setup-trivy-operator-in-production">Setup Trivy Operator in production</a>
+      <ul>
+        <li><a href="#trivy-operator-manifest-files">Trivy Operator manifest files</a></li>
+        <li><a href="#configure-calico-network-policy">Configure Calico network policy</a></li>
+        <li><a href="#tolerate-node-taints">Tolerate node taints</a></li>
+        <li><a href="#add-image-scanning">Add image scanning</a></li>
+      </ul>
+    </li>
+    <li><a href="#create-reports">Create reports</a></li>
+    <li><a href="#grafana-dashboard">Grafana dashboard</a></li>
+    <li><a href="#useful-commands">Useful commands</a>
+      <ul>
+        <li><a href="#trivy-operator-logs">Trivy Operator logs</a></li>
+        <li><a href="#flux-reconcile-logs">Flux reconcile logs</a></li>
+        <li><a href="#deleterestart-the-operator">Delete/restart the operator</a></li>
+        <li><a href="#delete-all-reports">Delete all reports</a></li>
+      </ul>
+    </li>
+    <li><a href="#debugging">Debugging</a>
+      <ul>
+        <li><a href="#sbom-decode-error-failed-to-decode-multiple-os-components-are-not-supported">SBOM decode error: failed to decode: multiple OS components are not supported</a></li>
+        <li><a href="#scan-error-unable-to-initialize-an-image-scanner-remote-error-image-fetch">scan error: unable to initialize an image scanner: remote error (image fetch)</a></li>
+        <li><a href="#scanning-windows-images-is-not-supported">Scanning Windows images is not supported</a></li>
+        <li><a href="#scan-job---oomkilled-">Scan job - OOMKilled ✅</a></li>
+      </ul>
+    </li>
+    <li><a href="#resources">Resources</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+          </div>
+        </div>
+      
+      <div class="min-h-0 min-w-0 max-w-prose grow">
+        <p>I am currently working with automated security testing to get control of the known vulnerabilities in our systems. As part of this, I am scanning a Kubernetes cluster and it&rsquo;s images.</p>
+<p>Trivy has a Kubernetes operator called <a href="https://aquasecurity.github.io/trivy-operator/latest/" target="_blank" rel="noreferrer">Trivy Operator</a>. Advantages with using the Trivy Operator are (<a href="https://www.aquasec.com/blog/vulnerability-scanning-trivy-vs-the-trivy-operator/" target="_blank" rel="noreferrer">source</a>) :</p>
+<ul>
+<li>Trivy Operator does background scans continuously in the cluster</li>
+<li>Trivy CLI cannot detect changes of any resources running inside the cluster</li>
+<li>Trivy Operator allows integrating with tools that can consume Kubernetes manifests as it produces <a href="https://aquasecurity.github.io/trivy-operator/latest/docs/crds/" target="_blank" rel="noreferrer">reports that are CRDs</a></li>
+<li>Kubernetes best practice is to push information from within the cluster to tools outside rather than letting the tools pull data from the outside</li>
+</ul>
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">One downside which is not in our scope, but is worth mentioning, is that the Trivy Operator does not scan prior to deployment. Hence, it can not be used as a quality control or quality gate. Therefore, you should still run Trivy CLI in your pipelines. We already run Trivy as a check before merging to main. Our scope is only Kubernetes and image scanning, not configs and vulns.</span>
+</div>
+
+<h1 id="prereqs" class="relative group">Prereqs <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#prereqs" aria-label="Anchor">#</a></span></h1><ul>
+<li><a href="https://kind.sigs.k8s.io/docs/user/quick-start/#installing-from-release-binaries" target="_blank" rel="noreferrer">Kind</a></li>
+<li><a href="https://kubecm.cloud/" target="_blank" rel="noreferrer">kubecm</a></li>
+<li><a href="https://helm.sh/docs/intro/install/" target="_blank" rel="noreferrer">Helm</a></li>
+<li><a href="https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/" target="_blank" rel="noreferrer">Trivy</a></li>
+<li>An image that can be deployed to the cluster</li>
+</ul>
+<h1 id="info" class="relative group">Info <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#info" aria-label="Anchor">#</a></span></h1><p>The Trivy Operator continuously scans the Kubernetes cluster. From docs:</p>
+<blockquote>
+<p><strong>The Operator does this by watching Kubernetes for state changes and automatically triggering security scans in response. For example, a vulnerability scan is initiated when a new Pod is created. This way, users can find and view the risks that relate to different resources in a Kubernetes-native way.</strong></p>
+</blockquote>
+<h1 id="step-by-step" class="relative group">Step-by-step <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#step-by-step" aria-label="Anchor">#</a></span></h1><p><a id="setup-local-cluster"></a></p>
+<h2 id="setup-local-cluster" class="relative group">Setup local cluster <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#setup-local-cluster" aria-label="Anchor">#</a></span></h2><ol>
+<li>
+<p><a href="http://localhost:1313/posts/flux-kind-localregistry/">Setup Flux with local registry</a>
+OR setup a simple cluster</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">kind create cluster
+</span></span></code></pre></div></li>
+<li>
+<p>Select local cluster (it is called kind-kind by default) with kubecm</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">kubecm s kind-kind
+</span></span></code></pre></div></li>
+<li>
+<p>For a more realistic environment, run a deployment</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">k apply -f ~/git/testing/flux-image-updates/clusters/my-cluster/podinfo/podinfo-deployment.yaml 
+</span></span><span class="line"><span class="cl">watch kubectl get pods
+</span></span></code></pre></div></li>
+<li>
+<p>(optional) push image to the local registry and create deployment for it</p>
+<p>Trivy needs images to scan, but there are probably already other images in your cluster. E.g. from Flux or others.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker tag 0ac97f5bbbb5 localhost:5001/my-api:1.0.1
+</span></span><span class="line"><span class="cl">docker push localhost:5001/my-api:1.0.1 
+</span></span></code></pre></div></li>
+<li>
+<p>(optional) Check contents of registry</p>
+<p>Flux should automatically deploy new images when they get a new tag (according to the tag policy). To verify what&rsquo;s in the registry, you can curl it.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">✗ curl -X GET http://localhost:5001/v2/_catalog            
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;repositories&#34;</span>:<span class="o">[</span><span class="s2">&#34;my-api&#34;</span>,<span class="s2">&#34;hello-app&#34;</span>,<span class="s2">&#34;podinfo&#34;</span><span class="o">]}</span>
+</span></span><span class="line"><span class="cl">**strong text**
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">✗ curl -X GET http://localhost:5001/v2/podinfo/tags/list
+</span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;podinfo&#34;</span>,<span class="s2">&#34;tags&#34;</span>:<span class="o">[</span><span class="s2">&#34;5.0.7&#34;</span>,<span class="s2">&#34;5.0.3&#34;</span>,<span class="s2">&#34;5.0.5&#34;</span>,<span class="s2">&#34;5.0.0&#34;</span>,<span class="s2">&#34;5.0.4&#34;</span>,<span class="s2">&#34;5.0.6&#34;</span><span class="o">]}</span>
+</span></span></code></pre></div></li>
+</ol>
+<p><a id="test-trivy-operator-locally"></a></p>
+<h2 id="optional-test-trivy-operator-locally" class="relative group">(optional) Test Trivy Operator locally <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#optional-test-trivy-operator-locally" aria-label="Anchor">#</a></span></h2><p><a href="https://aquasecurity.github.io/trivy-operator/latest/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy-operator/latest/</a></p>
+<p>I do this to get a better feeling of how Trivy works and how it should look in the cluster. You can install the Trivy Operator using a YAML manifest file, or as a Helm Chart. We will do the latter. Steps from the docs:</p>
+<p>Option 1: Install from traditional Helm Chart repository</p>
+<ol>
+<li>Add the Aqua chart repository:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">helm repo add aqua https://aquasecurity.github.io/helm-charts/
+</span></span><span class="line"><span class="cl">helm repo update
+</span></span></code></pre></div><ol start="2">
+<li>Install the Helm Chart:</li>
+</ol>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">helm install trivy-operator aqua/trivy-operator <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --namespace trivy-system <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --create-namespace <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --version 0.21.0
+</span></span></code></pre></div><p>Installing the operator yields the following output:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"> ✗    helm install trivy-operator aqua/trivy-operator <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>     --namespace trivy-system <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>     --create-namespace <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>     --version 0.21.0
+</span></span><span class="line"><span class="cl">	 
+</span></span><span class="line"><span class="cl">NAME: trivy-operator
+</span></span><span class="line"><span class="cl">LAST DEPLOYED: Wed Mar <span class="m">27</span> 09:14:18 <span class="m">2024</span>
+</span></span><span class="line"><span class="cl">NAMESPACE: trivy-system
+</span></span><span class="line"><span class="cl">STATUS: deployed
+</span></span><span class="line"><span class="cl">REVISION: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">TEST SUITE: None
+</span></span><span class="line"><span class="cl">NOTES:
+</span></span><span class="line"><span class="cl">You have installed Trivy Operator in the trivy-system namespace.
+</span></span><span class="line"><span class="cl">It is configured to discover Kubernetes workloads and resources in
+</span></span><span class="line"><span class="cl">all namespace<span class="o">(</span>s<span class="o">)</span>.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Inspect created VulnerabilityReports by:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    kubectl get vulnerabilityreports --all-namespaces -o wide
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Inspect created ConfigAuditReports by:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    kubectl get configauditreports --all-namespaces -o wide
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Inspect the work log of trivy-operator by:
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    kubectl logs -n trivy-system deployment/trivy-operator
+</span></span></code></pre></div><p>Running these commands, we see that the operator is starting making reports. I am interested to see if the podinfo deployment has any reports.</p>
+<p>The instructions above are from the &ldquo;Home&rdquo; page of the docs, while there are also more options in the <a href="https://aquasecurity.github.io/trivy-operator/v0.19.0/getting-started/installation/helm/" target="_blank" rel="noreferrer">Helm installation page</a>.</p>
+<p><a id="play-with-incluster-api"></a></p>
+<h2 id="play-with-the-in-cluster-api" class="relative group">Play with the in-cluster API <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#play-with-the-in-cluster-api" aria-label="Anchor">#</a></span></h2><p>&hellip; to get an overview of have the tool works. Is it even worth installing in the cluster?</p>
+<h3 id="get-an-overview" class="relative group">Get an overview <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#get-an-overview" aria-label="Anchor">#</a></span></h3><p>To get an overview of all findings, we can use the reports as shown in the output above:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">✗ kubectl get vulnerabilityreports --all-namespaces -o wide
+</span></span><span class="line"><span class="cl">NAMESPACE            NAME                                                       REPOSITORY                           TAG                  SCANNER   AGE   CRITICAL   HIGH   MEDIUM   LOW   UNKNOWN
+</span></span><span class="line"><span class="cl">flux-system          replicaset-helm-controller-58d5cc6f5b-manager              fluxcd/helm-controller               v0.37.2              Trivy     92m   <span class="m">0</span>          <span class="m">1</span>      <span class="m">11</span>       <span class="m">0</span>     <span class="m">0</span>
+</span></span><span class="line"><span class="cl">flux-system          replicaset-image-automation-controller-654dc4897-manager   fluxcd/image-automation-controller   v0.37.0              Trivy     93m   <span class="m">0</span>          <span class="m">1</span>      <span class="m">8</span>        <span class="m">0</span>     <span class="m">0</span>
+</span></span><span class="line"><span class="cl">flux-system          replicaset-image-reflector-controller-8498c88d9-manager    fluxcd/image-reflector-controller    v0.31.1              Trivy     92m   <span class="m">0</span>          <span class="m">0</span>      <span class="m">9</span>        <span class="m">0</span>     <span class="m">0</span>
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">✗ kubectl get configauditreports --all-namespaces -o wide
+</span></span><span class="line"><span class="cl">NAMESPACE            NAME                                               SCANNER   AGE   CRITICAL   HIGH   MEDIUM   LOW
+</span></span><span class="line"><span class="cl">default              replicaset-podinfo-5d869859bd                      Trivy     94m   <span class="m">0</span>          <span class="m">2</span>      <span class="m">3</span>        <span class="m">9</span>
+</span></span><span class="line"><span class="cl">default              service-kubernetes                                 Trivy     94m   <span class="m">0</span>          <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span>
+</span></span><span class="line"><span class="cl">my-api               replicaset-my-api-7cc565547                        Trivy     94m   <span class="m">0</span>          <span class="m">1</span>      <span class="m">2</span>        <span class="m">9</span>
+</span></span><span class="line"><span class="cl">flux-system          networkpolicy-allow-egress                         Trivy     94m   <span class="m">0</span>          <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span>
+</span></span><span class="line"><span class="cl">...
+</span></span></code></pre></div><p><a id="read-report-findings"></a></p>
+<h3 id="dive-deeper-into-findings" class="relative group">Dive deeper into findings <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#dive-deeper-into-findings" aria-label="Anchor">#</a></span></h3><p>To checkout the findings, run the following commands</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">✗ kubectl describe vulnerabilityreport my-vulnerability-report -n default
+</span></span><span class="line"><span class="cl">✗ kubectl describe configauditreport my-configaudit-report -n default
+</span></span></code></pre></div><p>My pod had the following HIGH finding:</p>
+<pre tabindex="0"><code>    Category:     Kubernetes Security Check
+    Check ID:     KSV118
+    Description:  Security context controls the allocation of security parameters for the pod/container/volume, ensuring the appropriate level
+ of protection. Relying on default security context may expose vulnerabilities to potential attacks that rely on privileged access.
+    Messages:
+      replicaset my-api-7cc565547 in my-api namespace is using the default security context, which allows root privileges
+    Remediation:  To enhance security, it is strongly recommended not to rely on the default security context. Instead, it is advisable to exp
+licitly define the required security parameters (such as runAsNonRoot, capabilities, readOnlyRootFilesystem, etc.) within the security context
+.
+    Severity:     HIGH
+    Success:      false
+    Title:        Default security context configured
+</code></pre><p><a id="add-trivy-operator-to-project"></a></p>
+<h2 id="setup-trivy-operator-in-production" class="relative group">Setup Trivy Operator in production <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#setup-trivy-operator-in-production" aria-label="Anchor">#</a></span></h2><h3 id="trivy-operator-manifest-files" class="relative group">Trivy Operator manifest files <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#trivy-operator-manifest-files" aria-label="Anchor">#</a></span></h3><p><a href="https://aquasecurity.github.io/trivy/v0.50/tutorials/kubernetes/gitops/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy/v0.50/tutorials/kubernetes/gitops/</a></p>
+<p>Okay, so I think this will give value. Especially in a scenario where Kubernetes is used for standard applications in an organisation. Then we have centralized image scanning and can report known vulnerabilities without the teams having to set up anything themselves.</p>
+<p>So let&rsquo;s look into how to add the Trivy Operator to a cluster in production.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Namespace</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">trivy-system</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">source.toolkit.fluxcd.io/v1beta2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">HelmRepository</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">trivy-operator</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">flux-system</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l">60m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">oci</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l">oci://ghcr.io/aquasecurity/helm-charts</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">helm.toolkit.fluxcd.io/v2beta1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">HelmRelease</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">trivy-operator</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">trivy-system</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">chart</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">chart</span><span class="p">:</span><span class="w"> </span><span class="l">trivy-operator</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="m">0.21.0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">sourceRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">HelmRepository</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">trivy-operator</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">flux-system</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l">60m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">trivy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">resources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">limits</span><span class="p">:</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l">1500M </span><span class="w"> </span><span class="c"># Default of ?? wasn&#39;t enough, causing OOMKilled workload containers</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ignoreUnfixed</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">operator</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">scanJobsConcurrentLimit</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">  </span><span class="c"># Default of 10 used too much RAM at once for Nodes, causing OOMkilled workload containers</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">install</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">crds</span><span class="p">:</span><span class="w"> </span><span class="l">CreateReplace</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">createNamespace</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span></code></pre></div><p><a id="configure-calico"></a></p>
+<h3 id="configure-calico-network-policy" class="relative group">Configure Calico network policy <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#configure-calico-network-policy" aria-label="Anchor">#</a></span></h3><p>If you are using Calico or other network management tools and run the manifests above, you will most likely get the following error or something similar:
+<code>unable to run trivy operator: failed getting configmap: trivy-operator: Get &quot;https://10.0.0.1:443/api/v1/namespaces/trivy-system/configmaps/trivy-operator&quot;: dial tcp 10.0.0.1:443: i/o timeout</code>.</p>
+<p>This means that you need to add a network policy. Trivy requires two network accesses:</p>
+<ul>
+<li>Access to the K8s API</li>
+<li>Access to the vulnerability database</li>
+</ul>
+<p>Adhering to the principle of least privilege is quite hard here. In the network policy, only IP ranges can be set. Using Azure, one can set more tailored rules in front. However, those rules apply to the whole cluster, not one namespace or Kubernetes resource.</p>
+<p>Here is an example of a network policy for Calico to allow Trivy access to the K8s API:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">projectcalico.org/v3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">NetworkPolicy</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">allow-trivy-operator-egress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">trivy-system</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">types</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="l">Egress</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">egress</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="l">Allow </span><span class="w"> </span><span class="c"># allow k8s API calls</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">destination</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">services</span><span class="p">:</span><span class="w"> 
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">kubernetes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">default</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">action</span><span class="p">:</span><span class="w"> </span><span class="l">Allow </span><span class="w"> </span><span class="c"># allow vulnerability database fetch</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">destination</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">ports</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="s2">&#34;443&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">nets</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="m">0.0.0.0</span><span class="l">/0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">protocol</span><span class="p">:</span><span class="w"> </span><span class="l">TCP</span><span class="w">
+</span></span></span></code></pre></div><p>To check the calico network policy when it has been applied:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">calicoctl get networkpolicy allow-trivy-operator-egress -o yaml -n trivy-system --allow-version-mismatch
+</span></span></code></pre></div><p><a id="tolerate-node-taints"></a></p>
+<h3 id="tolerate-node-taints" class="relative group">Tolerate node taints <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#tolerate-node-taints" aria-label="Anchor">#</a></span></h3><p><a href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/" target="_blank" rel="noreferrer">https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/</a></p>
+<p>If your cluster has taints on nodes, you will see that the Trivy node collector isn&rsquo;t running correctly. You can check by first finding the node collector name (list all resources in the namespace and you will have it), and then run kubectl describe on it. The events will show what is wrong, e.g. <code>FailedScheduling</code> with the message <code>0/7 nodes are available: 1 node(s) had untolerated taint ....</code>.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">k describe pod/node-collector-677f9fb5b8-jc6tw -n trivy-system
+</span></span></code></pre></div><p>Find the taints on the nodes in your cluster:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">➜  ~ kubectl get nodes -o json <span class="p">|</span> jq <span class="s1">&#39;.items[] | {name: .metadata.name, taints: .spec.taints}&#39;</span>
+</span></span></code></pre></div><p>Then you can add it to the HelmRelease as values. Note that it is not common pod tolerations you must configure, but tell the Trivy Operator through <code>values.triyvOperator.scanJobTolerations</code> which tolerations the node-collector pod should have.</p>
+<details><summary>What happens when setting common tolerations</summary>
+<p>Updating the tolerations, the node-collector pod didn&rsquo;t get them applied, only the operator pod (checking with <code>k describe pod/node-collector-some-id</code> and same for pod/trivy-operator). I found an <a href="https://github.com/aquasecurity/trivy-operator/issues/1659" target="_blank" rel="noreferrer">issue</a> and deleted all files to reset, but it didn&rsquo;t work. With some more research, I found that I must set the tolerations in the <a href="https://github.com/aquasecurity/trivy-operator/pull/1644#issuecomment-1884290908" target="_blank" rel="noreferrer">Helm values</a></p>
+<hr>
+</details>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">trivy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ignoreUnfixed</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">trivyOperator</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">			</span><span class="nt">scanJobTolerations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;key1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Equal&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;value1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;NoSchedule&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>In version 0.21.1, it was supported to add tolerations to NodeCollector. At that point, we started getting the same toleration error messages and the NodeCollector timed out. Looking at the <a href="https://artifacthub.io/packages/helm/trivy-operator/trivy-operator?modal=values&amp;path=nodeCollector.tolerations" target="_blank" rel="noreferrer">HelmChart Artifact Hub</a>, we fixed by adding tolerations to the node collector as well:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">trivy</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ignoreUnfixed</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">trivyOperator</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">			</span><span class="nt">scanJobTolerations</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;key1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Equal&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;value1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;NoSchedule&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		</span><span class="nt">nodeCollector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">		  </span>- <span class="nt">key</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;key1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">operator</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Equal&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;value1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;NoSchedule&#34;</span><span class="w">
+</span></span></span></code></pre></div><p>Done!</p>
+<h3 id="add-image-scanning" class="relative group">Add image scanning <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#add-image-scanning" aria-label="Anchor">#</a></span></h3><p>Trivy scans images by default. If it is not working, make sure you allow network to fetch the vulnerability database, as well as allowing network to fetch images from your repository.
+Maybe this will help:</p>
+<ul>
+<li><a href="https://aquasecurity.github.io/trivy-operator/latest/docs/vulnerability-scanning/private-registries/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy-operator/latest/docs/vulnerability-scanning/private-registries/</a></li>
+<li><a href="https://aquasecurity.github.io/trivy-operator/v0.19.0/tutorials/private-registries/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy-operator/v0.19.0/tutorials/private-registries/</a></li>
+</ul>
+<p><a id="create-reports"></a></p>
+<h2 id="create-reports" class="relative group">Create reports <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#create-reports" aria-label="Anchor">#</a></span></h2><p>Coming soon maybe.</p>
+<p><a id="grafana-dashboard"></a></p>
+<h2 id="grafana-dashboard" class="relative group">Grafana dashboard <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#grafana-dashboard" aria-label="Anchor">#</a></span></h2><p>This was an easy fix, however it took a little time to figure out how to use the gnetId to create image through Terraform.</p>
+<p>I made a PR to the Trivy docs, so it should be documented now: <a href="https://aquasecurity.github.io/trivy-operator/v0.22.0/tutorials/grafana-dashboard/#using-the-grafana-helm-chart" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy-operator/v0.22.0/tutorials/grafana-dashboard/#using-the-grafana-helm-chart</a>.</p>
+<h2 id="useful-commands" class="relative group">Useful commands <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#useful-commands" aria-label="Anchor">#</a></span></h2><p><a id="trivy-operator-logs"></a></p>
+<h3 id="trivy-operator-logs" class="relative group">Trivy Operator logs <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#trivy-operator-logs" aria-label="Anchor">#</a></span></h3><p>From K8s:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">k logs -n trivy-system deployment/trivy-operator
+</span></span></code></pre></div><p>See all trivy-system resource (except from network policy):</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">k get all -n trivy-system
+</span></span></code></pre></div><p><a id="flux-reconcile-logs"></a></p>
+<h3 id="flux-reconcile-logs" class="relative group">Flux reconcile logs <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#flux-reconcile-logs" aria-label="Anchor">#</a></span></h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">flux logs --namespace flux-system --since<span class="o">=</span>1h -f
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">flux logs --namespace flux-system --since<span class="o">=</span>1h -f --kind<span class="o">=</span>kustomization
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">flux logs --namespace flux-system --since<span class="o">=</span>1h -f --kind<span class="o">=</span>kustomization --name<span class="o">=</span>trivy-prereqs
+</span></span></code></pre></div><p>See new commits as they are detected:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">flux logs --namespace flux-system --since<span class="o">=</span>1h -f --kind<span class="o">=</span>gitrepository
+</span></span></code></pre></div><p><a id="restart-operator"></a></p>
+<h3 id="deleterestart-the-operator" class="relative group">Delete/restart the operator <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#deleterestart-the-operator" aria-label="Anchor">#</a></span></h3><p>After doing lots of testing, you might want to delete the operator and install it again to see that a clean install works. You can do like this:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">kubectl delete all --all -n trivy-system
+</span></span></code></pre></div><p>Flux might automatically reinstall. If not, you can run</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">flux reconcile kustomization flux-system --with-source -n flux-system
+</span></span></code></pre></div><p>or maybe</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">flux reconcile helmrelease trivy-operator -n trivy-system
+</span></span></code></pre></div><p>Or just delete the files and see that the resources are gone, and then put them back.</p>
+<p><a id="delete-all-reports"></a></p>
+<h3 id="delete-all-reports" class="relative group">Delete all reports <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#delete-all-reports" aria-label="Anchor">#</a></span></h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">kubectl delete exposedsecretreport --all --all-namespaces
+</span></span></code></pre></div><p>And then same for other reports, such as <code>vulnerabilityreport</code>.</p>
+<p><a id="debugging"></a></p>
+<h2 id="debugging" class="relative group">Debugging <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#debugging" aria-label="Anchor">#</a></span></h2><h3 id="sbom-decode-error-failed-to-decode-multiple-os-components-are-not-supported" class="relative group">SBOM decode error: failed to decode: multiple OS components are not supported <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#sbom-decode-error-failed-to-decode-multiple-os-components-are-not-supported" aria-label="Anchor">#</a></span></h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;level&#34;</span><span class="p">:</span> <span class="s2">&#34;error&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;ts&#34;</span><span class="p">:</span> <span class="s2">&#34;2024-04-08T10:04:45Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;logger&#34;</span><span class="p">:</span> <span class="s2">&#34;reconciler.scan job&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;msg&#34;</span><span class="p">:</span> <span class="s2">&#34;Scan job container&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;job&#34;</span><span class="p">:</span> <span class="s2">&#34;trivy-system/scan-vulnerabilityreport-6cccfb67dd&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;container&#34;</span><span class="p">:</span> <span class="s2">&#34;k8s-cluster&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;status.reason&#34;</span><span class="p">:</span> <span class="s2">&#34;Error&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;status.message&#34;</span><span class="p">:</span> <span class="s2">&#34;2024-04-08T10:04:37.564Z\t\u001b[31mFATAL\u001b[0m\tsbom scan error: scan error: scan failed: failed analysis: SBOM decode error: failed to decode: failed to decode components: multiple OS components are not supported\n&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;stacktrace&#34;</span><span class="p">:</span> <span class="s2">&#34;github.com/aquasecurity/trivy-operator/pkg/vulnerabilityreport/controller.(*ScanJobController).completedContainers\n\t/home/runner/work/trivy-operator/trivy-operator/pkg/vulnerabilityreport/controller/scanjob.go:353\ngithub.com/aquasecurity/trivy-operator/pkg/vulnerabilityreport/controller.(*ScanJobController).SetupWithManager.(*ScanJobController).reconcileJobs.func1\n\t/home/runner/work/trivy-operator/trivy-operator/pkg/vulnerabilityreport/controller/scanjob.go:80\nsigs.k8s.io/controller-runtime/pkg/reconcile.Func.Reconcile\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/reconcile/reconcile.go:113\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:119\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:316\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:227&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>Haven&rsquo;t looked into this yet.</p>
+<h3 id="scan-error-unable-to-initialize-an-image-scanner-remote-error-image-fetch" class="relative group">scan error: unable to initialize an image scanner: remote error (image fetch) <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#scan-error-unable-to-initialize-an-image-scanner-remote-error-image-fetch" aria-label="Anchor">#</a></span></h3><p>This problem is because GETing the URL provides a bad response.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;level&#34;</span><span class="p">:</span> <span class="s2">&#34;error&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;ts&#34;</span><span class="p">:</span> <span class="s2">&#34;2024-04-23T03:07:55Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;logger&#34;</span><span class="p">:</span> <span class="s2">&#34;reconciler.scan job&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;msg&#34;</span><span class="p">:</span> <span class="s2">&#34;Scan job container&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;job&#34;</span><span class="p">:</span> <span class="s2">&#34;trivy-system/scan-vulnerabilityreport-7f665c795b&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;container&#34;</span><span class="p">:</span> <span class="s2">&#34;calico-windows-upgrade&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;status.reason&#34;</span><span class="p">:</span> <span class="s2">&#34;Error&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;status.message&#34;</span><span class="p">:</span> <span class="s2">&#34;2024-04-23T03:07:53.141Z\t\u001b[31mFATAL\u001b[0m\timage scan error: scan error: unable to initialize a scanner: unable to initialize an image scanner: 4 errors occurred:\n\t* docker error: unable to inspect the image (mcr.microsoft.com/oss/calico/windows-upgrade:v3.26.3): Cannot connect to the Docker daemon at unix:///var/run/docker.sock. Is the docker daemon running?\n\t* containerd error: containerd socket not found: /run/containerd/containerd.sock\n\t* podman error: unable to initialize Podman client: no podman socket found: stat podman/podman.sock: no such file or directory\n\t* remote error: GET https://mcr.microsoft.com/v2/oss/calico/windows-upgrade/manifests/v3.26.3: MANIFEST_UNKNOWN: manifest tagged by \&#34;v3.26.3\&#34; is not found; map[Tag:v3.26.3]\n\n\n&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;stacktrace&#34;</span><span class="p">:</span> <span class="s2">&#34;github.com/aquasecurity/trivy-operator/pkg/vulnerabilityreport/controller.(*ScanJobController).completedContainers\n\t/home/runner/work/trivy-operator/trivy-operator/pkg/vulnerabilityreport/controller/scanjob.go:353\ngithub.com/aquasecurity/trivy-operator/pkg/vulnerabilityreport/controller.(*ScanJobController).SetupWithManager.(*ScanJobController).reconcileJobs.func1\n\t/home/runner/work/trivy-operator/trivy-operator/pkg/vulnerabilityreport/controller/scanjob.go:80\nsigs.k8s.io/controller-runtime/pkg/reconcile.Func.Reconcile\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.3/pkg/reconcile/reconcile.go:113\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.3/pkg/internal/controller/controller.go:119\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.3/pkg/internal/controller/controller.go:316\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.3/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.3/pkg/internal/controller/controller.go:227&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>I don&rsquo;t need Windows upgrades at all, so I am thinking of options to handle this:</p>
+<ul>
+<li>Disable scanning with Trivy
+<ul>
+<li>with label</li>
+<li>target workload (turn off DaemonSet-reports)</li>
+<li>namespace (turn off reports for all calico-system resources)</li>
+</ul>
+</li>
+<li>Disable calico-windows-upgrade DaemonSet</li>
+</ul>
+<p>Don&rsquo;t have a solution just yet. Didn&rsquo;t prioritise this because triggers this error is a deprecated feature that will be removed in the future.</p>
+<h3 id="scanning-windows-images-is-not-supported" class="relative group">Scanning Windows images is not supported <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#scanning-windows-images-is-not-supported" aria-label="Anchor">#</a></span></h3><p>Pretty self-explanatory.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;level&#34;</span><span class="p">:</span> <span class="s2">&#34;info&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;ts&#34;</span><span class="p">:</span> <span class="s2">&#34;2024-04-08T10:07:35Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;logger&#34;</span><span class="p">:</span> <span class="s2">&#34;reconciler.scan job&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;msg&#34;</span><span class="p">:</span> <span class="s2">&#34;Scan job container&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;job&#34;</span><span class="p">:</span> <span class="s2">&#34;trivy-system/scan-vulnerabilityreport-7f4d674d74&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;container&#34;</span><span class="p">:</span> <span class="s2">&#34;init&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;status.reason&#34;</span><span class="p">:</span> <span class="s2">&#34;Error&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;status.message&#34;</span><span class="p">:</span> <span class="s2">&#34;Scanning Windows images is not supported.&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><h3 id="scan-job---oomkilled-" class="relative group">Scan job - OOMKilled ✅ <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#scan-job---oomkilled-" aria-label="Anchor">#</a></span></h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;level&#34;</span><span class="p">:</span> <span class="s2">&#34;error&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;ts&#34;</span><span class="p">:</span> <span class="s2">&#34;2024-04-08T10:08:16Z&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;logger&#34;</span><span class="p">:</span> <span class="s2">&#34;reconciler.scan job&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;msg&#34;</span><span class="p">:</span> <span class="s2">&#34;Scan job container&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;job&#34;</span><span class="p">:</span> <span class="s2">&#34;trivy-system/scan-vulnerabilityreport-5c498d8bc6&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;container&#34;</span><span class="p">:</span> <span class="s2">&#34;prometheus&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;status.reason&#34;</span><span class="p">:</span> <span class="s2">&#34;OOMKilled&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;status.message&#34;</span><span class="p">:</span> <span class="s2">&#34;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;stacktrace&#34;</span><span class="p">:</span> <span class="s2">&#34;github.com/aquasecurity/trivy-operator/pkg/vulnerabilityreport/controller.(*ScanJobController).completedContainers\n\t/home/runner/work/trivy-operator/trivy-operator/pkg/vulnerabilityreport/controller/scanjob.go:353\ngithub.com/aquasecurity/trivy-operator/pkg/vulnerabilityreport/controller.(*ScanJobController).SetupWithManager.(*ScanJobController).reconcileJobs.func1\n\t/home/runner/work/trivy-operator/trivy-operator/pkg/vulnerabilityreport/controller/scanjob.go:80\nsigs.k8s.io/controller-runtime/pkg/reconcile.Func.Reconcile\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/reconcile/reconcile.go:113\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:119\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:316\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:227&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></div><p>The default values for RAM wasn&rsquo;t enough. We gave a little more <code>request</code> and <code>limit</code> for the scanners and this solved the problem. In addition there were 10 reports generated simultanuously. We changed it to 2 to give the nodes a little room. It is shown under spec.values in <a href="#trivy-operator-manifest-files">the manifest file</a>.</p>
+<h2 id="resources" class="relative group">Resources <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#resources" aria-label="Anchor">#</a></span></h2><ul>
+<li><a href="https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/</a></li>
+<li><a href="https://aquasecurity.github.io/trivy-operator/latest/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy-operator/latest/</a></li>
+<li><a href="https://www.aquasec.com/blog/vulnerability-scanning-trivy-vs-the-trivy-operator/" target="_blank" rel="noreferrer">https://www.aquasec.com/blog/vulnerability-scanning-trivy-vs-the-trivy-operator/</a></li>
+<li><a href="https://github.com/aquasecurity/trivy/discussions/4905" target="_blank" rel="noreferrer">https://github.com/aquasecurity/trivy/discussions/4905</a></li>
+<li><a href="https://github.com/aquasecurity/trivy/discussions/4499" target="_blank" rel="noreferrer">https://github.com/aquasecurity/trivy/discussions/4499</a></li>
+<li><a href="https://aquasecurity.github.io/trivy/v0.17.2/private-registries/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy/v0.17.2/private-registries/</a></li>
+<li>K8s Lens: <a href="https://docs.k8slens.dev/" target="_blank" rel="noreferrer">https://docs.k8slens.dev/</a></li>
+<li>Lens extension: <a href="https://aquasecurity.github.io/trivy-operator/v0.10.1/tutorials/integrations/lens/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy-operator/v0.10.1/tutorials/integrations/lens/</a></li>
+<li><a href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/" target="_blank" rel="noreferrer">https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/</a></li>
+<li><a href="https://github.com/aquasecurity/trivy-operator/issues/1659" target="_blank" rel="noreferrer">https://github.com/aquasecurity/trivy-operator/issues/1659</a></li>
+<li></li>
+</ul>
+
+      </div>
+    </section>
+    <footer class="max-w-prose pt-8 print:hidden">
+      
+
+      
+
+      
+  
+    
+    
+    
+      
+      
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/flux-kind-localregistry/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Flux with Local Registry</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                </span>
+              </span>
+              <span
+                class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[-2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&rarr;</span
+                ><span class="ltr:hidden rtl:inline">&larr;</span></span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+      </main>
+      
+        <div
+          class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12"
+          id="to-top"
+          hidden="true"
+        >
+          <a
+            href="#the-top"
+            class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+            aria-label="Scroll to top"
+            title="Scroll to top"
+          >
+            &uarr;
+          </a>
+        </div>
+      <footer class="py-10 print:hidden">
+  
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+      
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2024
+            Marit Iren R. Tokle
+        </p>
+      
+      
+      
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">
+          
+          
+          Powered by <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+            href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://github.com/jpanther/congo" target="_blank" rel="noopener noreferrer">Congo</a>
+        </p>
+      
+    </div>
+    <div class="flex flex-row items-center">
+      
+      
+      
+      
+        <div
+          class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        >
+          <button id="appearance-switcher-0" type="button" aria-label="appearance switcher">
+            <div
+              class="flex h-12 w-12 items-center justify-center dark:hidden"
+              title="Switch to dark appearance"
+            >
+              <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+            </div>
+            <div
+              class="hidden h-12 w-12 items-center justify-center dark:flex"
+              title="Switch to light appearance"
+            >
+              <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+            </div>
+          </button>
+        </div>
+      
+    </div>
+  </div>
+  
+  
+</footer>
+
+    </div>
+  </body>
+</html>
