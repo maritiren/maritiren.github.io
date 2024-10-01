@@ -1,10 +1,10 @@
 ---
-title: 'Kind Cluster with Local Registry'
+title: 'Kind with Local Registry for Flux'
 date: 2024-10-01T15:10:14+02:00
 draft: false
-description: "How to setup a local registry in Kind"
-summary: "A script to set up a local registry in Kind, with containerd patches to make it work for Flux"
-slug: "Kubernetes"
+description: "How to setup Kind with local registry"
+summary: "A script to set up Kind and a local registry, with containerd patches to make it work for Flux"
+slug: "kind-localregistry"
 tags: ["k8s", "kind", "local registry", "flux"]
 ---
 

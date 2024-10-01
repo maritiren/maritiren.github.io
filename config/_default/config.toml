@@ -3,7 +3,7 @@
 # https://jpanther.github.io/congo/docs/getting-started/
 
 theme = "congo"
-# baseURL = "https://your_domain.com/"
+baseURL = "https://tokle.dev/"
 defaultContentLanguage = "en"
 
 enableRobotsTXT = true
