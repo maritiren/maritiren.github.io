@@ -1,6 +1,6 @@
 ---
 title: 'Flux with Local Registry'
-date: 2024-10-01T14:33:44+02:00
+date: 2024-10-01T15:33:44+02:00
 draft: false
 description: "How to setup Flux in a Kind cluster with a local registry"
 summary: "A step-by-step guide for setting up Flux in a Kind cluster with a local registry for automatic updates of Docker images."

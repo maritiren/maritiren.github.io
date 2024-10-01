@@ -6,21 +6,21 @@
     <description>Recent content in Blog posts on Marit&#39;s notebook</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 01 Oct 2024 15:10:14 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 01 Oct 2024 15:33:44 +0200</lastBuildDate>
     <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Flux with Local Registry</title>
+      <link>http://localhost:1313/posts/flux-kind-localregistry/</link>
+      <pubDate>Tue, 01 Oct 2024 15:33:44 +0200</pubDate>
+      <guid>http://localhost:1313/posts/flux-kind-localregistry/</guid>
+      <description>A step-by-step guide for setting up Flux in a Kind cluster with a local registry for automatic updates of Docker images.</description>
+    </item>
     <item>
       <title>Kind with Local Registry for Flux</title>
       <link>http://localhost:1313/posts/kind-localregistry/</link>
       <pubDate>Tue, 01 Oct 2024 15:10:14 +0200</pubDate>
       <guid>http://localhost:1313/posts/kind-localregistry/</guid>
       <description>A script to set up Kind and a local registry, with containerd patches to make it work for Flux</description>
-    </item>
-    <item>
-      <title>Flux with Local Registry</title>
-      <link>http://localhost:1313/posts/flux-kind-localregistry/</link>
-      <pubDate>Tue, 01 Oct 2024 14:33:44 +0200</pubDate>
-      <guid>http://localhost:1313/posts/flux-kind-localregistry/</guid>
-      <description>A step-by-step guide for setting up Flux in a Kind cluster with a local registry for automatic updates of Docker images.</description>
     </item>
   </channel>
 </rss>
