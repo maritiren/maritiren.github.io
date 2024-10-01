@@ -1,0 +1,6 @@
+baseURL = 'https://tokle.dev/'
+languageCode = 'en-us'
+title = "Marit's notebook"
+theme = "roxo-hugo"
+paginate = 10
+publishDir = "blog"
