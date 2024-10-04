@@ -21,21 +21,21 @@ One downside which is not in our scope, but is worth mentioning, is that the Tri
 {{< /alert >}}
 
 
-# Prereqs
+## Prereqs
 * [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installing-from-release-binaries)
 * [kubecm](https://kubecm.cloud/)
 * [Helm](https://helm.sh/docs/intro/install/)
 * [Trivy](https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/)
 * An image that can be deployed to the cluster
 
-# Info
+## Info
 The Trivy Operator continuously scans the Kubernetes cluster. From docs: 
 > **The Operator does this by watching Kubernetes for state changes and automatically triggering security scans in response. For example, a vulnerability scan is initiated when a new Pod is created. This way, users can find and view the risks that relate to different resources in a Kubernetes-native way.**
 
-# Step-by-step
+## Step-by-step
 
 <a id="setup-local-cluster"></a>
-## Setup local cluster
+### Setup local cluster
 1. [Setup Flux with local registry]({{< ref "flux-with-local-registry">}})
    OR setup a simple cluster
    ```sh
@@ -77,7 +77,7 @@ The Trivy Operator continuously scans the Kubernetes cluster. From docs:
 
 
 <a id="test-trivy-operator-locally"></a>
-## (optional) Test Trivy Operator locally
+### (optional) Test Trivy Operator locally
 https://aquasecurity.github.io/trivy-operator/latest/
 
 I do this to get a better feeling of how Trivy works and how it should look in the cluster. You can install the Trivy Operator using a YAML manifest file, or as a Helm Chart. We will do the latter. Steps from the docs:
@@ -135,7 +135,7 @@ The instructions above are from the "Home" page of the docs, while there are als
 
 
 <a id="play-with-incluster-api"></a>
-## Play with the in-cluster API
+### Play with the in-cluster API
 ... to get an overview of have the tool works. Is it even worth installing in the cluster?
 
 ### Get an overview
@@ -186,8 +186,8 @@ licitly define the required security parameters (such as runAsNonRoot, capabilit
 
 
 <a id="add-trivy-operator-to-project"></a>
-## Setup Trivy Operator in production
-### Trivy Operator manifest files
+### Setup Trivy Operator in production
+#### Trivy Operator manifest files
 https://aquasecurity.github.io/trivy/v0.50/tutorials/kubernetes/gitops/ 
 
 Okay, so I think this will give value. Especially in a scenario where Kubernetes is used for standard applications in an organisation. Then we have centralized image scanning and can report known vulnerabilities without the teams having to set up anything themselves. 
@@ -240,7 +240,7 @@ spec:
 ```
 
 <a id="configure-calico"></a>
-### Configure Calico network policy
+#### Configure Calico network policy
 If you are using Calico or other network management tools and run the manifests above, you will most likely get the following error or something similar: 
 `unable to run trivy operator: failed getting configmap: trivy-operator: Get "https://10.0.0.1:443/api/v1/namespaces/trivy-system/configmaps/trivy-operator": dial tcp 10.0.0.1:443: i/o timeout`. 
 
@@ -284,7 +284,7 @@ calicoctl get networkpolicy allow-trivy-operator-egress -o yaml -n trivy-system 
 
 
 <a id="tolerate-node-taints"></a>
-### Tolerate node taints
+#### Tolerate node taints
 https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
 
 If your cluster has taints on nodes, you will see that the Trivy node collector isn't running correctly. You can check by first finding the node collector name (list all resources in the namespace and you will have it), and then run kubectl describe on it. The events will show what is wrong, e.g. `FailedScheduling` with the message `0/7 nodes are available: 1 node(s) had untolerated taint ....`.
@@ -344,7 +344,7 @@ In version 0.21.1, it was supported to add tolerations to NodeCollector. At that
 Done! 
 
 
-### Add image scanning
+#### Add image scanning
 Trivy scans images by default. If it is not working, make sure you allow network to fetch the vulnerability database, as well as allowing network to fetch images from your repository. 
 Maybe this will help:
 * https://aquasecurity.github.io/trivy-operator/latest/docs/vulnerability-scanning/private-registries/
@@ -493,6 +493,22 @@ Pretty self-explanatory.
 ```
 
 The default values for RAM wasn't enough. We gave a little more `request` and `limit` for the scanners and this solved the problem. In addition there were 10 reports generated simultanuously. We changed it to 2 to give the nodes a little room. It is shown under spec.values in [the manifest file](#trivy-operator-manifest-files).
+
+### Too many requests
+After a while, we started getting an error saying that we are sendign too many requests to the Trivy GitHub repo. I have some thought about why this might happen:
+* Some images are retried every 15 min or so
+* The cluster spins up jobs in which Trivy scans the same image every time the job runs
+
+```sh
+2024-10-03T07:31:26Z	FATAL	Fatal error	init error: DB error: failed to download vulnerability DB: database download error: oci download error: failed to fetch the layer: GET https://ghcr.io/v2/aquasecurity/trivy-db/blobs/sha256:77a50f405854d311fdf062f2d7edf3c04c63e2f5d218751a29125431376757a1: TOOMANYREQUESTS: retry-after: 600.129µs, allowed: 44000/minute
+```
+
+Possible solutions: 
+* Do not scan AKS. Maybe management would like an overview in case of a new Log4j? But then it should probably be in form of an SBOM. Which is probably generated after a scan
+* Try to only scan the same image (with hash!!) once a day. Is it even possible? This would be a nice solution! Especially if standard applications are using the same images.
+
+Seems like this was a recently introduced bug. As discussed in [this GitHub issue](https://github.com/aquasecurity/trivy/discussions/7538).
+
 
 ## Resources
 * https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/

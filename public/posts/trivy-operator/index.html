@@ -130,7 +130,7 @@
     "keywords": ["K8s","Trivy"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "2163"
+    "wordCount": "2334"
   }
   </script>
     
@@ -498,20 +498,23 @@
   <div class="border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
-    <li><a href="#setup-local-cluster">Setup local cluster</a></li>
-    <li><a href="#optional-test-trivy-operator-locally">(optional) Test Trivy Operator locally</a></li>
-    <li><a href="#play-with-the-in-cluster-api">Play with the in-cluster API</a>
+    <li><a href="#prereqs">Prereqs</a></li>
+    <li><a href="#info">Info</a></li>
+    <li><a href="#step-by-step">Step-by-step</a>
       <ul>
+        <li><a href="#setup-local-cluster">Setup local cluster</a></li>
+        <li><a href="#optional-test-trivy-operator-locally">(optional) Test Trivy Operator locally</a></li>
+        <li><a href="#play-with-the-in-cluster-api">Play with the in-cluster API</a></li>
         <li><a href="#get-an-overview">Get an overview</a></li>
         <li><a href="#dive-deeper-into-findings">Dive deeper into findings</a></li>
-      </ul>
-    </li>
-    <li><a href="#setup-trivy-operator-in-production">Setup Trivy Operator in production</a>
-      <ul>
-        <li><a href="#trivy-operator-manifest-files">Trivy Operator manifest files</a></li>
-        <li><a href="#configure-calico-network-policy">Configure Calico network policy</a></li>
-        <li><a href="#tolerate-node-taints">Tolerate node taints</a></li>
-        <li><a href="#add-image-scanning">Add image scanning</a></li>
+        <li><a href="#setup-trivy-operator-in-production">Setup Trivy Operator in production</a>
+          <ul>
+            <li><a href="#trivy-operator-manifest-files">Trivy Operator manifest files</a></li>
+            <li><a href="#configure-calico-network-policy">Configure Calico network policy</a></li>
+            <li><a href="#tolerate-node-taints">Tolerate node taints</a></li>
+            <li><a href="#add-image-scanning">Add image scanning</a></li>
+          </ul>
+        </li>
       </ul>
     </li>
     <li><a href="#create-reports">Create reports</a></li>
@@ -530,6 +533,7 @@
         <li><a href="#scan-error-unable-to-initialize-an-image-scanner-remote-error-image-fetch">scan error: unable to initialize an image scanner: remote error (image fetch)</a></li>
         <li><a href="#scanning-windows-images-is-not-supported">Scanning Windows images is not supported</a></li>
         <li><a href="#scan-job---oomkilled-">Scan job - OOMKilled ✅</a></li>
+        <li><a href="#too-many-requests">Too many requests</a></li>
       </ul>
     </li>
     <li><a href="#resources">Resources</a></li>
@@ -558,19 +562,19 @@
   <span class="dark:text-neutral-300">One downside which is not in our scope, but is worth mentioning, is that the Trivy Operator does not scan prior to deployment. Hence, it can not be used as a quality control or quality gate. Therefore, you should still run Trivy CLI in your pipelines. We already run Trivy as a check before merging to main. Our scope is only Kubernetes and image scanning, not configs and vulns.</span>
 </div>
 
-<h1 id="prereqs" class="relative group">Prereqs <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#prereqs" aria-label="Anchor">#</a></span></h1><ul>
+<h2 id="prereqs" class="relative group">Prereqs <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#prereqs" aria-label="Anchor">#</a></span></h2><ul>
 <li><a href="https://kind.sigs.k8s.io/docs/user/quick-start/#installing-from-release-binaries" target="_blank" rel="noreferrer">Kind</a></li>
 <li><a href="https://kubecm.cloud/" target="_blank" rel="noreferrer">kubecm</a></li>
 <li><a href="https://helm.sh/docs/intro/install/" target="_blank" rel="noreferrer">Helm</a></li>
 <li><a href="https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/" target="_blank" rel="noreferrer">Trivy</a></li>
 <li>An image that can be deployed to the cluster</li>
 </ul>
-<h1 id="info" class="relative group">Info <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#info" aria-label="Anchor">#</a></span></h1><p>The Trivy Operator continuously scans the Kubernetes cluster. From docs:</p>
+<h2 id="info" class="relative group">Info <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#info" aria-label="Anchor">#</a></span></h2><p>The Trivy Operator continuously scans the Kubernetes cluster. From docs:</p>
 <blockquote>
 <p><strong>The Operator does this by watching Kubernetes for state changes and automatically triggering security scans in response. For example, a vulnerability scan is initiated when a new Pod is created. This way, users can find and view the risks that relate to different resources in a Kubernetes-native way.</strong></p>
 </blockquote>
-<h1 id="step-by-step" class="relative group">Step-by-step <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#step-by-step" aria-label="Anchor">#</a></span></h1><p><a id="setup-local-cluster"></a></p>
-<h2 id="setup-local-cluster" class="relative group">Setup local cluster <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#setup-local-cluster" aria-label="Anchor">#</a></span></h2><ol>
+<h2 id="step-by-step" class="relative group">Step-by-step <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#step-by-step" aria-label="Anchor">#</a></span></h2><p><a id="setup-local-cluster"></a></p>
+<h3 id="setup-local-cluster" class="relative group">Setup local cluster <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#setup-local-cluster" aria-label="Anchor">#</a></span></h3><ol>
 <li>
 <p><a href="http://localhost:1313/posts/flux-kind-localregistry/">Setup Flux with local registry</a>
 OR setup a simple cluster</p>
@@ -602,7 +606,7 @@ OR setup a simple cluster</p>
 </span></span></code></pre></div></li>
 </ol>
 <p><a id="test-trivy-operator-locally"></a></p>
-<h2 id="optional-test-trivy-operator-locally" class="relative group">(optional) Test Trivy Operator locally <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#optional-test-trivy-operator-locally" aria-label="Anchor">#</a></span></h2><p><a href="https://aquasecurity.github.io/trivy-operator/latest/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy-operator/latest/</a></p>
+<h3 id="optional-test-trivy-operator-locally" class="relative group">(optional) Test Trivy Operator locally <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#optional-test-trivy-operator-locally" aria-label="Anchor">#</a></span></h3><p><a href="https://aquasecurity.github.io/trivy-operator/latest/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy-operator/latest/</a></p>
 <p>I do this to get a better feeling of how Trivy works and how it should look in the cluster. You can install the Trivy Operator using a YAML manifest file, or as a Helm Chart. We will do the latter. Steps from the docs:</p>
 <p>Option 1: Install from traditional Helm Chart repository</p>
 <ol>
@@ -648,7 +652,7 @@ OR setup a simple cluster</p>
 </span></span></code></pre></div><p>Running these commands, we see that the operator is starting making reports. I am interested to see if the podinfo deployment has any reports.</p>
 <p>The instructions above are from the &ldquo;Home&rdquo; page of the docs, while there are also more options in the <a href="https://aquasecurity.github.io/trivy-operator/v0.19.0/getting-started/installation/helm/" target="_blank" rel="noreferrer">Helm installation page</a>.</p>
 <p><a id="play-with-incluster-api"></a></p>
-<h2 id="play-with-the-in-cluster-api" class="relative group">Play with the in-cluster API <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#play-with-the-in-cluster-api" aria-label="Anchor">#</a></span></h2><p>&hellip; to get an overview of have the tool works. Is it even worth installing in the cluster?</p>
+<h3 id="play-with-the-in-cluster-api" class="relative group">Play with the in-cluster API <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#play-with-the-in-cluster-api" aria-label="Anchor">#</a></span></h3><p>&hellip; to get an overview of have the tool works. Is it even worth installing in the cluster?</p>
 <h3 id="get-an-overview" class="relative group">Get an overview <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#get-an-overview" aria-label="Anchor">#</a></span></h3><p>To get an overview of all findings, we can use the reports as shown in the output above:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">✗ kubectl get vulnerabilityreports --all-namespaces -o wide
 </span></span><span class="line"><span class="cl">NAMESPACE            NAME                                                       REPOSITORY                           TAG                  SCANNER   AGE   CRITICAL   HIGH   MEDIUM   LOW   UNKNOWN
@@ -681,7 +685,7 @@ licitly define the required security parameters (such as runAsNonRoot, capabilit
     Success:      false
     Title:        Default security context configured
 </code></pre><p><a id="add-trivy-operator-to-project"></a></p>
-<h2 id="setup-trivy-operator-in-production" class="relative group">Setup Trivy Operator in production <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#setup-trivy-operator-in-production" aria-label="Anchor">#</a></span></h2><h3 id="trivy-operator-manifest-files" class="relative group">Trivy Operator manifest files <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#trivy-operator-manifest-files" aria-label="Anchor">#</a></span></h3><p><a href="https://aquasecurity.github.io/trivy/v0.50/tutorials/kubernetes/gitops/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy/v0.50/tutorials/kubernetes/gitops/</a></p>
+<h3 id="setup-trivy-operator-in-production" class="relative group">Setup Trivy Operator in production <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#setup-trivy-operator-in-production" aria-label="Anchor">#</a></span></h3><h4 id="trivy-operator-manifest-files" class="relative group">Trivy Operator manifest files <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#trivy-operator-manifest-files" aria-label="Anchor">#</a></span></h4><p><a href="https://aquasecurity.github.io/trivy/v0.50/tutorials/kubernetes/gitops/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy/v0.50/tutorials/kubernetes/gitops/</a></p>
 <p>Okay, so I think this will give value. Especially in a scenario where Kubernetes is used for standard applications in an organisation. Then we have centralized image scanning and can report known vulnerabilities without the teams having to set up anything themselves.</p>
 <p>So let&rsquo;s look into how to add the Trivy Operator to a cluster in production.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nn">---</span><span class="w">
@@ -727,7 +731,7 @@ licitly define the required security parameters (such as runAsNonRoot, capabilit
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">crds</span><span class="p">:</span><span class="w"> </span><span class="l">CreateReplace</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">createNamespace</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
 </span></span></span></code></pre></div><p><a id="configure-calico"></a></p>
-<h3 id="configure-calico-network-policy" class="relative group">Configure Calico network policy <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#configure-calico-network-policy" aria-label="Anchor">#</a></span></h3><p>If you are using Calico or other network management tools and run the manifests above, you will most likely get the following error or something similar:
+<h4 id="configure-calico-network-policy" class="relative group">Configure Calico network policy <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#configure-calico-network-policy" aria-label="Anchor">#</a></span></h4><p>If you are using Calico or other network management tools and run the manifests above, you will most likely get the following error or something similar:
 <code>unable to run trivy operator: failed getting configmap: trivy-operator: Get &quot;https://10.0.0.1:443/api/v1/namespaces/trivy-system/configmaps/trivy-operator&quot;: dial tcp 10.0.0.1:443: i/o timeout</code>.</p>
 <p>This means that you need to add a network policy. Trivy requires two network accesses:</p>
 <ul>
@@ -761,7 +765,7 @@ licitly define the required security parameters (such as runAsNonRoot, capabilit
 </span></span></span></code></pre></div><p>To check the calico network policy when it has been applied:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">calicoctl get networkpolicy allow-trivy-operator-egress -o yaml -n trivy-system --allow-version-mismatch
 </span></span></code></pre></div><p><a id="tolerate-node-taints"></a></p>
-<h3 id="tolerate-node-taints" class="relative group">Tolerate node taints <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#tolerate-node-taints" aria-label="Anchor">#</a></span></h3><p><a href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/" target="_blank" rel="noreferrer">https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/</a></p>
+<h4 id="tolerate-node-taints" class="relative group">Tolerate node taints <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#tolerate-node-taints" aria-label="Anchor">#</a></span></h4><p><a href="https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/" target="_blank" rel="noreferrer">https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/</a></p>
 <p>If your cluster has taints on nodes, you will see that the Trivy node collector isn&rsquo;t running correctly. You can check by first finding the node collector name (list all resources in the namespace and you will have it), and then run kubectl describe on it. The events will show what is wrong, e.g. <code>FailedScheduling</code> with the message <code>0/7 nodes are available: 1 node(s) had untolerated taint ....</code>.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">k describe pod/node-collector-677f9fb5b8-jc6tw -n trivy-system
 </span></span></code></pre></div><p>Find the taints on the nodes in your cluster:</p>
@@ -798,7 +802,7 @@ licitly define the required security parameters (such as runAsNonRoot, capabilit
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;value1&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">effect</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;NoSchedule&#34;</span><span class="w">
 </span></span></span></code></pre></div><p>Done!</p>
-<h3 id="add-image-scanning" class="relative group">Add image scanning <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#add-image-scanning" aria-label="Anchor">#</a></span></h3><p>Trivy scans images by default. If it is not working, make sure you allow network to fetch the vulnerability database, as well as allowing network to fetch images from your repository.
+<h4 id="add-image-scanning" class="relative group">Add image scanning <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#add-image-scanning" aria-label="Anchor">#</a></span></h4><p>Trivy scans images by default. If it is not working, make sure you allow network to fetch the vulnerability database, as well as allowing network to fetch images from your repository.
 Maybe this will help:</p>
 <ul>
 <li><a href="https://aquasecurity.github.io/trivy-operator/latest/docs/vulnerability-scanning/private-registries/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy-operator/latest/docs/vulnerability-scanning/private-registries/</a></li>
@@ -891,6 +895,18 @@ Maybe this will help:</p>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;stacktrace&#34;</span><span class="p">:</span> <span class="s2">&#34;github.com/aquasecurity/trivy-operator/pkg/vulnerabilityreport/controller.(*ScanJobController).completedContainers\n\t/home/runner/work/trivy-operator/trivy-operator/pkg/vulnerabilityreport/controller/scanjob.go:353\ngithub.com/aquasecurity/trivy-operator/pkg/vulnerabilityreport/controller.(*ScanJobController).SetupWithManager.(*ScanJobController).reconcileJobs.func1\n\t/home/runner/work/trivy-operator/trivy-operator/pkg/vulnerabilityreport/controller/scanjob.go:80\nsigs.k8s.io/controller-runtime/pkg/reconcile.Func.Reconcile\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/reconcile/reconcile.go:113\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:119\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:316\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:227&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>The default values for RAM wasn&rsquo;t enough. We gave a little more <code>request</code> and <code>limit</code> for the scanners and this solved the problem. In addition there were 10 reports generated simultanuously. We changed it to 2 to give the nodes a little room. It is shown under spec.values in <a href="#trivy-operator-manifest-files">the manifest file</a>.</p>
+<h3 id="too-many-requests" class="relative group">Too many requests <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#too-many-requests" aria-label="Anchor">#</a></span></h3><p>After a while, we started getting an error saying that we are sendign too many requests to the Trivy GitHub repo. I have some thought about why this might happen:</p>
+<ul>
+<li>Some images are retried every 15 min or so</li>
+<li>The cluster spins up jobs in which Trivy scans the same image every time the job runs</li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">2024-10-03T07:31:26Z	FATAL	Fatal error	init error: DB error: failed to download vulnerability DB: database download error: oci download error: failed to fetch the layer: GET https://ghcr.io/v2/aquasecurity/trivy-db/blobs/sha256:77a50f405854d311fdf062f2d7edf3c04c63e2f5d218751a29125431376757a1: TOOMANYREQUESTS: retry-after: 600.129µs, allowed: 44000/minute
+</span></span></code></pre></div><p>Possible solutions:</p>
+<ul>
+<li>Do not scan AKS. Maybe management would like an overview in case of a new Log4j? But then it should probably be in form of an SBOM. Which is probably generated after a scan</li>
+<li>Try to only scan the same image (with hash!!) once a day. Is it even possible? This would be a nice solution! Especially if standard applications are using the same images.</li>
+</ul>
+<p>Seems like this was a recently introduced bug. As discussed in <a href="https://github.com/aquasecurity/trivy/discussions/7538" target="_blank" rel="noreferrer">this GitHub issue</a>.</p>
 <h2 id="resources" class="relative group">Resources <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#resources" aria-label="Anchor">#</a></span></h2><ul>
 <li><a href="https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/</a></li>
 <li><a href="https://aquasecurity.github.io/trivy-operator/latest/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy-operator/latest/</a></li>
@@ -924,6 +940,23 @@ Maybe this will help:</p>
       <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
       <div class="flex justify-between pt-3">
         <span>
+          
+            <a class="group flex" href="/posts/trivy-ci-pipeline/">
+              <span
+                class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&larr;</span
+                ><span class="ltr:hidden rtl:inline">&rarr;</span></span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Trivy CI Pipeline</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                </span>
+              </span>
+            </a>
           
         </span>
         <span>
