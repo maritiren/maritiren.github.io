@@ -11,7 +11,8 @@ tags: ["k8s", "kind", "local registry", "flux"]
 
 <a id="setup-cluster"></a>
 ## 1. Setup Kind cluster with local registry
-Find the script in the post [Kind Cluster with Local Registry]({{< ref "kind-cluster-with-local-registry" >}})
+Find the script in the post [Kind Cluster with Local Registry]({{< ref "kind-cluster-with-local-registry" >}}). 
+You may run this script even if you already have running local registry. It didn't do anything to my images at least. 
 ```sh
 cd ~/git/flux-image-updates/clusters
 ./create-kind-cluster-with-registry.sh 
@@ -47,8 +48,8 @@ flux bootstrap github \
 ## 3. Setup secrets for namespaces to fetch images
 Add secret for the namespaces you use to fetch an image:
 ```sh
-k create secret docker-registry regcred --docker-server="kind-registry:5000" --docker-username=myuser --docker-password=myuser -n my-api
-k create secret docker-registry regcred2 --docker-server="kind-registry:5000" --docker-username=myuser --docker-password=myuser -n flux-system
+k create secret docker-registry regcred --docker-server="kind-registry:5000" --docker-username=myuser --docker-password=myuser -n flux-system
+k create secret docker-registry regcred2 --docker-server="kind-registry:5000" --docker-username=myuser --docker-password=myuser -n my-api
 ```
 
 Watch the image repositories to see status:
@@ -185,6 +186,7 @@ docker network connect kind kind-registry
 
 
 ## Resources
+* https://fluxcd.io/flux/guides/image-update
 * https://kind.sigs.k8s.io/docs/user/local-registry/
 * https://hackernoon.com/kubernetes-cluster-setup-with-a-local-registry-and-ingress-in-docker-using-kind 
 * https://stackoverflow.com/a/3175054

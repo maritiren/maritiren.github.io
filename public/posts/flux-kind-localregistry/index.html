@@ -132,7 +132,7 @@
     "keywords": ["k8s","kind","local registry","flux"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "863"
+    "wordCount": "886"
   }
   </script>
     
@@ -521,7 +521,8 @@
       
       <div class="min-h-0 min-w-0 max-w-prose grow">
         <p><a id="setup-cluster"></a></p>
-<h2 id="1-setup-kind-cluster-with-local-registry" class="relative group">1. Setup Kind cluster with local registry <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-setup-kind-cluster-with-local-registry" aria-label="Anchor">#</a></span></h2><p>Find the script in the post <a href="http://localhost:1313/posts/kind-localregistry/">Kind Cluster with Local Registry</a></p>
+<h2 id="1-setup-kind-cluster-with-local-registry" class="relative group">1. Setup Kind cluster with local registry <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-setup-kind-cluster-with-local-registry" aria-label="Anchor">#</a></span></h2><p>Find the script in the post <a href="http://localhost:1313/posts/kind-localregistry/">Kind Cluster with Local Registry</a>.
+You may run this script even if you already have running local registry. It didn&rsquo;t do anything to my images at least.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">cd</span> ~/git/flux-image-updates/clusters
 </span></span><span class="line"><span class="cl">./create-kind-cluster-with-registry.sh 
 </span></span></code></pre></div><p><a id="run-flux"></a></p>
@@ -542,8 +543,8 @@ It requires the <code>repo</code> scope.</p>
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>   --personal
 </span></span></code></pre></div><p><a id="setup-secrets"></a></p>
 <h2 id="3-setup-secrets-for-namespaces-to-fetch-images" class="relative group">3. Setup secrets for namespaces to fetch images <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-setup-secrets-for-namespaces-to-fetch-images" aria-label="Anchor">#</a></span></h2><p>Add secret for the namespaces you use to fetch an image:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">k create secret docker-registry regcred --docker-server<span class="o">=</span><span class="s2">&#34;kind-registry:5000&#34;</span> --docker-username<span class="o">=</span>myuser --docker-password<span class="o">=</span>myuser -n my-api
-</span></span><span class="line"><span class="cl">k create secret docker-registry regcred2 --docker-server<span class="o">=</span><span class="s2">&#34;kind-registry:5000&#34;</span> --docker-username<span class="o">=</span>myuser --docker-password<span class="o">=</span>myuser -n flux-system
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">k create secret docker-registry regcred --docker-server<span class="o">=</span><span class="s2">&#34;kind-registry:5000&#34;</span> --docker-username<span class="o">=</span>myuser --docker-password<span class="o">=</span>myuser -n flux-system
+</span></span><span class="line"><span class="cl">k create secret docker-registry regcred2 --docker-server<span class="o">=</span><span class="s2">&#34;kind-registry:5000&#34;</span> --docker-username<span class="o">=</span>myuser --docker-password<span class="o">=</span>myuser -n my-api
 </span></span></code></pre></div><p>Watch the image repositories to see status:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">watch flux get image repository --all-namespaces
 </span></span></code></pre></div><p>And then reconcile the image repositories:</p>
@@ -627,6 +628,7 @@ It requires the <code>repo</code> scope.</p>
 <h3 id="completely-recreate-a-deployment" class="relative group">Completely recreate a deployment <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#completely-recreate-a-deployment" aria-label="Anchor">#</a></span></h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">✗ k delete deployment my-api -n my-api
 </span></span><span class="line"><span class="cl">✗ flux reconcile kustomization flux-system --with-source
 </span></span></code></pre></div><h2 id="resources" class="relative group">Resources <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#resources" aria-label="Anchor">#</a></span></h2><ul>
+<li><a href="https://fluxcd.io/flux/guides/image-update" target="_blank" rel="noreferrer">https://fluxcd.io/flux/guides/image-update</a></li>
 <li><a href="https://kind.sigs.k8s.io/docs/user/local-registry/" target="_blank" rel="noreferrer">https://kind.sigs.k8s.io/docs/user/local-registry/</a></li>
 <li><a href="https://hackernoon.com/kubernetes-cluster-setup-with-a-local-registry-and-ingress-in-docker-using-kind" target="_blank" rel="noreferrer">https://hackernoon.com/kubernetes-cluster-setup-with-a-local-registry-and-ingress-in-docker-using-kind</a></li>
 <li><a href="https://stackoverflow.com/a/3175054" target="_blank" rel="noreferrer">https://stackoverflow.com/a/3175054</a></li>

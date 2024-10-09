@@ -140,7 +140,7 @@ The instructions above are from the "Home" page of the docs, while there are als
 ### Play with the in-cluster API
 ... to get an overview of have the tool works. Is it even worth installing in the cluster?
 
-### Get an overview
+#### Get an overview
 To get an overview of all findings, we can use the reports as shown in the output above:
 ```sh
 ✗ kubectl get vulnerabilityreports --all-namespaces -o wide
@@ -163,7 +163,7 @@ flux-system          networkpolicy-allow-egress                         Trivy   
 ```
 
 <a id="read-report-findings"></a>
-### Dive deeper into findings
+#### Dive deeper into findings
 To checkout the findings, run the following commands
 ```sh
 ✗ kubectl describe vulnerabilityreport my-vulnerability-report -n default
@@ -417,6 +417,11 @@ kubectl delete exposedsecretreport --all --all-namespaces
 ```
 And then same for other reports, such as `vulnerabilityreport`.
 
+## Improvements and further thoughts
+There are several improvements to be done here. Here are some of my thoughts:
+- Create reports, e.g. monthly reports or immediate alerts for critical findings
+- Scan regularly
+- Use hash of versions and do not scan that very image again every time it appears in the cluster. E.g. job images.
 
 <a id="debugging"></a>
 ## Debugging

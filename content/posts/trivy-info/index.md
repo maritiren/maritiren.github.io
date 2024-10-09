@@ -21,7 +21,7 @@ I am very happy with Trivy scanning. It is a nice free tool that is easy to use 
 > I am just hoping that this is not another [Semgrep](https://semgrep.dev/), a nice free tool that ends up as a paid tool after it becomes popular.  
 
 ## Advantages
-There are many pitfalls when writing IaC, and scanning it helps us in several ways. We don't need to know **everything**, and we don't need to pay constant attention to new vulnerabilities. We get **more control** of what we create, and create **more predictable applications**. We can be more confident on what we deliver when we run scans like this. 
+There are many pitfalls when writing IaC, and scanning it helps us in several ways. We don't need to **know everything**, and we don't need to pay constant attention to new vulnerabilities. We get **more control** of what we create, and create **more predictable applications**. We can be more confident on what we deliver when we run scans like this. 
 
 ## When & where to scan 
 - At your local environment, before pushing to remote (VS Code extension, pre-commit hooks, etc.)

@@ -130,7 +130,7 @@
     "keywords": ["K8s","Trivy"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "2359"
+    "wordCount": "2412"
   }
   </script>
     
@@ -495,9 +495,12 @@
       <ul>
         <li><a href="#setup-local-cluster">Setup local cluster</a></li>
         <li><a href="#optional-test-trivy-operator-locally">(optional) Test Trivy Operator locally</a></li>
-        <li><a href="#play-with-the-in-cluster-api">Play with the in-cluster API</a></li>
-        <li><a href="#get-an-overview">Get an overview</a></li>
-        <li><a href="#dive-deeper-into-findings">Dive deeper into findings</a></li>
+        <li><a href="#play-with-the-in-cluster-api">Play with the in-cluster API</a>
+          <ul>
+            <li><a href="#get-an-overview">Get an overview</a></li>
+            <li><a href="#dive-deeper-into-findings">Dive deeper into findings</a></li>
+          </ul>
+        </li>
         <li><a href="#setup-trivy-operator-in-production">Setup Trivy Operator in production</a>
           <ul>
             <li><a href="#trivy-operator-manifest-files">Trivy Operator manifest files</a></li>
@@ -518,6 +521,7 @@
         <li><a href="#delete-all-reports">Delete all reports</a></li>
       </ul>
     </li>
+    <li><a href="#improvements-and-further-thoughts">Improvements and further thoughts</a></li>
     <li><a href="#debugging">Debugging</a>
       <ul>
         <li><a href="#sbom-decode-error-failed-to-decode-multiple-os-components-are-not-supported">SBOM decode error: failed to decode: multiple OS components are not supported</a></li>
@@ -645,7 +649,7 @@ OR setup a simple cluster</p>
 <p>The instructions above are from the &ldquo;Home&rdquo; page of the docs, while there are also more options in the <a href="https://aquasecurity.github.io/trivy-operator/v0.19.0/getting-started/installation/helm/" target="_blank" rel="noreferrer">Helm installation page</a>.</p>
 <p><a id="play-with-incluster-api"></a></p>
 <h3 id="play-with-the-in-cluster-api" class="relative group">Play with the in-cluster API <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#play-with-the-in-cluster-api" aria-label="Anchor">#</a></span></h3><p>&hellip; to get an overview of have the tool works. Is it even worth installing in the cluster?</p>
-<h3 id="get-an-overview" class="relative group">Get an overview <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#get-an-overview" aria-label="Anchor">#</a></span></h3><p>To get an overview of all findings, we can use the reports as shown in the output above:</p>
+<h4 id="get-an-overview" class="relative group">Get an overview <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#get-an-overview" aria-label="Anchor">#</a></span></h4><p>To get an overview of all findings, we can use the reports as shown in the output above:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">✗ kubectl get vulnerabilityreports --all-namespaces -o wide
 </span></span><span class="line"><span class="cl">NAMESPACE            NAME                                                       REPOSITORY                           TAG                  SCANNER   AGE   CRITICAL   HIGH   MEDIUM   LOW   UNKNOWN
 </span></span><span class="line"><span class="cl">flux-system          replicaset-helm-controller-58d5cc6f5b-manager              fluxcd/helm-controller               v0.37.2              Trivy     92m   <span class="m">0</span>          <span class="m">1</span>      <span class="m">11</span>       <span class="m">0</span>     <span class="m">0</span>
@@ -660,7 +664,7 @@ OR setup a simple cluster</p>
 </span></span><span class="line"><span class="cl">flux-system          networkpolicy-allow-egress                         Trivy     94m   <span class="m">0</span>          <span class="m">0</span>      <span class="m">0</span>        <span class="m">0</span>
 </span></span><span class="line"><span class="cl">...
 </span></span></code></pre></div><p><a id="read-report-findings"></a></p>
-<h3 id="dive-deeper-into-findings" class="relative group">Dive deeper into findings <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#dive-deeper-into-findings" aria-label="Anchor">#</a></span></h3><p>To checkout the findings, run the following commands</p>
+<h4 id="dive-deeper-into-findings" class="relative group">Dive deeper into findings <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#dive-deeper-into-findings" aria-label="Anchor">#</a></span></h4><p>To checkout the findings, run the following commands</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">✗ kubectl describe vulnerabilityreport my-vulnerability-report -n default
 </span></span><span class="line"><span class="cl">✗ kubectl describe configauditreport my-configaudit-report -n default
 </span></span></code></pre></div><p>My pod had the following HIGH finding:</p>
@@ -827,6 +831,12 @@ Maybe this will help:</p>
 <p><a id="delete-all-reports"></a></p>
 <h3 id="delete-all-reports" class="relative group">Delete all reports <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#delete-all-reports" aria-label="Anchor">#</a></span></h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">kubectl delete exposedsecretreport --all --all-namespaces
 </span></span></code></pre></div><p>And then same for other reports, such as <code>vulnerabilityreport</code>.</p>
+<h2 id="improvements-and-further-thoughts" class="relative group">Improvements and further thoughts <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#improvements-and-further-thoughts" aria-label="Anchor">#</a></span></h2><p>There are several improvements to be done here. Here are some of my thoughts:</p>
+<ul>
+<li>Create reports, e.g. monthly reports or immediate alerts for critical findings</li>
+<li>Scan regularly</li>
+<li>Use hash of versions and do not scan that very image again every time it appears in the cluster. E.g. job images.</li>
+</ul>
 <p><a id="debugging"></a></p>
 <h2 id="debugging" class="relative group">Debugging <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#debugging" aria-label="Anchor">#</a></span></h2><h3 id="sbom-decode-error-failed-to-decode-multiple-os-components-are-not-supported" class="relative group">SBOM decode error: failed to decode: multiple OS components are not supported <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#sbom-decode-error-failed-to-decode-multiple-os-components-are-not-supported" aria-label="Anchor">#</a></span></h3><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;level&#34;</span><span class="p">:</span> <span class="s2">&#34;error&#34;</span><span class="p">,</span>
@@ -932,6 +942,23 @@ Maybe this will help:</p>
       <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
       <div class="flex justify-between pt-3">
         <span>
+          
+            <a class="group flex" href="/posts/trivy-pipeline/">
+              <span
+                class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&larr;</span
+                ><span class="ltr:hidden rtl:inline">&rarr;</span></span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Trivy in CI Pipeline</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                </span>
+              </span>
+            </a>
           
         </span>
         <span>
