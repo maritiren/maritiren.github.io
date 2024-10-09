@@ -1,14 +1,16 @@
 ---
-title: 'Trivy scan for Kubernetes'
+title: 'Trivy in Kubernetes'
 date: 2024-10-01T17:15:18+02:00
-draft: true
+draft: false
 description: "How to setup the Trivy Operator in K8s"
 summary: "A step-by-step guide to setup the Trivy Operator in Kubernetes."
 slug: "trivy-operator"
 tags: ["K8s", "Trivy"]
 ---
 
-I am currently working with automated security testing to get control of the known vulnerabilities in our systems. As part of this, I am scanning a Kubernetes cluster and it's images.
+I am currently working with automated security testing to get control of the known vulnerabilities in our applications. As part of this, I am scanning a Kubernetes cluster and it's images, as well as application code. We want to cover the whole width, not only application code. Now, we look at a Infrastructure as Code (IaC) scanning tool, [Trivy](https://trivy.dev/).
+
+Read more about Trivy in [my other post]({{< ref "trivy-info" >}}).
 
 Trivy has a Kubernetes operator called [Trivy Operator](https://aquasecurity.github.io/trivy-operator/latest/). Advantages with using the Trivy Operator are ([source](https://www.aquasec.com/blog/vulnerability-scanning-trivy-vs-the-trivy-operator/)) :
 - Trivy Operator does background scans continuously in the cluster
@@ -17,13 +19,13 @@ Trivy has a Kubernetes operator called [Trivy Operator](https://aquasecurity.git
 - Kubernetes best practice is to push information from within the cluster to tools outside rather than letting the tools pull data from the outside 
 
 {{< alert >}}
-One downside which is not in our scope, but is worth mentioning, is that the Trivy Operator does not scan prior to deployment. Hence, it can not be used as a quality control or quality gate. Therefore, you should still run Trivy CLI in your pipelines. We already run Trivy as a check before merging to main. Our scope is only Kubernetes and image scanning, not configs and vulns.
+One downside which is not in our scope, but is worth mentioning, is that the Trivy Operator does not scan prior to deployment. Hence, it can not be used as a quality control or quality gate. Therefore, you should still run Trivy CLI in your pipelines.
 {{< /alert >}}
 
 
-## Prereqs
+## Prereqs to follow this guide
 * [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installing-from-release-binaries)
-* [kubecm](https://kubecm.cloud/)
+* [kubecm](https://kubecm.cloud/), strictly not necessary, but I like this tool!
 * [Helm](https://helm.sh/docs/intro/install/)
 * [Trivy](https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/)
 * An image that can be deployed to the cluster

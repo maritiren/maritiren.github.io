@@ -23,6 +23,20 @@
       <description></description>
     </item>
     <item>
+      <title>IaC Scan</title>
+      <link>http://localhost:1313/tags/iac-scan/</link>
+      <pubDate>Tue, 01 Oct 2024 17:00:04 +0200</pubDate>
+      <guid>http://localhost:1313/tags/iac-scan/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Quality</title>
+      <link>http://localhost:1313/tags/quality/</link>
+      <pubDate>Tue, 01 Oct 2024 17:00:04 +0200</pubDate>
+      <guid>http://localhost:1313/tags/quality/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Flux</title>
       <link>http://localhost:1313/tags/flux/</link>
       <pubDate>Tue, 01 Oct 2024 15:33:44 +0200</pubDate>

@@ -6,21 +6,21 @@
     <description>Recent content in Welcome to my notes! :tada: on Techkroken</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 03 Oct 2024 11:42:15 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 01 Oct 2024 17:15:18 +0200</lastBuildDate>
     <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Trivy CI Pipeline</title>
-      <link>http://localhost:1313/posts/trivy-ci-pipeline/</link>
-      <pubDate>Thu, 03 Oct 2024 11:42:15 +0200</pubDate>
-      <guid>http://localhost:1313/posts/trivy-ci-pipeline/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Trivy scan for Kubernetes</title>
+      <title>Trivy in Kubernetes</title>
       <link>http://localhost:1313/posts/trivy-operator/</link>
       <pubDate>Tue, 01 Oct 2024 17:15:18 +0200</pubDate>
       <guid>http://localhost:1313/posts/trivy-operator/</guid>
       <description>A step-by-step guide to setup the Trivy Operator in Kubernetes.</description>
+    </item>
+    <item>
+      <title>Trivy Infrastructure as Code (IaC) Scanning</title>
+      <link>http://localhost:1313/posts/trivy/</link>
+      <pubDate>Tue, 01 Oct 2024 17:00:04 +0200</pubDate>
+      <guid>http://localhost:1313/posts/trivy/</guid>
+      <description>Contains several guides for applying Trivy to your project</description>
     </item>
     <item>
       <title>Flux with Local Registry</title>

@@ -132,7 +132,7 @@
     "keywords": ["k8s","kind","local registry","flux"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "843"
+    "wordCount": "863"
   }
   </script>
     
@@ -447,7 +447,7 @@
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <span title="Reading time">4 mins</span><span class="px-2 text-primary-500">&middot;</span>
+      <span title="Reading time">5 mins</span><span class="px-2 text-primary-500">&middot;</span>
 
 
   
@@ -542,12 +542,13 @@ It requires the <code>repo</code> scope.</p>
 </span></span></span><span class="line"><span class="cl"><span class="se"></span>   --personal
 </span></span></code></pre></div><p><a id="setup-secrets"></a></p>
 <h2 id="3-setup-secrets-for-namespaces-to-fetch-images" class="relative group">3. Setup secrets for namespaces to fetch images <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#3-setup-secrets-for-namespaces-to-fetch-images" aria-label="Anchor">#</a></span></h2><p>Add secret for the namespaces you use to fetch an image:</p>
-<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">✗ k create secret docker-registry regcred --docker-server<span class="o">=</span><span class="s2">&#34;kind-registry:5000&#34;</span> --docker-username<span class="o">=</span>myuser --docker-password<span class="o">=</span>myuser -n my-api
-</span></span><span class="line"><span class="cl">✗ k create secret docker-registry regcred2 --docker-server<span class="o">=</span><span class="s2">&#34;kind-registry:5000&#34;</span> --docker-username<span class="o">=</span>myuser --docker-password<span class="o">=</span>myuser -n flux-system
-</span></span></code></pre></div><p>Watch the image repositories to see status</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">k create secret docker-registry regcred --docker-server<span class="o">=</span><span class="s2">&#34;kind-registry:5000&#34;</span> --docker-username<span class="o">=</span>myuser --docker-password<span class="o">=</span>myuser -n my-api
+</span></span><span class="line"><span class="cl">k create secret docker-registry regcred2 --docker-server<span class="o">=</span><span class="s2">&#34;kind-registry:5000&#34;</span> --docker-username<span class="o">=</span>myuser --docker-password<span class="o">=</span>myuser -n flux-system
+</span></span></code></pre></div><p>Watch the image repositories to see status:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">watch flux get image repository --all-namespaces
-</span></span></code></pre></div><p>And then reconcile the image repository</p>
+</span></span></code></pre></div><p>And then reconcile the image repositories:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">flux reconcile image repository my-api -n my-api
+</span></span><span class="line"><span class="cl">flux reconcile image repository podinfo -n flux-system
 </span></span></code></pre></div><p><a id="push-image"></a></p>
 <h2 id="4-push-image-to-local-registry" class="relative group">4. Push image to local registry <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#4-push-image-to-local-registry" aria-label="Anchor">#</a></span></h2><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker tag 0ac97f5bbbb5 localhost:5001/my-api:1.0.0
 </span></span><span class="line"><span class="cl">docker push localhost:5001/my-api:1.0.0
@@ -561,7 +562,10 @@ It requires the <code>repo</code> scope.</p>
 </span></span></code></pre></div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">✗ curl -X GET http://localhost:5001/v2/podinfo/tags/list
 </span></span><span class="line"><span class="cl"><span class="o">{</span><span class="s2">&#34;name&#34;</span>:<span class="s2">&#34;podinfo&#34;</span>,<span class="s2">&#34;tags&#34;</span>:<span class="o">[</span><span class="s2">&#34;5.0.7&#34;</span>,<span class="s2">&#34;5.0.3&#34;</span>,<span class="s2">&#34;5.0.5&#34;</span>,<span class="s2">&#34;5.0.0&#34;</span>,<span class="s2">&#34;5.0.4&#34;</span>,<span class="s2">&#34;5.0.6&#34;</span><span class="o">]}</span>
 </span></span></code></pre></div><p><a id="cleanup"></a></p>
-<h2 id="cleanup" class="relative group">Cleanup <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#cleanup" aria-label="Anchor">#</a></span></h2><p>From <a href="https://github.com/piyushjajoo/kind-with-local-registry-and-ingress/blob/master/destroy.sh" target="_blank" rel="noreferrer">https://github.com/piyushjajoo/kind-with-local-registry-and-ingress/blob/master/destroy.sh</a></p>
+<h2 id="cleanup" class="relative group">Cleanup <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#cleanup" aria-label="Anchor">#</a></span></h2><p>Only delete the cluster:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">kind cluster delete --name <span class="s2">&#34;kind-kind&#34;</span>
+</span></span></code></pre></div><p>Deleting both the cluster and registry.
+<em>(From <a href="https://github.com/piyushjajoo/kind-with-local-registry-and-ingress/blob/master/destroy.sh%29" target="_blank" rel="noreferrer">https://github.com/piyushjajoo/kind-with-local-registry-and-ingress/blob/master/destroy.sh)</a></em>:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="cp">#!/bin/sh
 </span></span></span><span class="line"><span class="cl"><span class="cp"></span><span class="nb">set</span> -o errexit
 </span></span><span class="line"><span class="cl">
@@ -648,7 +652,7 @@ It requires the <code>repo</code> scope.</p>
       <div class="flex justify-between pt-3">
         <span>
           
-            <a class="group flex" href="/posts/trivy-operator/">
+            <a class="group flex" href="/posts/trivy/">
               <span
                 class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
                 ><span class="ltr:inline rtl:hidden">&larr;</span
@@ -657,7 +661,7 @@ It requires the <code>repo</code> scope.</p>
               <span class="flex flex-col">
                 <span
                   class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >Trivy scan for Kubernetes</span
+                  >Trivy Infrastructure as Code (IaC) Scanning</span
                 >
                 <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
                   

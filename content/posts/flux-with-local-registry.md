@@ -47,18 +47,19 @@ flux bootstrap github \
 ## 3. Setup secrets for namespaces to fetch images
 Add secret for the namespaces you use to fetch an image:
 ```sh
-✗ k create secret docker-registry regcred --docker-server="kind-registry:5000" --docker-username=myuser --docker-password=myuser -n my-api
-✗ k create secret docker-registry regcred2 --docker-server="kind-registry:5000" --docker-username=myuser --docker-password=myuser -n flux-system
+k create secret docker-registry regcred --docker-server="kind-registry:5000" --docker-username=myuser --docker-password=myuser -n my-api
+k create secret docker-registry regcred2 --docker-server="kind-registry:5000" --docker-username=myuser --docker-password=myuser -n flux-system
 ```
 
-Watch the image repositories to see status
+Watch the image repositories to see status:
 ```sh
 watch flux get image repository --all-namespaces
 ```
 
-And then reconcile the image repository
+And then reconcile the image repositories:
 ```sh
 flux reconcile image repository my-api -n my-api
+flux reconcile image repository podinfo -n flux-system
 ```
 
 
@@ -92,7 +93,14 @@ Flux should automatically deploy new images when they get a new tag (according t
 
 <a id="cleanup"></a>
 ## Cleanup
-From https://github.com/piyushjajoo/kind-with-local-registry-and-ingress/blob/master/destroy.sh
+Only delete the cluster:
+```bash
+kind cluster delete --name "kind-kind"
+```
+
+
+Deleting both the cluster and registry. 
+_(From https://github.com/piyushjajoo/kind-with-local-registry-and-ingress/blob/master/destroy.sh)_:
 
 ```bash
 #!/bin/sh

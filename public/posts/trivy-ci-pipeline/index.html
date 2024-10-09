@@ -17,8 +17,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FFFFFF" />
   
-  <title>Trivy CI Pipeline &middot; Techkroken</title>
-    <meta name="title" content="Trivy CI Pipeline &middot; Techkroken" />
+  <title>Trivy in CI Pipeline &middot; Techkroken</title>
+    <meta name="title" content="Trivy in CI Pipeline &middot; Techkroken" />
   
   
   
@@ -92,7 +92,7 @@
   
   <meta property="og:url" content="http://localhost:1313/posts/trivy-ci-pipeline/">
   <meta property="og:site_name" content="Techkroken">
-  <meta property="og:title" content="Trivy CI Pipeline">
+  <meta property="og:title" content="Trivy in CI Pipeline">
   <meta property="og:description" content="I realized I needed a place to put my final notes, so here we are^_^">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
@@ -102,7 +102,7 @@
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Trivy CI Pipeline">
+  <meta name="twitter:title" content="Trivy in CI Pipeline">
   <meta name="twitter:description" content="I realized I needed a place to put my final notes, so here we are^_^">
 
   
@@ -111,8 +111,8 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "articleSection": "Blog posts",
-    "name": "Trivy CI Pipeline",
-    "headline": "Trivy CI Pipeline",
+    "name": "Trivy in CI Pipeline",
+    "headline": "Trivy in CI Pipeline",
     
     
     "inLanguage": "en",
@@ -130,7 +130,7 @@
     
     
     "mainEntityOfPage": "true",
-    "wordCount": "96"
+    "wordCount": "510"
   }
   </script>
     
@@ -153,7 +153,7 @@
      },
      {
        "@type": "ListItem",
-       "name": "Trivy Ci Pipeline",
+       "name": "Trivy in Ci Pipeline",
        "position": 3
      }
    ]
@@ -409,7 +409,7 @@
     <header class="max-w-prose">
       
       <h1 class="mb-8 mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
-        Trivy CI Pipeline
+        Trivy in CI Pipeline
       </h1>
       
         <div class="mb-10 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
@@ -445,7 +445,7 @@
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <span title="Reading time">1 min</span><span class="px-2 text-primary-500">&middot;</span>
+      <span title="Reading time">3 mins</span><span class="px-2 text-primary-500">&middot;</span>
 
 
   
@@ -503,6 +503,7 @@
         <li><a href="#go-not-scanned-properly">go not scanned properly</a></li>
       </ul>
     </li>
+    <li><a href="#resources">Resources</a></li>
   </ul>
 </nav>
   </div>
@@ -513,11 +514,62 @@
       
       <div class="min-h-0 min-w-0 max-w-prose grow">
         <h2 id="debugging" class="relative group">Debugging <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#debugging" aria-label="Anchor">#</a></span></h2><h3 id="go-not-scanned-properly" class="relative group">go not scanned properly <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#go-not-scanned-properly" aria-label="Anchor">#</a></span></h3><p>Some pipelines got 44 findings, while other&rsquo;s had none. By looking at the pipeline logs, we figured that it wasn&rsquo;t detected properly that this was a Go repo.</p>
-<p>Running the commands locally also yields no findings (except one that is ignored with .trivyignore). With debug on, I found that Trivy is <code>Skipping vulnerability scan as no version is detected for the package name=&quot;my.project.com/some/module&quot;</code>.</p>
+<p>Running the commands locally also yields no findings (except one that is ignored with .trivyignore). With debug on, I found that Trivy is <code>Skipping vulnerability scan as no version is detected for the package name=&quot;my.project.com/main/module&quot;</code>.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">2024-10-03T11:37:58+02:00	INFO	<span class="o">[</span>gomod<span class="o">]</span> Detecting vulnerabilities...
 </span></span><span class="line"><span class="cl">2024-10-03T11:37:58+02:00	DEBUG	<span class="o">[</span>gomod<span class="o">]</span> Scanning packages <span class="k">for</span> vulnerabilities	<span class="nv">file_path</span><span class="o">=</span><span class="s2">&#34;go.mod&#34;</span>
-</span></span><span class="line"><span class="cl">2024-10-03T11:37:58+02:00	DEBUG	<span class="o">[</span>gomod<span class="o">]</span> Skipping vulnerability scan as no version is detected <span class="k">for</span> the package <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;my.project.com/some/module&#34;</span>
-</span></span></code></pre></div>
+</span></span><span class="line"><span class="cl">2024-10-03T11:37:58+02:00	DEBUG	<span class="o">[</span>gomod<span class="o">]</span> Skipping vulnerability scan as no version is detected <span class="k">for</span> the package <span class="nv">name</span><span class="o">=</span><span class="s2">&#34;my.project.com/main/module&#34;</span>
+</span></span></code></pre></div><p>Possibilitites:</p>
+<ul>
+<li>Set an older version? An idea from <a href="https://github.com/aquasecurity/trivy/discussions/5744" target="_blank" rel="noreferrer">this issue</a> stating it stopped working after version 0.45.1</li>
+<li>Maybe the cache isn&rsquo;t working properly</li>
+</ul>
+<hr>
+<p>Trying an older version:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker run -v <span class="nv">$PWD</span>:/src --workdir /src  aquasec/trivy:0.45.0 -d fs . --scanners config,vuln,secret --no-progress
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">2024-10-06T15:12:43.971Z	DEBUG	GOPATH <span class="o">(</span>/root/go/pkg/mod<span class="o">)</span> not found. Need <span class="s1">&#39;go mod download&#39;</span> to fill licenses and dependency relationships
+</span></span><span class="line"><span class="cl">2024-10-06T15:12:43.979Z	DEBUG	OS is not detected.
+</span></span><span class="line"><span class="cl">2024-10-06T15:12:43.979Z	DEBUG	Detected OS: unknown
+</span></span><span class="line"><span class="cl">2024-10-06T15:12:43.979Z	INFO	Number of language-specific files: <span class="m">1</span>
+</span></span><span class="line"><span class="cl">2024-10-06T15:12:43.979Z	INFO	Detecting gomod vulnerabilities...
+</span></span><span class="line"><span class="cl">2024-10-06T15:12:43.979Z	DEBUG	Detecting library vulnerabilities, type: gomod, path: go.mod
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">Dockerfile <span class="o">(</span>dockerfile<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">=======================</span>
+</span></span><span class="line"><span class="cl">Tests: <span class="m">26</span> <span class="o">(</span>SUCCESSES: 25, FAILURES: 1, EXCEPTIONS: 0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Failures: <span class="m">1</span> <span class="o">(</span>UNKNOWN: 0, LOW: 1, MEDIUM: 0, HIGH: 0, CRITICAL: 0<span class="o">)</span>
+</span></span><span class="line"><span class="cl">...
+</span></span><span class="line"><span class="cl">.trivycache/policy/content/commands/kubernetes/containerNetworkInterfaceFilePermissions.yaml <span class="o">(</span>secrets<span class="o">)</span>
+</span></span><span class="line"><span class="cl"><span class="o">======================================================================================================</span>
+</span></span><span class="line"><span class="cl">Total: <span class="m">1</span> <span class="o">(</span>UNKNOWN: 0, LOW: 0, MEDIUM: 0, HIGH: 0, CRITICAL: <span class="m">1</span>
+</span></span></code></pre></div><p>Trying the newest version at this time, 0.56.0:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">docker run -v <span class="nv">$PWD</span>:/src --workdir /src  aquasec/trivy:0.56.0 -d fs . --scanners misconfig,vuln,secret --no-progress
+</span></span></code></pre></div><hr>
+<p>We cloned the Trivy repo and logged to check whether the packages has been scanned. On version 0.56.0, they are scanned even though the main module gets the message <code>Skipping vulnerability scan as no version is detected for the package name=&quot;my.project.com/main/module&quot;</code>. However, when the scan finds all modules, it says <code>Number of language-specific files: N</code>, where N is more than just one.. This needs more investigation.</p>
+<p>Found <a href="https://github.com/aquasecurity/trivy/blob/2c87f0cb794acd77446a273582ba1a45b9f18980/pkg/detector/library/detect.go#L32" target="_blank" rel="noreferrer">here</a> in the Trivy code.</p>
+<hr>
+<p>I think this might be a GitLab Runner issue. Perhaps the GitLab Runner cache. All local tests with and without Trivy cache is working as supposed to. Perhaps not, though. Still looking into it.</p>
+<p>The results were inconsistent in GitLab. After clearing the pipeline cache, the pipeline findings are more consistent. However, they are not the same locally and in pipeline. Seems like due to recursive dependencies are added in the pipeline and not locally. Locally, I don&rsquo;t have the
+The &ldquo;very&rdquo; old results that had bout 35-44 findings, I think is because of GitLab Runner cache of the Go path.</p>
+<p>Regarding the recursive dependencies, I see that the scan fetches packages from <code>$HOME/go/pkg/mod</code>. After running <code>go mod download</code>, I have other dependencies locally than what is scanned in the pipeline. That might cause different results.</p>
+<hr>
+<p>I decided to try with GitHub Actions to see if it acts weird there as well.</p>
+<ul>
+<li>The Trivy GH Action uses Trivy version 0.53.0</li>
+<li>By default, it doesn&rsquo;t log the output from the Trivy run</li>
+</ul>
+<hr>
+<p>Husk:</p>
+<ul>
+<li>Sjekk om det er Go cache</li>
+<li></li>
+</ul>
+<h2 id="resources" class="relative group">Resources <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#resources" aria-label="Anchor">#</a></span></h2><ul>
+<li><a href="https://www.aquasec.com/blog/devsecops-with-trivy-github-actions/" target="_blank" rel="noreferrer">https://www.aquasec.com/blog/devsecops-with-trivy-github-actions/</a></li>
+<li><a href="https://github.com/aquasecurity/trivy/discussions/5744" target="_blank" rel="noreferrer">https://github.com/aquasecurity/trivy/discussions/5744</a></li>
+<li>Trivy GitHub discussion: <a href="https://github.com/aquasecurity/trivy/discussions/7585" target="_blank" rel="noreferrer">Intermittent missing vulnerabilities from Trivy 0.55.0 #7585</a></li>
+</ul>
+
       </div>
     </section>
     <footer class="max-w-prose pt-8 print:hidden">
@@ -545,7 +597,7 @@
               <span class="flex flex-col">
                 <span
                   class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >Trivy scan for Kubernetes</span
+                  >Trivy in Kubernetes</span
                 >
                 <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
                   
