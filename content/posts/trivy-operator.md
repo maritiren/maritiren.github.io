@@ -36,7 +36,6 @@ The Trivy Operator continuously scans the Kubernetes cluster. From docs:
 
 ## Step-by-step
 
-<a id="setup-local-cluster"></a>
 ### Setup local cluster
 1. [Setup Flux with local registry]({{< ref "flux-with-local-registry">}})
    OR setup a simple cluster
@@ -78,7 +77,6 @@ The Trivy Operator continuously scans the Kubernetes cluster. From docs:
     ```
 
 
-<a id="test-trivy-operator-locally"></a>
 ### (optional) Test Trivy Operator locally
 https://aquasecurity.github.io/trivy-operator/latest/
 
@@ -136,12 +134,21 @@ Running these commands, we see that the operator is starting making reports. I a
 The instructions above are from the "Home" page of the docs, while there are also more options in the [Helm installation page](https://aquasecurity.github.io/trivy-operator/v0.19.0/getting-started/installation/helm/). 
 
 
-<a id="play-with-incluster-api"></a>
 ### Play with the in-cluster API
 ... to get an overview of have the tool works. Is it even worth installing in the cluster?
 
+Trivy creates several types of reports:
+- VulnerabilityReport
+- ConfigAuditReport
+- ExposedSecretReport
+- RbacAssessmentReport
+- InfraAssessmentReport
+- ClusterComplianceReport
+- ClusterVulnerabilityReport
+- SbomReport
+
 #### Get an overview
-To get an overview of all findings, we can use the reports as shown in the output above:
+To get an overview of all findings, we can use the reports as shown in the Helm Install output above:
 ```sh
 ✗ kubectl get vulnerabilityreports --all-namespaces -o wide
 NAMESPACE            NAME                                                       REPOSITORY                           TAG                  SCANNER   AGE   CRITICAL   HIGH   MEDIUM   LOW   UNKNOWN
@@ -150,7 +157,6 @@ flux-system          replicaset-image-automation-controller-654dc4897-manager   
 flux-system          replicaset-image-reflector-controller-8498c88d9-manager    fluxcd/image-reflector-controller    v0.31.1              Trivy     92m   0          0      9        0     0
 ...
 ```
-
 
 ```sh
 ✗ kubectl get configauditreports --all-namespaces -o wide
@@ -162,7 +168,6 @@ flux-system          networkpolicy-allow-egress                         Trivy   
 ...
 ```
 
-<a id="read-report-findings"></a>
 #### Dive deeper into findings
 To checkout the findings, run the following commands
 ```sh
@@ -187,7 +192,6 @@ licitly define the required security parameters (such as runAsNonRoot, capabilit
 ```
 
 
-<a id="add-trivy-operator-to-project"></a>
 ### Setup Trivy Operator in production
 #### Trivy Operator manifest files
 https://aquasecurity.github.io/trivy/v0.50/tutorials/kubernetes/gitops/ 
@@ -241,7 +245,6 @@ spec:
     createNamespace: false
 ```
 
-<a id="configure-calico"></a>
 #### Configure Calico network policy
 If you are using Calico or other network management tools and run the manifests above, you will most likely get the following error or something similar: 
 `unable to run trivy operator: failed getting configmap: trivy-operator: Get "https://10.0.0.1:443/api/v1/namespaces/trivy-system/configmaps/trivy-operator": dial tcp 10.0.0.1:443: i/o timeout`. 
@@ -285,7 +288,6 @@ calicoctl get networkpolicy allow-trivy-operator-egress -o yaml -n trivy-system 
 ```
 
 
-<a id="tolerate-node-taints"></a>
 #### Tolerate node taints
 https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
 
@@ -352,11 +354,9 @@ Maybe this will help:
 * https://aquasecurity.github.io/trivy-operator/latest/docs/vulnerability-scanning/private-registries/
 * https://aquasecurity.github.io/trivy-operator/v0.19.0/tutorials/private-registries/ 
 
-<a id="create-reports"></a>
 ## Create reports
 Coming soon maybe.
 
-<a id="grafana-dashboard"></a>
 ## Grafana dashboard
 This was an easy fix, however it took a little time to figure out how to use the gnetId to create image through Terraform.
 
@@ -364,7 +364,6 @@ I made a PR to the Trivy docs, so it should be documented now: https://aquasecur
 
 
 ## Useful commands
-<a id="trivy-operator-logs"></a>
 ### Trivy Operator logs
 From K8s:
 ```sh
@@ -376,7 +375,6 @@ See all trivy-system resource (except from network policy):
 k get all -n trivy-system
 ```
 
-<a id="flux-reconcile-logs"></a>
 ### Flux reconcile logs
 ```sh
 flux logs --namespace flux-system --since=1h -f
@@ -392,7 +390,6 @@ See new commits as they are detected:
 flux logs --namespace flux-system --since=1h -f --kind=gitrepository
 ```
 
-<a id="restart-operator"></a>
 ### Delete/restart the operator
 After doing lots of testing, you might want to delete the operator and install it again to see that a clean install works. You can do like this:
 ```sh
@@ -410,7 +407,6 @@ flux reconcile helmrelease trivy-operator -n trivy-system
 
 Or just delete the files and see that the resources are gone, and then put them back. 
 
-<a id="delete-all-reports"></a>
 ### Delete all reports
 ```sh
 kubectl delete exposedsecretreport --all --all-namespaces
@@ -423,7 +419,6 @@ There are several improvements to be done here. Here are some of my thoughts:
 - Scan regularly
 - Use hash of versions and do not scan that very image again every time it appears in the cluster. E.g. job images.
 
-<a id="debugging"></a>
 ## Debugging
 
 ### SBOM decode error: failed to decode: multiple OS components are not supported
