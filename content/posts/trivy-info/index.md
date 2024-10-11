@@ -29,8 +29,8 @@ There are many pitfalls when writing IaC, and scanning it helps us in several wa
 - Regularly in the production environment, e.g. every saturday evening. 
 
 ## What scans to run
-We should run different Trivy scans, and which will always differ from application to application. 
-However, in general, I believe this scans should be run:
+We should run different Trivy scans. Which scans to run differ from application to application. 
+However, in general, I believe these scans should be run:
 - **Configuration file scan**, to scan your IaC configuration files for known vulnerabilities
 - **Secrets scan**, to check if there are any secrets present in your code
 - **Dependency scan**, to scan your dependency versions for known vulnerabilities
