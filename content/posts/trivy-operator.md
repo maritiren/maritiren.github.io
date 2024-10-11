@@ -358,9 +358,9 @@ Maybe this will help:
 Coming soon maybe.
 
 ## Grafana dashboard
-This was an easy fix, however it took a little time to figure out how to use the gnetId to create image through Terraform.
+Documentation at https://aquasecurity.github.io/trivy-operator/v0.22.0/tutorials/grafana-dashboard/#using-the-grafana-helm-chart.
 
-I made a PR to the Trivy docs, so it should be documented now: https://aquasecurity.github.io/trivy-operator/v0.22.0/tutorials/grafana-dashboard/#using-the-grafana-helm-chart.
+This was an easy fix, however it took a little time to figure out how to use the gnetId to create image through Terraform. I made a PR to the Trivy docs, so it should be documented now.
 
 
 ## Useful commands
