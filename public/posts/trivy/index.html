@@ -535,8 +535,8 @@
 <li>As automatic PR review. Although, I only believe in using this as a quality gate as long as it is possible to buypass it. In case of critical scenarios, such as fixing down-time or a critical bug.</li>
 <li>Regularly in the production environment, e.g. every saturday evening.</li>
 </ul>
-<h2 id="what-scans-to-run" class="relative group">What scans to run <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#what-scans-to-run" aria-label="Anchor">#</a></span></h2><p>We should run different Trivy scans, and which will always differ from application to application.
-However, in general, I believe this scans should be run:</p>
+<h2 id="what-scans-to-run" class="relative group">What scans to run <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#what-scans-to-run" aria-label="Anchor">#</a></span></h2><p>We should run different Trivy scans. Which scans to run differ from application to application.
+However, in general, I believe these scans should be run:</p>
 <ul>
 <li><strong>Configuration file scan</strong>, to scan your IaC configuration files for known vulnerabilities</li>
 <li><strong>Secrets scan</strong>, to check if there are any secrets present in your code</li>

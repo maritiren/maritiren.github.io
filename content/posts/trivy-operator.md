@@ -496,21 +496,29 @@ Pretty self-explanatory.
 
 The default values for RAM wasn't enough. We gave a little more `request` and `limit` for the scanners and this solved the problem. In addition there were 10 reports generated simultanuously. We changed it to 2 to give the nodes a little room. It is shown under spec.values in [the manifest file](#trivy-operator-manifest-files).
 
-### Too many requests
-After a while, we started getting an error saying that we are sendign too many requests to the Trivy GitHub repo. I have some thought about why this might happen:
-* Some images are retried every 15 min or so
-* The cluster spins up jobs in which Trivy scans the same image every time the job runs
+### TOO MANY REQUESTS ✅
+{{< alert >}}
+This is an ongoing issue, so Trivy might solve this without us having to take action. However, it has been going on a while now. There are two options for this issue;
+* Wait until the Trivy maintainers have fixed the issue
+* Setup a mirror for the vulnerability database
+{{< /alert >}}
+
+At some point, we suddenly got the following error: 
 
 ```sh
 2024-10-03T07:31:26Z	FATAL	Fatal error	init error: DB error: failed to download vulnerability DB: database download error: oci download error: failed to fetch the layer: GET https://ghcr.io/v2/aquasecurity/trivy-db/blobs/sha256:77a50f405854d311fdf062f2d7edf3c04c63e2f5d218751a29125431376757a1: TOOMANYREQUESTS: retry-after: 600.129µs, allowed: 44000/minute
 ```
 
-Possible solutions: 
-* Do not scan AKS. Maybe management would like an overview in case of a new Log4j? But then it should probably be in form of an SBOM. Which is probably generated after a scan
-* Try to only scan the same image (with hash!!) once a day. Is it even possible? This would be a nice solution! Especially if standard applications are using the same images.
+I found out why this happens from a discussions thread in the Trivy repo: 
+["This is happening just because Trivy has too many users and reached the rate limits. "](https://github.com/aquasecurity/trivy/discussions/7668#discussioncomment-10878985). Apparently, the GitHub container registry, ghcr.io, introduced rate limiting which ended up with this issue. Or, it is just Trivy that has gotten too many users.
 
-Seems like this was a recently introduced bug. As discussed in [this GitHub issue](https://github.com/aquasecurity/trivy/discussions/7538).
+So, in theory setting up cache for the vulnerability database should help. However, if we need to update the database often, it doesn't really help too much. It certainly doesn't solve the problem entirely. 
 
+That leaves us two other options;
+* **Setting up our own package registry to mirror the vulnerability database.** A comment on the option above states that this adds security risk. It definitely force us to maintain another thing and we risk not having the latest discovered vulnerabilities in our mirrored version. If the database doesn't get updated, we might just end up allowing another Log4j affect our systems. Anyways, I think this is a good option if this is still an issue next week. 
+* If you are patient and OK with rerunning your failing pipelines, then a solution could be to **wait for the Trivy maintainers to fix the problem**. They are looking into the issue and have already pushed small improvements very quickly to remediate. I am sure they are looking into it and trying their best to fix the issue quickly.
+
+Later, I found [this](https://github.com/aquasecurity/trivy/discussions/7699) announcement about the issue. 
 
 ## Resources
 * https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/
