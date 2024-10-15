@@ -130,7 +130,7 @@
     "keywords": ["K8s","Trivy"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "2532"
+    "wordCount": "2590"
   }
   </script>
     
@@ -445,7 +445,7 @@
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <span title="Reading time">12 mins</span><span class="px-2 text-primary-500">&middot;</span>
+      <span title="Reading time">13 mins</span><span class="px-2 text-primary-500">&middot;</span>
 
 
   
@@ -528,7 +528,7 @@
         <li><a href="#scan-error-unable-to-initialize-an-image-scanner-remote-error-image-fetch">scan error: unable to initialize an image scanner: remote error (image fetch)</a></li>
         <li><a href="#scanning-windows-images-is-not-supported">Scanning Windows images is not supported</a></li>
         <li><a href="#scan-job---oomkilled-">Scan job - OOMKilled ✅</a></li>
-        <li><a href="#too-many-requests">TOO MANY REQUESTS</a></li>
+        <li><a href="#too-many-requests-">TOO MANY REQUESTS ✅</a></li>
       </ul>
     </li>
     <li><a href="#resources">Resources</a></li>
@@ -894,7 +894,7 @@ Maybe this will help:</p>
 </span></span><span class="line"><span class="cl">  <span class="nt">&#34;stacktrace&#34;</span><span class="p">:</span> <span class="s2">&#34;github.com/aquasecurity/trivy-operator/pkg/vulnerabilityreport/controller.(*ScanJobController).completedContainers\n\t/home/runner/work/trivy-operator/trivy-operator/pkg/vulnerabilityreport/controller/scanjob.go:353\ngithub.com/aquasecurity/trivy-operator/pkg/vulnerabilityreport/controller.(*ScanJobController).SetupWithManager.(*ScanJobController).reconcileJobs.func1\n\t/home/runner/work/trivy-operator/trivy-operator/pkg/vulnerabilityreport/controller/scanjob.go:80\nsigs.k8s.io/controller-runtime/pkg/reconcile.Func.Reconcile\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/reconcile/reconcile.go:113\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Reconcile\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:119\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).reconcileHandler\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:316\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).processNextWorkItem\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:266\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller).Start.func2.2\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.17.2/pkg/internal/controller/controller.go:227&#34;</span>
 </span></span><span class="line"><span class="cl"><span class="p">}</span>
 </span></span></code></pre></div><p>The default values for RAM wasn&rsquo;t enough. We gave a little more <code>request</code> and <code>limit</code> for the scanners and this solved the problem. In addition there were 10 reports generated simultanuously. We changed it to 2 to give the nodes a little room. It is shown under spec.values in <a href="#trivy-operator-manifest-files">the manifest file</a>.</p>
-<h3 id="too-many-requests" class="relative group">TOO MANY REQUESTS <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#too-many-requests" aria-label="Anchor">#</a></span></h3><div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+<h3 id="too-many-requests-" class="relative group">TOO MANY REQUESTS ✅ <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#too-many-requests-" aria-label="Anchor">#</a></span></h3><div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
   <span class="pe-3 text-primary-400">
     <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
 </span>
@@ -908,14 +908,15 @@ Maybe this will help:</p>
 
 <p>At some point, we suddenly got the following error:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">2024-10-03T07:31:26Z	FATAL	Fatal error	init error: DB error: failed to download vulnerability DB: database download error: oci download error: failed to fetch the layer: GET https://ghcr.io/v2/aquasecurity/trivy-db/blobs/sha256:77a50f405854d311fdf062f2d7edf3c04c63e2f5d218751a29125431376757a1: TOOMANYREQUESTS: retry-after: 600.129µs, allowed: 44000/minute
-</span></span></code></pre></div><p>From discussions in Trivy repo:
-<a href="https://github.com/aquasecurity/trivy/discussions/7668#discussioncomment-10878985" target="_blank" rel="noreferrer">&ldquo;This is happening just because Trivy has too many users and reached the rate limits. &ldquo;</a>. Apparently, the GitHub container registry, ghcr.io, introduced rate limiting which ended up with this issue.</p>
+</span></span></code></pre></div><p>I found out why this happens from a discussions thread in the Trivy repo:
+<a href="https://github.com/aquasecurity/trivy/discussions/7668#discussioncomment-10878985" target="_blank" rel="noreferrer">&ldquo;This is happening just because Trivy has too many users and reached the rate limits. &ldquo;</a>. Apparently, the GitHub container registry, ghcr.io, introduced rate limiting which ended up with this issue. Or, it is just Trivy that has gotten too many users.</p>
 <p>So, in theory setting up cache for the vulnerability database should help. However, if we need to update the database often, it doesn&rsquo;t really help too much. It certainly doesn&rsquo;t solve the problem entirely.</p>
 <p>That leaves us two other options;</p>
 <ul>
-<li>Setting up our own package registry to mirror the vulnerability database. A comment on the option above states that this adds security risk. It definitely force us to maintain another thing and we risk not having the latest discovered vulnerabilities in our mirrored version. If the database doesn&rsquo;t get updated, we might just end up allowing another Log4j affect our systems. Anyways, I think this is a good option if this is still an issue next week.</li>
-<li>If you are patient and OK with rerunning your failing pipelines, then a solution could be to wait for the Trivy maintainers to fix the problem. They are looking into</li>
+<li><strong>Setting up our own package registry to mirror the vulnerability database.</strong> A comment on the option above states that this adds security risk. It definitely force us to maintain another thing and we risk not having the latest discovered vulnerabilities in our mirrored version. If the database doesn&rsquo;t get updated, we might just end up allowing another Log4j affect our systems. Anyways, I think this is a good option if this is still an issue next week.</li>
+<li>If you are patient and OK with rerunning your failing pipelines, then a solution could be to <strong>wait for the Trivy maintainers to fix the problem</strong>. They are looking into the issue and have already pushed small improvements very quickly to remediate. I am sure they are looking into it and trying their best to fix the issue quickly.</li>
 </ul>
+<p>Later, I found <a href="https://github.com/aquasecurity/trivy/discussions/7699" target="_blank" rel="noreferrer">this</a> announcement about the issue.</p>
 <h2 id="resources" class="relative group">Resources <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#resources" aria-label="Anchor">#</a></span></h2><ul>
 <li><a href="https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/</a></li>
 <li><a href="https://aquasecurity.github.io/trivy-operator/latest/" target="_blank" rel="noreferrer">https://aquasecurity.github.io/trivy-operator/latest/</a></li>

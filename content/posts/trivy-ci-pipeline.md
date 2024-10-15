@@ -10,6 +10,65 @@ I am currently working with automated security testing to get control of the kno
 
 Read more about Trivy in [my other post]({{< ref "trivy-info" >}}).
 
+
+## Creating a Trivy CI pipeline
+
+### GitLab CI
+This pipeline is for GitLab CI when not using GitLab Ultimate. 
+Ultimate has Trivy included in their scans. 
+You can read more about it in [the Trivy Docs](https://aquasecurity.github.io/trivy/latest/tutorials/integrations/gitlab-ci/).
+
+The link above contains example pipelines. 
+Here is another example, using the Trivy container only to do filesystem scan
+
+{{< alert >}}
+If you want to follow best practice and do both image and filesystem-scan, 
+you can use [this example](https://aquasecurity.github.io/trivy/v0.56/tutorials/integrations/gitlab-ci/#gitlab-ci-alternative-template) from the Trivy docs. 
+{{< /alert >}}
+
+```sh
+stages:
+  - Test
+
+Trivy IaC scan:
+  stage: Test
+  allow_failure: true  # show warning, but allow merge for high severity findings
+  image:
+    name: docker.io/aquasec/trivy:0.56.2@sha256:26245f364b6f5d223003dc344ec1eb5eb8439052bfecb31d79aeba0c74344b3a
+    entrypoint: [""]
+  variables:
+    TRIVY_NO_PROGRESS: "true"
+    TRIVY_CACHE_DIR: ".trivycache/"
+    TRIVY_IGNOREFILE: ".trivyignore.yaml"
+  cache:
+    when: 'always'  # save cache even in job fails
+    key: trivy-cache
+    paths:
+      - .trivycache
+  script:
+    - trivy --version
+    # Clear the scan cache (keep the vuln DB)
+    - trivy clean --scan-cache
+    # Build the report
+    - >
+      trivy fs . 
+      --exit-code 0
+      --scanners=misconfig,vuln,secret
+      --format template
+      --template "@/contrib/gitlab-codequality.tpl"
+      --output trivy_fs_${CI_COMMIT_SHORT_SHA}.test.json
+    # Fail on HIGH and CRITICAL vulnerabilities
+    - >
+      trivy fs . 
+      --exit-code 1
+      --severity CRITICAL,HIGH
+  artifacts:
+    name: "trivy_fs_${CI_COMMIT_SHORT_SHA}.test.json"
+    reports:
+      codequality: trivy_fs_${CI_COMMIT_SHORT_SHA}.test.json
+    expire_in: "30 days"
+```
+
 ## Debugging
 
 ### go not scanned properly

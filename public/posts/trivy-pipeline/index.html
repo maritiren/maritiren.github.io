@@ -134,7 +134,7 @@
     "keywords": ["Trivy","IaC scan","CI","pipeline"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "577"
+    "wordCount": "760"
   }
   </script>
     
@@ -449,7 +449,7 @@
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <span title="Reading time">3 mins</span><span class="px-2 text-primary-500">&middot;</span>
+      <span title="Reading time">4 mins</span><span class="px-2 text-primary-500">&middot;</span>
 
 
   
@@ -502,6 +502,11 @@
   <div class="border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
+    <li><a href="#creating-a-trivy-ci-pipeline">Creating a Trivy CI pipeline</a>
+      <ul>
+        <li><a href="#gitlab-ci">GitLab CI</a></li>
+      </ul>
+    </li>
     <li><a href="#debugging">Debugging</a>
       <ul>
         <li><a href="#go-not-scanned-properly">go not scanned properly</a></li>
@@ -519,7 +524,61 @@
       <div class="min-h-0 min-w-0 max-w-prose grow">
         <p>I am currently working with automated security testing to get control of the known vulnerabilities in our applications. As part of this, I am scanning a Kubernetes cluster and it&rsquo;s images, as well as application code. We want to cover the whole width, not only application code. Now, we look at a Infrastructure as Code (IaC) scanning tool, <a href="https://trivy.dev/" target="_blank" rel="noreferrer">Trivy</a>.</p>
 <p>Read more about Trivy in <a href="http://localhost:1313/posts/trivy/">my other post</a>.</p>
-<h2 id="debugging" class="relative group">Debugging <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#debugging" aria-label="Anchor">#</a></span></h2><h3 id="go-not-scanned-properly" class="relative group">go not scanned properly <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#go-not-scanned-properly" aria-label="Anchor">#</a></span></h3><p>Some pipelines got 44 findings, while other&rsquo;s had none. By looking at the pipeline logs, we figured that it wasn&rsquo;t detected properly that this was a Go repo.</p>
+<h2 id="creating-a-trivy-ci-pipeline" class="relative group">Creating a Trivy CI pipeline <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#creating-a-trivy-ci-pipeline" aria-label="Anchor">#</a></span></h2><h3 id="gitlab-ci" class="relative group">GitLab CI <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#gitlab-ci" aria-label="Anchor">#</a></span></h3><p>This pipeline is for GitLab CI when not using GitLab Ultimate.
+Ultimate has Trivy included in their scans.
+You can read more about it in <a href="https://aquasecurity.github.io/trivy/latest/tutorials/integrations/gitlab-ci/" target="_blank" rel="noreferrer">the Trivy Docs</a>.</p>
+<p>The link above contains example pipelines.
+Here is another example, using the Trivy container only to do filesystem scan</p>
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">If you want to follow best practice and do both image and filesystem-scan,
+you can use <a href="https://aquasecurity.github.io/trivy/v0.56/tutorials/integrations/gitlab-ci/#gitlab-ci-alternative-template" target="_blank" rel="noreferrer">this example</a> from the Trivy docs.</span>
+</div>
+
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">stages:
+</span></span><span class="line"><span class="cl">  - Test
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Trivy IaC scan:
+</span></span><span class="line"><span class="cl">  stage: Test
+</span></span><span class="line"><span class="cl">  allow_failure: <span class="nb">true</span>  <span class="c1"># show warning, but allow merge for high severity findings</span>
+</span></span><span class="line"><span class="cl">  image:
+</span></span><span class="line"><span class="cl">    name: docker.io/aquasec/trivy:0.56.2@sha256:26245f364b6f5d223003dc344ec1eb5eb8439052bfecb31d79aeba0c74344b3a
+</span></span><span class="line"><span class="cl">    entrypoint: <span class="o">[</span><span class="s2">&#34;&#34;</span><span class="o">]</span>
+</span></span><span class="line"><span class="cl">  variables:
+</span></span><span class="line"><span class="cl">    TRIVY_NO_PROGRESS: <span class="s2">&#34;true&#34;</span>
+</span></span><span class="line"><span class="cl">    TRIVY_CACHE_DIR: <span class="s2">&#34;.trivycache/&#34;</span>
+</span></span><span class="line"><span class="cl">    TRIVY_IGNOREFILE: <span class="s2">&#34;.trivyignore.yaml&#34;</span>
+</span></span><span class="line"><span class="cl">  cache:
+</span></span><span class="line"><span class="cl">    when: <span class="s1">&#39;always&#39;</span>  <span class="c1"># save cache even in job fails</span>
+</span></span><span class="line"><span class="cl">    key: trivy-cache
+</span></span><span class="line"><span class="cl">    paths:
+</span></span><span class="line"><span class="cl">      - .trivycache
+</span></span><span class="line"><span class="cl">  script:
+</span></span><span class="line"><span class="cl">    - trivy --version
+</span></span><span class="line"><span class="cl">    <span class="c1"># Clear the scan cache (keep the vuln DB)</span>
+</span></span><span class="line"><span class="cl">    - trivy clean --scan-cache
+</span></span><span class="line"><span class="cl">    <span class="c1"># Build the report</span>
+</span></span><span class="line"><span class="cl">    - &gt;
+</span></span><span class="line"><span class="cl">      trivy fs . 
+</span></span><span class="line"><span class="cl">      --exit-code <span class="m">0</span>
+</span></span><span class="line"><span class="cl">      --scanners<span class="o">=</span>misconfig,vuln,secret
+</span></span><span class="line"><span class="cl">      --format template
+</span></span><span class="line"><span class="cl">      --template <span class="s2">&#34;@/contrib/gitlab-codequality.tpl&#34;</span>
+</span></span><span class="line"><span class="cl">      --output trivy_fs_<span class="si">${</span><span class="nv">CI_COMMIT_SHORT_SHA</span><span class="si">}</span>.test.json
+</span></span><span class="line"><span class="cl">    <span class="c1"># Fail on HIGH and CRITICAL vulnerabilities</span>
+</span></span><span class="line"><span class="cl">    - &gt;
+</span></span><span class="line"><span class="cl">      trivy fs . 
+</span></span><span class="line"><span class="cl">      --exit-code <span class="m">1</span>
+</span></span><span class="line"><span class="cl">      --severity CRITICAL,HIGH
+</span></span><span class="line"><span class="cl">  artifacts:
+</span></span><span class="line"><span class="cl">    name: <span class="s2">&#34;trivy_fs_</span><span class="si">${</span><span class="nv">CI_COMMIT_SHORT_SHA</span><span class="si">}</span><span class="s2">.test.json&#34;</span>
+</span></span><span class="line"><span class="cl">    reports:
+</span></span><span class="line"><span class="cl">      codequality: trivy_fs_<span class="si">${</span><span class="nv">CI_COMMIT_SHORT_SHA</span><span class="si">}</span>.test.json
+</span></span><span class="line"><span class="cl">    expire_in: <span class="s2">&#34;30 days&#34;</span>
+</span></span></code></pre></div><h2 id="debugging" class="relative group">Debugging <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#debugging" aria-label="Anchor">#</a></span></h2><h3 id="go-not-scanned-properly" class="relative group">go not scanned properly <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#go-not-scanned-properly" aria-label="Anchor">#</a></span></h3><p>Some pipelines got 44 findings, while other&rsquo;s had none. By looking at the pipeline logs, we figured that it wasn&rsquo;t detected properly that this was a Go repo.</p>
 <p>Running the commands locally also yields no findings (except one that is ignored with .trivyignore). With debug on, I found that Trivy is <code>Skipping vulnerability scan as no version is detected for the package name=&quot;my.project.com/main/module&quot;</code>.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">2024-10-03T11:37:58+02:00	INFO	<span class="o">[</span>gomod<span class="o">]</span> Detecting vulnerabilities...
 </span></span><span class="line"><span class="cl">2024-10-03T11:37:58+02:00	DEBUG	<span class="o">[</span>gomod<span class="o">]</span> Scanning packages <span class="k">for</span> vulnerabilities	<span class="nv">file_path</span><span class="o">=</span><span class="s2">&#34;go.mod&#34;</span>
