@@ -6,8 +6,50 @@
     <description>Recent content in Tags on Techkroken</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Thu, 03 Oct 2024 11:42:15 +0200</lastBuildDate>
+    <lastBuildDate>Tue, 15 Oct 2024 15:13:28 +0200</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Defectdojo</title>
+      <link>http://localhost:1313/tags/defectdojo/</link>
+      <pubDate>Tue, 15 Oct 2024 15:13:28 +0200</pubDate>
+      <guid>http://localhost:1313/tags/defectdojo/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>K8s</title>
+      <link>http://localhost:1313/tags/k8s/</link>
+      <pubDate>Tue, 15 Oct 2024 15:13:28 +0200</pubDate>
+      <guid>http://localhost:1313/tags/k8s/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Kind</title>
+      <link>http://localhost:1313/tags/kind/</link>
+      <pubDate>Tue, 15 Oct 2024 15:13:28 +0200</pubDate>
+      <guid>http://localhost:1313/tags/kind/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Owasp</title>
+      <link>http://localhost:1313/tags/owasp/</link>
+      <pubDate>Tue, 15 Oct 2024 15:13:28 +0200</pubDate>
+      <guid>http://localhost:1313/tags/owasp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Trivy</title>
+      <link>http://localhost:1313/tags/trivy/</link>
+      <pubDate>Tue, 15 Oct 2024 15:13:28 +0200</pubDate>
+      <guid>http://localhost:1313/tags/trivy/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Trivy-Dojo-Report-Operator</title>
+      <link>http://localhost:1313/tags/trivy-dojo-report-operator/</link>
+      <pubDate>Tue, 15 Oct 2024 15:13:28 +0200</pubDate>
+      <guid>http://localhost:1313/tags/trivy-dojo-report-operator/</guid>
+      <description></description>
+    </item>
     <item>
       <title>CI</title>
       <link>http://localhost:1313/tags/ci/</link>
@@ -30,20 +72,6 @@
       <description></description>
     </item>
     <item>
-      <title>Trivy</title>
-      <link>http://localhost:1313/tags/trivy/</link>
-      <pubDate>Thu, 03 Oct 2024 11:42:15 +0200</pubDate>
-      <guid>http://localhost:1313/tags/trivy/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>K8s</title>
-      <link>http://localhost:1313/tags/k8s/</link>
-      <pubDate>Tue, 01 Oct 2024 17:15:18 +0200</pubDate>
-      <guid>http://localhost:1313/tags/k8s/</guid>
-      <description></description>
-    </item>
-    <item>
       <title>Quality</title>
       <link>http://localhost:1313/tags/quality/</link>
       <pubDate>Tue, 01 Oct 2024 17:00:04 +0200</pubDate>
@@ -55,13 +83,6 @@
       <link>http://localhost:1313/tags/flux/</link>
       <pubDate>Tue, 01 Oct 2024 15:33:44 +0200</pubDate>
       <guid>http://localhost:1313/tags/flux/</guid>
-      <description></description>
-    </item>
-    <item>
-      <title>Kind</title>
-      <link>http://localhost:1313/tags/kind/</link>
-      <pubDate>Tue, 01 Oct 2024 15:33:44 +0200</pubDate>
-      <guid>http://localhost:1313/tags/kind/</guid>
       <description></description>
     </item>
     <item>

@@ -25,6 +25,7 @@ One downside which is not in our scope, but is worth mentioning, is that the Tri
 
 ## Prereqs to follow this guide
 * [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installing-from-release-binaries)
+* [Kubectl]()
 * [kubecm](https://kubecm.cloud/), strictly not necessary, but I like this tool!
 * [Helm](https://helm.sh/docs/intro/install/)
 * [Trivy](https://aquasecurity.github.io/trivy/v0.50/docs/target/kubernetes/)

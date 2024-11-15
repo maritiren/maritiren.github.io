@@ -552,7 +552,7 @@ you can use <a href="https://aquasecurity.github.io/trivy/v0.56/tutorials/integr
 </span></span><span class="line"><span class="cl">    TRIVY_CACHE_DIR: <span class="s2">&#34;.trivycache/&#34;</span>
 </span></span><span class="line"><span class="cl">    TRIVY_IGNOREFILE: <span class="s2">&#34;.trivyignore.yaml&#34;</span>
 </span></span><span class="line"><span class="cl">  cache:
-</span></span><span class="line"><span class="cl">    when: <span class="s1">&#39;always&#39;</span>  <span class="c1"># save cache even in job fails</span>
+</span></span><span class="line"><span class="cl">    when: <span class="s1">&#39;always&#39;</span>  <span class="c1"># save cache even when job fails</span>
 </span></span><span class="line"><span class="cl">    key: trivy-cache
 </span></span><span class="line"><span class="cl">    paths:
 </span></span><span class="line"><span class="cl">      - .trivycache
@@ -654,6 +654,23 @@ The &ldquo;very&rdquo; old results that had bout 35-44 findings, I think is beca
       <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
       <div class="flex justify-between pt-3">
         <span>
+          
+            <a class="group flex" href="/posts/defectdojo/">
+              <span
+                class="me-2 text-neutral-700 transition-transform group-hover:-translate-x-[2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&larr;</span
+                ><span class="ltr:hidden rtl:inline">&rarr;</span></span
+              >
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >DefectDojo with Trivy cluster reports</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                </span>
+              </span>
+            </a>
           
         </span>
         <span>

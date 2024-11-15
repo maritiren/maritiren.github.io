@@ -9,9 +9,20 @@ tags: ["k8s", "kind", "local registry", "flux"]
 ---
 
 
-<a id="setup-cluster"></a>
+This post show every step of setting up a Kind cluster with Flux for automatic image updates from a local registry. 
+
+## Prerequisites
+* [Kind](https://kind.sigs.k8s.io/docs/user/quick-start/#installing-from-release-binaries)
+* Kubectl
+* GitHub account
+
+
 ## 1. Setup Kind cluster with local registry
-Find the script in the post [Kind Cluster with Local Registry]({{< ref "kind-cluster-with-local-registry" >}}). 
+{{< alert >}}
+The script below also includes Ingress config for hosting DefectDojo in your cluster. If you don't want to setup DefectDojo later, remove the whole `nodes:` section.
+{{< /alert >}}
+
+Find the script in the post [Kind Cluster with Local Registry]({{< ref "script-kind-cluster-with-local-registry" >}}). 
 You may run this script even if you already have running local registry. It didn't do anything to my images at least. 
 ```sh
 cd ~/git/flux-image-updates/clusters
@@ -19,7 +30,6 @@ cd ~/git/flux-image-updates/clusters
 ```
 
 
-<a id="run-flux"></a>
 ## 2. Run Flux
 Following the Flux guide ["Automate image updates to Git"](https://fluxcd.io/flux/guides/image-update/#prerequisites), I setup everything as follows:
 

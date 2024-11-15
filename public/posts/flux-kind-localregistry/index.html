@@ -132,7 +132,7 @@
     "keywords": ["k8s","kind","local registry","flux"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "886"
+    "wordCount": "940"
   }
   </script>
     
@@ -491,6 +491,7 @@
   <div class="border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
     <nav id="TableOfContents">
   <ul>
+    <li><a href="#prerequisites">Prerequisites</a></li>
     <li><a href="#1-setup-kind-cluster-with-local-registry">1. Setup Kind cluster with local registry</a></li>
     <li><a href="#2-run-flux">2. Run Flux</a></li>
     <li><a href="#3-setup-secrets-for-namespaces-to-fetch-images">3. Setup secrets for namespaces to fetch images</a></li>
@@ -520,13 +521,25 @@
         </div>
       
       <div class="min-h-0 min-w-0 max-w-prose grow">
-        <p><a id="setup-cluster"></a></p>
-<h2 id="1-setup-kind-cluster-with-local-registry" class="relative group">1. Setup Kind cluster with local registry <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-setup-kind-cluster-with-local-registry" aria-label="Anchor">#</a></span></h2><p>Find the script in the post <a href="http://localhost:1313/posts/kind-localregistry/">Kind Cluster with Local Registry</a>.
+        <p>This post show every step of setting up a Kind cluster with Flux for automatic image updates from a local registry.</p>
+<h2 id="prerequisites" class="relative group">Prerequisites <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#prerequisites" aria-label="Anchor">#</a></span></h2><ul>
+<li><a href="https://kind.sigs.k8s.io/docs/user/quick-start/#installing-from-release-binaries" target="_blank" rel="noreferrer">Kind</a></li>
+<li>Kubectl</li>
+<li>GitHub account</li>
+</ul>
+<h2 id="1-setup-kind-cluster-with-local-registry" class="relative group">1. Setup Kind cluster with local registry <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#1-setup-kind-cluster-with-local-registry" aria-label="Anchor">#</a></span></h2><div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">The script below also includes Ingress config for hosting DefectDojo in your cluster. If you don&rsquo;t want to setup DefectDojo later, remove the whole <code>nodes:</code> section.</span>
+</div>
+
+<p>Find the script in the post <a href="http://localhost:1313/posts/kind-localregistry/">Kind Cluster with Local Registry</a>.
 You may run this script even if you already have running local registry. It didn&rsquo;t do anything to my images at least.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="nb">cd</span> ~/git/flux-image-updates/clusters
 </span></span><span class="line"><span class="cl">./create-kind-cluster-with-registry.sh 
-</span></span></code></pre></div><p><a id="run-flux"></a></p>
-<h2 id="2-run-flux" class="relative group">2. Run Flux <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-run-flux" aria-label="Anchor">#</a></span></h2><p>Following the Flux guide <a href="https://fluxcd.io/flux/guides/image-update/#prerequisites" target="_blank" rel="noreferrer">&ldquo;Automate image updates to Git&rdquo;</a>, I setup everything as follows:</p>
+</span></span></code></pre></div><h2 id="2-run-flux" class="relative group">2. Run Flux <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#2-run-flux" aria-label="Anchor">#</a></span></h2><p>Following the Flux guide <a href="https://fluxcd.io/flux/guides/image-update/#prerequisites" target="_blank" rel="noreferrer">&ldquo;Automate image updates to Git&rdquo;</a>, I setup everything as follows:</p>
 <p>Start by adding your GitHub credentials as environment variables.
 PAT token can be found at <a href="https://github.com/settings/tokens" target="_blank" rel="noreferrer"><code>Settings&gt; Developer Settings&gt; Tokens (classic)</code></a>.
 It requires the <code>repo</code> scope.</p>
@@ -610,7 +623,7 @@ It requires the <code>repo</code> scope.</p>
 <h4 id="changing-containerd-configs" class="relative group">Changing containerd configs <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#changing-containerd-configs" aria-label="Anchor">#</a></span></h4><ul>
 <li><a href="https://github.com/kubernetes-sigs/kind/issues/2604#issuecomment-1041314277" target="_blank" rel="noreferrer">https://github.com/kubernetes-sigs/kind/issues/2604#issuecomment-1041314277</a></li>
 </ul>
-<p>Remove the existing config line and add this instead, in the <a href="http://localhost:1313/posts/kind-localregistry/">cluster startup script</a>. This makes some parts of the Kind script unuseful (the part of setting containerd settings in each node). You might change this either in cluster-config.yaml or in the Kind startup script.</p>
+<p>Remove the existing config line and add this instead, in the <a href="">cluster startup script</a>. This makes some parts of the Kind script unuseful (the part of setting containerd settings in each node). You might change this either in cluster-config.yaml or in the Kind startup script.</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">containerdConfigPatches</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="p">|-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">  [plugins.&#34;io.containerd.grpc.v1.cri&#34;.registry]

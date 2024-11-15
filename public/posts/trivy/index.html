@@ -131,7 +131,7 @@
     "keywords": ["Trivy","IaC scan","quality"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "601"
+    "wordCount": "612"
   }
   </script>
     
@@ -494,6 +494,7 @@
     <li><a href="#when--where-to-scan">When &amp; where to scan</a></li>
     <li><a href="#what-scans-to-run">What scans to run</a></li>
     <li><a href="#dockerfile-scan-vs-image-scan">Dockerfile scan vs image scan</a></li>
+    <li><a href="#caching">Caching</a></li>
     <li><a href="#step-by-step-guides-for-different-scans">Step-by-step guides for different scans</a></li>
   </ul>
 </nav>
@@ -551,6 +552,7 @@ However, in general, I believe these scans should be run:</p>
 <p><em>This is section based on my colleague&rsquo;s explanation</em>.</p>
 <p>Dockerfile scan checks the instructions used to build an image, such as the base image, package installations, config files and scripts. Also, whether you use best practices for versions, users with too high privileges or exposure of sensitive data, e.g. insecure mounting of fileshare.</p>
 <p>Image scanning finds known vulnerabilities in all installed packages, including the base image and dependencies that aren&rsquo;t directly visible in the Dockerfiel. Image scanning gives more of a depth of all the packages and third-party dependencies. E.g. using an image that is running an old version of Python with known vulnerabilities won&rsquo;t be found by the Dockerfile scan, but it will be discovered by the image scan. Only if the usage is explicitly written in the Dockerfile.</p>
+<h2 id="caching" class="relative group">Caching <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#caching" aria-label="Anchor">#</a></span></h2><p>Trivy fetches new vulns on an interval, every 12th hour.</p>
 <h2 id="step-by-step-guides-for-different-scans" class="relative group">Step-by-step guides for different scans <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#step-by-step-guides-for-different-scans" aria-label="Anchor">#</a></span></h2><p>I am going to write different guides on applying Trivy in projects. Here are the ones I have so far:</p>
 <ul>
 <li><a href="http://localhost:1313/posts/trivy-operator/">Trivy in Kubernetes</a></li>

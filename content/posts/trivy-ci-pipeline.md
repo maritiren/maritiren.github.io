@@ -41,7 +41,7 @@ Trivy IaC scan:
     TRIVY_CACHE_DIR: ".trivycache/"
     TRIVY_IGNOREFILE: ".trivyignore.yaml"
   cache:
-    when: 'always'  # save cache even in job fails
+    when: 'always'  # save cache even when job fails
     key: trivy-cache
     paths:
       - .trivycache

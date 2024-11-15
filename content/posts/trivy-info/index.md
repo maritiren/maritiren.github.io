@@ -48,6 +48,9 @@ Dockerfile scan checks the instructions used to build an image, such as the base
 
 Image scanning finds known vulnerabilities in all installed packages, including the base image and dependencies that aren't directly visible in the Dockerfiel. Image scanning gives more of a depth of all the packages and third-party dependencies. E.g. using an image that is running an old version of Python with known vulnerabilities won't be found by the Dockerfile scan, but it will be discovered by the image scan. Only if the usage is explicitly written in the Dockerfile.
 
+## Caching
+Trivy fetches new vulns on an interval, every 12th hour.
+
 ## Step-by-step guides for different scans
 I am going to write different guides on applying Trivy in projects. Here are the ones I have so far:
 * [Trivy in Kubernetes]({{< ref "trivy-operator" >}})

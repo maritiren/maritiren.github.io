@@ -1,0 +1,901 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FFFFFF" />
+  
+  <title>DefectDojo with Trivy cluster reports &middot; Techkroken</title>
+    <meta name="title" content="DefectDojo with Trivy cluster reports &middot; Techkroken" />
+  
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/appearance.min.8a082f81b27f3cb2ee528df0b0bdc39787034cf2cc34d4669fbc9977c929023c.js"
+    integrity="sha256-iggvgbJ/PLLuUo3wsL3Dl4cDTPLMNNRmn7yZd8kpAjw="
+  ></script>
+  
+  
+  
+  
+  
+  
+  
+  
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="/css/main.bundle.min.b0785c8131a75f72b211435af86269eb2d4b81dda03a8f2cf5ccb1c967747167.css"
+    integrity="sha256-sHhcgTGnX3KyEUNa&#43;GJp6y1Lgd2gOo8s9cyxyWd0cWc="
+  />
+  
+  
+  
+  
+    
+    
+  
+  
+  
+    
+    <script
+      defer
+      type="text/javascript"
+      id="script-bundle"
+      src="/js/main.bundle.min.d4b727caf411cb5c3b421d0d427ed1e3daeafe0d04840327efad4978430edb8c.js"
+      integrity="sha256-1LcnyvQRy1w7Qh0NQn7R49rq/g0EhAMn761JeEMO24w="
+      data-copy="Copy"
+      data-copied="Copied"
+    ></script>
+  
+  
+  <meta
+    name="description"
+    content="
+      Setting up DefectDojo and receiving data from Trivy Operator with trivy-dojo-report-operator.
+    "
+  />
+  
+  
+  
+  <link rel="canonical" href="http://localhost:1313/posts/defectdojo/" />
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:url" content="http://localhost:1313/posts/defectdojo/">
+  <meta property="og:site_name" content="Techkroken">
+  <meta property="og:title" content="DefectDojo with Trivy cluster reports">
+  <meta property="og:description" content="Setting up DefectDojo and receiving data from Trivy Operator with trivy-dojo-report-operator.">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-10-15T15:13:28+02:00">
+    <meta property="article:modified_time" content="2024-10-15T15:13:28+02:00">
+    <meta property="article:tag" content="K8s">
+    <meta property="article:tag" content="Kind">
+    <meta property="article:tag" content="Defectdojo">
+    <meta property="article:tag" content="Trivy-Dojo-Report-Operator">
+    <meta property="article:tag" content="Trivy">
+    <meta property="article:tag" content="Owasp">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="DefectDojo with Trivy cluster reports">
+  <meta name="twitter:description" content="Setting up DefectDojo and receiving data from Trivy Operator with trivy-dojo-report-operator.">
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Blog posts",
+    "name": "DefectDojo with Trivy cluster reports",
+    "headline": "DefectDojo with Trivy cluster reports",
+    "description": "Setting up DefectDojo and receiving data from Trivy Operator with trivy-dojo-report-operator.",
+    "abstract": "A step-by-step guide to set up DefectDojo in a local Kind cluster and receive data from the Trivy Operator reports, using the trivy-dojo-report-operator.",
+    "inLanguage": "en",
+    "url" : "http:\/\/localhost:1313\/posts\/defectdojo\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Marit Iren R. Tokle"
+    },
+    "copyrightYear": "2024",
+    "dateCreated": "2024-10-15T15:13:28\u002b02:00",
+    "datePublished": "2024-10-15T15:13:28\u002b02:00",
+    
+    "dateModified": "2024-10-15T15:13:28\u002b02:00",
+    
+    "keywords": ["k8s","kind","defectdojo","trivy-dojo-report-operator","trivy","owasp"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "1540"
+  }
+  </script>
+    
+    <script type="application/ld+json">
+    {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+     {
+       "@type": "ListItem",
+       "item": "http://localhost:1313/",
+       "name": "Welcome to My Notes! Tada",
+       "position": 1
+     },
+     {
+       "@type": "ListItem",
+       "item": "http://localhost:1313/posts/",
+       "name": "Blog Posts",
+       "position": 2
+     },
+     {
+       "@type": "ListItem",
+       "name": "Defect Dojo With Trivy Cluster Reports",
+       "position": 3
+     }
+   ]
+ }
+  </script>
+
+  
+  <meta name="author" content="Marit Iren R. Tokle" />
+  
+    
+      <link href="mailto:marit@tokle.dev" rel="me" />
+    
+      <link href="https://github.com/maritiren" rel="me" />
+    
+  
+  
+  
+
+
+
+
+
+
+  
+  
+
+  
+  
+</head>
+<body
+    class="m-auto flex h-screen max-w-7xl flex-col bg-neutral px-6 text-lg leading-7 text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="-translate-y-8 rounded-b-lg bg-primary-200 px-3 py-1 text-sm focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="pe-2 font-bold text-primary-600 dark:text-primary-400">&darr;</span
+        >Skip to main content</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral sm:py-10 print:hidden">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="z-40 flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Techkroken</a
+  >
+
+    </div>
+    
+      
+      <label id="menu-button" for="menu-controller" class="block sm:hidden">
+        <input type="checkbox" id="menu-controller" class="hidden" />
+        <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+          <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+</span>
+        </div>
+        <div
+          id="menu-wrapper"
+          class="invisible fixed inset-0 z-30 m-auto h-full w-full cursor-default overflow-auto bg-neutral-100/50 opacity-0 backdrop-blur-sm transition-opacity dark:bg-neutral-900/50"
+        >
+          <ul
+            class="mx-auto flex w-full max-w-7xl list-none flex-col overflow-visible px-6 py-6 text-end sm:px-14 sm:py-10 sm:pt-10 md:px-24 lg:px-32"
+          >
+            <li class="mb-1">
+              <span class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400"
+                ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span></span
+              >
+            </li>
+            
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="/posts/"
+                      title=""
+                      onclick="close_menu()"
+                      
+                      ><span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Blog</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="/categories/"
+                      title=""
+                      onclick="close_menu()"
+                      
+                      ><span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Categories</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="/tags/"
+                      title=""
+                      onclick="close_menu()"
+                      
+                      ><span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Tags</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="https://github.com/maritiren/blog"
+                      title=""
+                      onclick="close_menu()"
+                      target="_blank"
+                      >
+                        <span
+                          class="group-dark:hover:text-primary-400 transition-colors group-hover:text-primary-600"
+                        ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></span></a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    
+                    
+                  
+                </li>
+              
+                
+                  
+              
+            
+          </ul>
+        </div>
+      </label>
+      
+      <ul class="hidden list-none flex-row text-end sm:flex">
+        
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="/posts/"
+                  title=""
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Blog</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="/categories/"
+                  title=""
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Categories</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="/tags/"
+                  title=""
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Tags</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="https://github.com/maritiren/blog"
+                  title=""
+                  target="_blank"
+                  >
+                    <span
+                      class="group-dark:hover:text-primary-400 transition-colors group-hover:text-primary-600"
+                    ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></span></a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                
+                
+              
+            </li>
+          
+            
+              
+          
+
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex grow flex-col">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mb-8 mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        DefectDojo with Trivy cluster reports
+      </h1>
+      
+        <div class="mb-10 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+          
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      <span title="Reading time">8 mins</span><span class="px-2 text-primary-500">&middot;</span>
+
+
+  
+  
+
+<span class="mb-[2px]">
+  <a
+    href="https://github.com/maritiren/blog/posts/defectdojo.md"
+    class="text-lg hover:text-primary-500"
+    rel="noopener noreferrer"
+    target="_blank"
+    title="Edit content"
+    ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M490.3 40.4C512.2 62.27 512.2 97.73 490.3 119.6L460.3 149.7L362.3 51.72L392.4 21.66C414.3-.2135 449.7-.2135 471.6 21.66L490.3 40.4zM172.4 241.7L339.7 74.34L437.7 172.3L270.3 339.6C264.2 345.8 256.7 350.4 248.4 353.2L159.6 382.8C150.1 385.6 141.5 383.4 135 376.1C128.6 370.5 126.4 361 129.2 352.4L158.8 263.6C161.6 255.3 166.2 247.8 172.4 241.7V241.7zM192 63.1C209.7 63.1 224 78.33 224 95.1C224 113.7 209.7 127.1 192 127.1H96C78.33 127.1 64 142.3 64 159.1V416C64 433.7 78.33 448 96 448H352C369.7 448 384 433.7 384 416V319.1C384 302.3 398.3 287.1 416 287.1C433.7 287.1 448 302.3 448 319.1V416C448 469 405 512 352 512H96C42.98 512 0 469 0 416V159.1C0 106.1 42.98 63.1 96 63.1H192z"/></svg>
+</span></a
+  >
+</span>
+    
+
+    
+    
+      <span class="ps-2"><span class="flex">
+  <span
+    class="ms-1 rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400"
+  >
+    Draft
+  </span>
+</span>
+</span>
+    
+  </div>
+
+  
+  
+
+
+        </div>
+      
+      
+    </header>
+    <section class="prose mt-0 flex max-w-full flex-col dark:prose-invert lg:flex-row">
+      
+        <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
+          <div class="toc pe-5 lg:sticky lg:top-10 print:hidden">
+            <details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5">
+  <summary
+    class="block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden"
+  >
+    Table of Contents
+  </summary>
+  <div class="border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#prerequisites-to-follow-these-steps">Prerequisites to follow these steps</a></li>
+    <li><a href="#installation-of-defectdojo">Installation of DefectDojo</a>
+      <ul>
+        <li><a href="#docker-compose">Docker Compose</a></li>
+        <li><a href="#kubernetes">Kubernetes</a></li>
+      </ul>
+    </li>
+    <li><a href="#send-trivy-report-data-to-defectdojo">Send Trivy report data to DefectDojo</a></li>
+    <li><a href="#debugging">Debugging</a>
+      <ul>
+        <li><a href="#handler-send_to_dojo-failed-temporarily"><code>Handler 'send_to_dojo' failed temporarily</code></a>
+          <ul>
+            <li><a href="#figure-out-network-issue">Figure out network issue</a></li>
+            <li><a href="#solution">Solution</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#resources">Resources</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+          </div>
+        </div>
+      
+      <div class="min-h-0 min-w-0 max-w-prose grow">
+        <p><a href="https://www.defectdojo.org/" target="_blank" rel="noreferrer">DefectDojo</a> is an <a href="https://owasp.org/" target="_blank" rel="noreferrer">OWASP (Open Worldwide Application Security Project)</a> project for vulnerability management.</p>
+<p>It is free, but also has paid SaaS solutions.</p>
+<p>First, the goal is to set up DefectDojo and receive data from Trivy reports in my Kubernetes cluster.
+I also want to configure DefectDojo to fit a certain organization structure and see how SBOM fits in the platform.
+Then, I want to add scans from pipelines.</p>
+<h2 id="prerequisites-to-follow-these-steps" class="relative group">Prerequisites to follow these steps <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#prerequisites-to-follow-these-steps" aria-label="Anchor">#</a></span></h2><ul>
+<li>A local cluster (I use Kind)</li>
+<li><a href="http://localhost:1313/posts/trivy-operator/">The Trivy Operator running in the cluster</a></li>
+</ul>
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">To understand my Kubernetes setup, checkout my posts about <a href="http://localhost:1313/posts/flux-kind-localregistry/" target="_blank" rel="noreferrer">running local Kind cluster with local registry and Flux</a>.</span>
+</div>
+
+<h2 id="installation-of-defectdojo" class="relative group">Installation of DefectDojo <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#installation-of-defectdojo" aria-label="Anchor">#</a></span></h2><h3 id="docker-compose" class="relative group">Docker Compose <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#docker-compose" aria-label="Anchor">#</a></span></h3><p>It is very easy to run DefectDojo using Docker Compose.
+I just cloned the repo, ran it and it was all good.
+<a href="https://defectdojo.github.io/django-DefectDojo/getting_started/installation/" target="_blank" rel="noreferrer">Here are the instructions</a>.</p>
+<p>However, due to local networking, it is easier to setup with Kubernetes.
+Therefore, Kubernetes installation and configuring is the focus here.</p>
+<h3 id="kubernetes" class="relative group">Kubernetes <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#kubernetes" aria-label="Anchor">#</a></span></h3><div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300"><a href="https://github.com/DefectDojo/django-DefectDojo/blob/dev/readme-docs/KUBERNETES.md" target="_blank" rel="noreferrer">Here&rsquo;s the Kubernetes installation documentation</a>. Note that the Kubernetes documentation is old and not maintained. It wasn&rsquo;t straight forward to setup either.</span>
+</div>
+
+<p>A downside of the Kubernetes setup is that we cannot simply add the Helm chart using Kubernets manifest files. This is what I did in the end:</p>
+<ol>
+<li><a href="https://kind.sigs.k8s.io/docs/user/ingress/#create-cluster" target="_blank" rel="noreferrer">Add cluster config to Kind</a> and run cluster. <em>Note! This is already done if you setup your cluster like step 1 <a href="http://localhost:1313/posts/flux-kind-localregistry/">in this post</a></em>.</li>
+<li><a href="https://kind.sigs.k8s.io/docs/user/ingress/#ingress-nginx" target="_blank" rel="noreferrer">Setup NGINX Ingress controller</a> and apply it. <em>I chose to just copy the files to create the Ingress controller with Flux in my local cluster.</em></li>
+<li>Create and apply namespace <code>defectdojo</code>. I chose to do so as a manifest file.</li>
+<li>Write and run bash script to setup DefectDojo with Helm locally:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="cp">#!/bin/sh
+</span></span></span><span class="line"><span class="cl"><span class="cp"></span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 0. Clone repo if not exists</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;[0] Cloning repo if not exists&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="nb">test</span> -d /home/maritiren/git/testing/django-defectdojo<span class="p">;</span> 
+</span></span><span class="line"><span class="cl"><span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;django-defectdojo exists, not cloning repo&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;Repo doesn&#39;t exist, cloning...&#34;</span>
+</span></span><span class="line"><span class="cl">	git clone https://github.com/DefectDojo/django-DefectDojo ~/git/testing/django-defectdojo
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1">## 1. Fetch Helm repos</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;[1] Adding Defect Dojo Helm repo&#34;</span>
+</span></span><span class="line"><span class="cl">helm repo add helm-charts <span class="s1">&#39;https://raw.githubusercontent.com/DefectDojo/django-DefectDojo/helm-charts&#39;</span>
+</span></span><span class="line"><span class="cl">helm repo update
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;[2] Adding Bitnami Helm repo&#34;</span>
+</span></span><span class="line"><span class="cl">helm repo add bitnami https://charts.bitnami.com/bitnami
+</span></span><span class="line"><span class="cl">helm repo update
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. Update helm dependencies</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;[3] Updating Helm dependencies&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /home/maritiren/git/testing/django-defectdojo
+</span></span><span class="line"><span class="cl">helm dependency update ./helm/defectdojo
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. Install helm chart</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;[4] Installing Defect Dojo with Helm&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="nb">cd</span> /home/maritiren/git/testing/django-defectdojo
+</span></span><span class="line"><span class="cl">helm install <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  defectdojo <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  ./helm/defectdojo <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -n defectdojo <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set django.ingress.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set django.ingress.activateTLS<span class="o">=</span><span class="nb">false</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="nv">createSecret</span><span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="nv">createRabbitMqSecret</span><span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="nv">createPostgresqlSecret</span><span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="nv">createMysqlSecret</span><span class="o">=</span><span class="nb">false</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="nv">createRedisSecret</span><span class="o">=</span><span class="nb">false</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="s2">&#34;alternativeHosts={defectdojo-django.defectdojo.svc.cluster.local}&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="c1">#&gt; helm-install.out</span>
+</span></span><span class="line"><span class="cl">  <span class="c1"># setting alternative host for Trivy to send data</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 4. set host value for defectdojo.default.minikube.local</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;[5] Adding host to /etc/hosts&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">if</span> grep -Fxq <span class="s2">&#34;127.0.0.1 defectdojo.default.minikube.local&#34;</span> /etc/hosts
+</span></span><span class="line"><span class="cl"><span class="k">then</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;Already added to /etc/hosts. Skipping.&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="k">else</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;Adding host to /etc/hosts to resolve host value...&#34;</span>
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;# Defect Dojo&#34;</span> <span class="p">|</span> sudo tee -a /etc/hosts
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;::1       defectdojo.default.minikube.local&#34;</span> <span class="p">|</span> sudo tee -a /etc/hosts
+</span></span><span class="line"><span class="cl">	<span class="nb">echo</span> <span class="s2">&#34;127.0.0.1 defectdojo.default.minikube.local&#34;</span> <span class="p">|</span> sudo tee -a /etc/hosts
+</span></span><span class="line"><span class="cl"><span class="k">fi</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 5. print DefectDojo password</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;[6] DefectDojo admin password: </span><span class="k">$(</span>kubectl <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  get secret defectdojo <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --namespace<span class="o">=</span>defectdojo <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --output <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.data.DD_ADMIN_PASSWORD}&#39;</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  <span class="p">|</span> base64 --decode<span class="k">)</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;You should now (or as soon as the Kubernetes resources are finished setting up) be able to open http://defectdojo.default.minikube.local:8080.&#34;</span>
+</span></span></code></pre></div></li>
+</ol>
+<h2 id="send-trivy-report-data-to-defectdojo" class="relative group">Send Trivy report data to DefectDojo <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#send-trivy-report-data-to-defectdojo" aria-label="Anchor">#</a></span></h2><p>This involves setting up <a href="https://github.com/telekom-mms/trivy-dojo-report-operator" target="_blank" rel="noreferrer">trivy-dojo-report-operator</a> to automatically send report data created by the Trivy Operator to DefectDojo when they are created.</p>
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">Different ways of installing is described <a href="https://github.com/telekom-mms/trivy-dojo-report-operator?tab=readme-ov-file#installation-and-usage" target="_blank" rel="noreferrer">here</a>.
+We are deploying with Helm, so none of the options in the docs correspond to these steps. See step 3 in this note for Helm setup.</span>
+</div>
+
+<ol>
+<li>
+<p>Clone repo, <code>git clone git@github.com:telekom-mms/trivy-dojo-report-operator.git</code></p>
+</li>
+<li>
+<p>Fetch the API key. Go to DefectDojo and click the person-icon, and then press &ldquo;API v2 Key&rdquo;. Then &ldquo;Generate New Key&rdquo; and you got it!</p>
+</li>
+<li>
+<p>Add the API key and the DefectDojo URL to the setup of your choice configuration and apply the changes.
+I chose to apply the Helm chart as manifests:
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">Note that the URL is the internal cluster URL</span>
+</div>
+</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># trivy-dojo-report-operator.yaml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Namespace</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">defectdojo-report</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">source.toolkit.fluxcd.io/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">HelmRepository</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">trivy-dojo-report-operator</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">flux-system</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l">60m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l">https://telekom-mms.github.io/trivy-dojo-report-operator</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">helm.toolkit.fluxcd.io/v2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">HelmRelease</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">metadata</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">trivy-dojo-report-operator</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">defectdojo-report</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">chart</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">chart</span><span class="p">:</span><span class="w"> </span><span class="l">trivy-dojo-report-operator</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;0.6.2&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">sourceRef</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">HelmRepository</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">trivy-dojo-report-operator</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l">flux-system</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">interval</span><span class="p">:</span><span class="w"> </span><span class="l">60m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">values</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">defectDojoApiCredentials</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">apiKey</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;fa9b2d02...5a9c739b&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;http://defectdojo-django.defectdojo.svc.cluster.local&#34;</span><span class="w">  </span><span class="c"># For internal K8s routing </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">operator.trivyDojoReportOperator.env.defectDojoEvalEngagementName</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">operator.trivyDojoReportOperator.env.defectDojoEvalProductName</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">operator.trivyDojoReportOperator.env.defectDojoEvalProductTypeName</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">operator.trivyDojoReportOperator.env.defectDojoEngagementName</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;body[&#34;report&#34;][&#34;artifact&#34;][&#34;tag&#34;]&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">operator.trivyDojoReportOperator.env.defectDojoProductName</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;body[name]&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">operator.trivyDojoReportOperator.env.defectDojoProductTypeName</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;body[&#34;namespace&#34;&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">install</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">crds</span><span class="p">:</span><span class="w"> </span><span class="l">CreateReplace</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">createNamespace</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></div></li>
+<li>
+<p>Something isn&rsquo;t working as supposed to, with the following error message. It is a normal error message (as far as I know) when Python requests do not work correctly.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="o">[</span>2024-08-02 07:00:39,022<span class="o">]</span> kopf.objects         <span class="o">[</span>ERROR   <span class="o">]</span> <span class="o">[</span>flux-system/replicaset-image-reflector-controller-565565d549-manager<span class="o">]</span> Handler <span class="s1">&#39;send_to_dojo&#39;</span> failed temporarily: Other error occurred: HTTPConnectionPool<span class="o">(</span><span class="nv">host</span><span class="o">=</span><span class="s1">&#39;defectdojo.default.minikube.local&#39;</span>, <span class="nv">port</span><span class="o">=</span>80<span class="o">)</span>: Max retries exceeded with url: /api/v2/reimport-scan/ <span class="o">(</span>Caused by NewConnectionError<span class="o">(</span><span class="s1">&#39;&lt;urllib3.connection.HTTPConnection object at 0x7bb95574d430&gt;: Failed to establish a new connection: [Errno 111] Connection refused&#39;</span><span class="o">))</span>. Retrying in <span class="m">60</span> seconds
+</span></span></code></pre></div></li>
+</ol>
+<h2 id="debugging" class="relative group">Debugging <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#debugging" aria-label="Anchor">#</a></span></h2><h3 id="handler-send_to_dojo-failed-temporarily" class="relative group"><code>Handler 'send_to_dojo' failed temporarily</code> <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#handler-send_to_dojo-failed-temporarily" aria-label="Anchor">#</a></span></h3><div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">I used the incorrect DefectDojo API URL in the config. The correct one was <code>http://defectdojo-django.defectdojo.svc.cluster.local</code>. It was previously <code>http://defectdojo.default.minikube.local</code> which works from outside the cluster. However, Kubernetes didn&rsquo;t route the request out of the cluster, only within.</span>
+</div>
+
+<p>Something isn&rsquo;t working as supposed to, with the following error message. It is a normal error message (as far as I know) when Python requests do not work correctly.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="o">[</span>2024-08-02 07:00:39,022<span class="o">]</span> kopf.objects         <span class="o">[</span>ERROR   <span class="o">]</span> <span class="o">[</span>flux-system/replicaset-image-reflector-controller-565565d549-manager<span class="o">]</span> Handler <span class="s1">&#39;send_to_dojo&#39;</span> failed temporarily: Other error occurred: HTTPConnectionPool<span class="o">(</span><span class="nv">host</span><span class="o">=</span><span class="s1">&#39;defectdojo.default.minikube.local&#39;</span>, <span class="nv">port</span><span class="o">=</span>80<span class="o">)</span>: Max retries exceeded with url: /api/v2/reimport-scan/ <span class="o">(</span>Caused by NewConnectionError<span class="o">(</span><span class="s1">&#39;&lt;urllib3.connection.HTTPConnection object at 0x7bb95574d430&gt;: Failed to establish a new connection: [Errno 111] Connection refused&#39;</span><span class="o">))</span>. Retrying in <span class="m">60</span> seconds
+</span></span></code></pre></div><p>To debug this, I created a script to verify that the DefectDojo API could receive requests:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">token</span> <span class="o">=</span> <span class="s1">&#39;your_token&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">url</span> <span class="o">=</span> <span class="s1">&#39;http://defectdojo.default.minikube.local&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">endpoint</span> <span class="o">=</span> <span class="s1">&#39;api/v2/users&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="n">headers</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;content-type&#39;</span><span class="p">:</span> <span class="s1">&#39;application/json&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s1">&#39;Authorization&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&#34;Token </span><span class="si">{</span><span class="n">token</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">url</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">,</span> <span class="n">verify</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1"># set verify to False if ssl cert is self-signed</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">r</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;&#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;: &#39;</span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&#39;&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">  <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;------------------&#39;</span>
+</span></span></code></pre></div><p>This simple endpoint worked just fine. Now I want to test the endpoint that the report operator is using, <code>/api/v2/reimport-scan</code>.  To do this, we need to attach a report file, and so we need to figure out the expected format. Therefore, I looked more into the report operator code.</p>
+<p>The report operator uses <a href="https://kopf.readthedocs.io/en/latest" target="_blank" rel="noreferrer">kopf</a>, a Python framework for creating operators. The framework relies on creating handlers, and the report operator has a handler that fires when a new Trivy scan pod, named for instance <code>vulnerabilityreport.aquasecurity.github.io</code> is created:</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="c1"># handlers.py</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@REQUEST_TIME.time</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl"><span class="nd">@kopf.on.create</span><span class="p">(</span><span class="n">report</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">+</span> <span class="s2">&#34;.aquasecurity.github.io&#34;</span><span class="p">,</span> <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">send_to_dojo</span><span class="p">(</span><span class="n">body</span><span class="p">,</span> <span class="n">meta</span><span class="p">,</span> <span class="n">logger</span><span class="p">,</span> <span class="o">**</span><span class="n">_</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">   <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">   The main function that creates a report-file from the trivy-operator vulnerabilityreport
+</span></span></span><span class="line"><span class="cl"><span class="s2">   and sends it to the defectdojo instance.
+</span></span></span><span class="line"><span class="cl"><span class="s2">   &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="o">...</span>
+</span></span></code></pre></div><p>The handler is called per report type. What&rsquo;s interesting here is to see what is sent as a file to DefectDojo.</p>
+<p>To do this, I had to turn on DEBUG, but there was no config option. After struggling with the updated chart not working, I tried adding the LOG_LEVEL env var to the manifest and running manifests instead. Nothing really worked&hellip; Then I realized that either something magical is happening to the LOG_LEVEL (maybe through kopf is reading the environment variable and setting the level), or it is never set. So I tried to set it manually with <code>logger.setLevel(&quot;DEBUG&quot;)</code>. That didn&rsquo;t work either. I just need to see the object, so I ended up changing the log statement to <code>log.info</code> instead of <code>log.debug</code>. (Although I really wanted to do it the proper way, I guess I must realize when it is time to throw in the towel). The log now contains all the request data that is sent with the request.</p>
+<p>In addition, I stored the <code>report.json</code> to the filesystem in the pod, so that I could copy it to the host with <code>k cp -n defectdojo-report trivy-dojo-report-operator-operator-769978f8d5-rcklv:/tmp/report.json ./report.json</code>.</p>
+<p>Now that I have everything I need to make the request from the host machine, I tried and it worked perfectly. Therefore, my suspicions (and fear) that this would be network related has been confirmed.</p>
+<h4 id="figure-out-network-issue" class="relative group">Figure out network issue <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#figure-out-network-issue" aria-label="Anchor">#</a></span></h4><p>To send requests from the Trivy Dojo Report Operator, we need to install cURL. However, we don&rsquo;t have sudo on the pod. Therefore, we did the following:</p>
+<ol>
+<li><code>pgrep kopf</code>. All processes in Kubernetes is visible to the host machine, so we can fetch the pid of the process. In our case, the kopf process.</li>
+<li><code>sudo nsenter -a -t $(pgrep kopf)</code>. We use the ID to enter the Docker container namespace with <code>nsenter</code>.</li>
+<li><code>apt update &amp;&amp; apt install -y curl</code></li>
+</ol>
+<p>OK, now we&rsquo;ve got cURL on the pod. Let&rsquo;s go!</p>
+<h4 id="solution" class="relative group">Solution <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#solution" aria-label="Anchor">#</a></span></h4><p>The problem was that Kubernetes didn&rsquo;t route the request out of the cluster, it deals with the routing internally. That means, the Trivy Dojo Report Operator couldn&rsquo;t find the FQDN of DefectDojo, as it is running in another namespace and didn&rsquo;t use the internal routing FQDN. It should be <code>defectdojo-django.defectdojo.svc.cluster.local</code>.</p>
+<p>DefectDojo doesn&rsquo;t allow this sort of host by default, so we must add it to an allow list upon start of DefectDojo.</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl">helm install <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  defectdojo <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  ./helm/defectdojo <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  -n defectdojo <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set django.ingress.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set django.ingress.activateTLS<span class="o">=</span><span class="nb">false</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="nv">createSecret</span><span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="nv">createRabbitMqSecret</span><span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="nv">createPostgresqlSecret</span><span class="o">=</span><span class="nb">true</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="nv">createMysqlSecret</span><span class="o">=</span><span class="nb">false</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="nv">createRedisSecret</span><span class="o">=</span><span class="nb">false</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span>  --set <span class="s2">&#34;alternativeHosts={defectdojo-django.defectdojo.svc.cluster.local}&#34;</span>  <span class="c1"># &lt;----</span>
+</span></span></code></pre></div><p>Woho! It worked! Trivy Dojo Report Operator is now sending all reports!</p>
+<h2 id="resources" class="relative group">Resources <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#resources" aria-label="Anchor">#</a></span></h2><ul>
+<li><a href="https://www.defectdojo.org/" target="_blank" rel="noreferrer">https://www.defectdojo.org/</a></li>
+<li><a href="https://github.com/telekom-mms/trivy-dojo-report-operator" target="_blank" rel="noreferrer">https://github.com/telekom-mms/trivy-dojo-report-operator</a></li>
+</ul>
+
+      </div>
+    </section>
+    <footer class="max-w-prose pt-8 print:hidden">
+      
+
+      
+
+      
+  
+    
+    
+    
+      
+      
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/trivy-pipeline/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >Trivy in CI Pipeline</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                </span>
+              </span>
+              <span
+                class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[-2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&rarr;</span
+                ><span class="ltr:hidden rtl:inline">&larr;</span></span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+      </main>
+      
+        <div
+          class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12"
+          id="to-top"
+          hidden="true"
+        >
+          <a
+            href="#the-top"
+            class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+            aria-label="Scroll to top"
+            title="Scroll to top"
+          >
+            &uarr;
+          </a>
+        </div>
+      <footer class="py-10 print:hidden">
+  
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+      
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2024
+            Marit Iren R. Tokle
+        </p>
+      
+      
+      
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">
+          
+          
+          Powered by <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+            href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://github.com/jpanther/congo" target="_blank" rel="noopener noreferrer">Congo</a>
+        </p>
+      
+    </div>
+    <div class="flex flex-row items-center">
+      
+      
+      
+      
+        <div
+          class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        >
+          <button id="appearance-switcher-0" type="button" aria-label="appearance switcher">
+            <div
+              class="flex h-12 w-12 items-center justify-center dark:hidden"
+              title="Switch to dark appearance"
+            >
+              <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+            </div>
+            <div
+              class="hidden h-12 w-12 items-center justify-center dark:flex"
+              title="Switch to light appearance"
+            >
+              <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+            </div>
+          </button>
+        </div>
+      
+    </div>
+  </div>
+  
+  
+</footer>
+
+    </div>
+  </body>
+</html>
