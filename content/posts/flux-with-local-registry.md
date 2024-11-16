@@ -161,7 +161,7 @@ There are many (or few - depending on how you see things) options on what could 
 #### Changing containerd configs
 * https://github.com/kubernetes-sigs/kind/issues/2604#issuecomment-1041314277
 
-Remove the existing config line and add this instead, in the [cluster startup script]({{< ref "kind-cluster-with-local-registry">}}). This makes some parts of the Kind script unuseful (the part of setting containerd settings in each node). You might change this either in cluster-config.yaml or in the Kind startup script.
+Remove the existing config line and add this instead, in the [cluster startup script]({{< ref "script-kind-cluster-with-local-registry">}}). This makes some parts of the Kind script unuseful (the part of setting containerd settings in each node). You might change this either in cluster-config.yaml or in the Kind startup script.
 ```yaml
 containerdConfigPatches:
 - |-

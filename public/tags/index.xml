@@ -6,8 +6,36 @@
     <description>Recent content in Tags on Techkroken</description>
     <generator>Hugo</generator>
     <language>en</language>
-    <lastBuildDate>Tue, 15 Oct 2024 15:13:28 +0200</lastBuildDate>
+    <lastBuildDate>Fri, 15 Nov 2024 17:40:58 +0100</lastBuildDate>
     <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AppSec</title>
+      <link>http://localhost:1313/tags/appsec/</link>
+      <pubDate>Fri, 15 Nov 2024 17:40:58 +0100</pubDate>
+      <guid>http://localhost:1313/tags/appsec/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rapid Risk Assessment (RRA)</title>
+      <link>http://localhost:1313/tags/rapid-risk-assessment-rra/</link>
+      <pubDate>Fri, 15 Nov 2024 17:40:58 +0100</pubDate>
+      <guid>http://localhost:1313/tags/rapid-risk-assessment-rra/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>STRIDE</title>
+      <link>http://localhost:1313/tags/stride/</link>
+      <pubDate>Fri, 15 Nov 2024 17:40:58 +0100</pubDate>
+      <guid>http://localhost:1313/tags/stride/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Threat Modeling</title>
+      <link>http://localhost:1313/tags/threat-modeling/</link>
+      <pubDate>Fri, 15 Nov 2024 17:40:58 +0100</pubDate>
+      <guid>http://localhost:1313/tags/threat-modeling/</guid>
+      <description></description>
+    </item>
     <item>
       <title>Defectdojo</title>
       <link>http://localhost:1313/tags/defectdojo/</link>

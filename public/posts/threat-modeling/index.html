@@ -1,0 +1,1070 @@
+
+
+
+
+
+
+
+<!doctype html>
+<html
+  lang="en"
+  dir="ltr"
+  class="scroll-smooth"
+  data-default-appearance="light"
+  data-auto-appearance="true"
+><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#FFFFFF" />
+  
+  <title>Threat Modeling &middot; Techkroken</title>
+    <meta name="title" content="Threat Modeling &middot; Techkroken" />
+  
+  
+  
+  
+  
+  <script
+    type="text/javascript"
+    src="/js/appearance.min.8a082f81b27f3cb2ee528df0b0bdc39787034cf2cc34d4669fbc9977c929023c.js"
+    integrity="sha256-iggvgbJ/PLLuUo3wsL3Dl4cDTPLMNNRmn7yZd8kpAjw="
+  ></script>
+  
+  
+  
+  
+  
+  
+  
+  
+  <link
+    type="text/css"
+    rel="stylesheet"
+    href="/css/main.bundle.min.b0785c8131a75f72b211435af86269eb2d4b81dda03a8f2cf5ccb1c967747167.css"
+    integrity="sha256-sHhcgTGnX3KyEUNa&#43;GJp6y1Lgd2gOo8s9cyxyWd0cWc="
+  />
+  
+  
+  
+  
+    
+    
+  
+  
+  
+    
+    <script
+      defer
+      type="text/javascript"
+      id="script-bundle"
+      src="/js/main.bundle.min.d4b727caf411cb5c3b421d0d427ed1e3daeafe0d04840327efad4978430edb8c.js"
+      integrity="sha256-1LcnyvQRy1w7Qh0NQn7R49rq/g0EhAMn761JeEMO24w="
+      data-copy="Copy"
+      data-copied="Copied"
+    ></script>
+  
+  
+  <meta
+    name="description"
+    content="
+      
+        
+      
+    "
+  />
+  
+  
+  
+  <link rel="canonical" href="http://localhost:1313/posts/threat-modeling/" />
+  
+  
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+  
+  
+  
+  
+  
+  
+  
+  
+  <meta property="og:url" content="http://localhost:1313/posts/threat-modeling/">
+  <meta property="og:site_name" content="Techkroken">
+  <meta property="og:title" content="Threat Modeling">
+  <meta property="og:description" content="I realized I needed a place to put my final notes, so here we are^_^">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2024-11-15T17:40:58+01:00">
+    <meta property="article:modified_time" content="2024-11-15T17:40:58+01:00">
+    <meta property="article:tag" content="AppSec">
+    <meta property="article:tag" content="Threat Modeling">
+    <meta property="article:tag" content="Rapid Risk Assessment (RRA)">
+    <meta property="article:tag" content="STRIDE">
+
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Threat Modeling">
+  <meta name="twitter:description" content="I realized I needed a place to put my final notes, so here we are^_^">
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "articleSection": "Blog posts",
+    "name": "Threat Modeling",
+    "headline": "Threat Modeling",
+    
+    
+    "inLanguage": "en",
+    "url" : "http:\/\/localhost:1313\/posts\/threat-modeling\/",
+    "author" : {
+      "@type": "Person",
+      "name": "Marit Iren R. Tokle"
+    },
+    "copyrightYear": "2024",
+    "dateCreated": "2024-11-15T17:40:58\u002b01:00",
+    "datePublished": "2024-11-15T17:40:58\u002b01:00",
+    
+    "dateModified": "2024-11-15T17:40:58\u002b01:00",
+    
+    "keywords": ["AppSec","Threat modeling","Rapid Risk Assessment (RRA)","STRIDE"],
+    
+    "mainEntityOfPage": "true",
+    "wordCount": "3119"
+  }
+  </script>
+    
+    <script type="application/ld+json">
+    {
+   "@context": "https://schema.org",
+   "@type": "BreadcrumbList",
+   "itemListElement": [
+     {
+       "@type": "ListItem",
+       "item": "http://localhost:1313/",
+       "name": "Welcome to My Notes! Tada",
+       "position": 1
+     },
+     {
+       "@type": "ListItem",
+       "item": "http://localhost:1313/posts/",
+       "name": "Blog Posts",
+       "position": 2
+     },
+     {
+       "@type": "ListItem",
+       "name": "Threat Modeling",
+       "position": 3
+     }
+   ]
+ }
+  </script>
+
+  
+  <meta name="author" content="Marit Iren R. Tokle" />
+  
+    
+      <link href="mailto:marit@tokle.dev" rel="me" />
+    
+      <link href="https://github.com/maritiren" rel="me" />
+    
+  
+  
+  
+
+
+
+
+
+
+  
+  
+
+  
+  
+</head>
+<body
+    class="m-auto flex h-screen max-w-7xl flex-col bg-neutral px-6 text-lg leading-7 text-neutral-900 dark:bg-neutral-800 dark:text-neutral sm:px-14 md:px-24 lg:px-32"
+  >
+    <div id="the-top" class="absolute flex self-center">
+      <a
+        class="-translate-y-8 rounded-b-lg bg-primary-200 px-3 py-1 text-sm focus:translate-y-0 dark:bg-neutral-600"
+        href="#main-content"
+        ><span class="pe-2 font-bold text-primary-600 dark:text-primary-400">&darr;</span
+        >Skip to main content</a
+      >
+    </div>
+    
+    
+      <header class="py-6 font-semibold text-neutral-900 dark:text-neutral sm:py-10 print:hidden">
+  <nav class="flex items-start justify-between sm:items-center">
+    
+    <div class="z-40 flex flex-row items-center">
+      
+  <a
+    class="decoration-primary-500 hover:underline hover:decoration-2 hover:underline-offset-2"
+    rel="me"
+    href="/"
+    >Techkroken</a
+  >
+
+    </div>
+    
+      
+      <label id="menu-button" for="menu-controller" class="block sm:hidden">
+        <input type="checkbox" id="menu-controller" class="hidden" />
+        <div class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400">
+          <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M0 96C0 78.33 14.33 64 32 64H416C433.7 64 448 78.33 448 96C448 113.7 433.7 128 416 128H32C14.33 128 0 113.7 0 96zM0 256C0 238.3 14.33 224 32 224H416C433.7 224 448 238.3 448 256C448 273.7 433.7 288 416 288H32C14.33 288 0 273.7 0 256zM416 448H32C14.33 448 0 433.7 0 416C0 398.3 14.33 384 32 384H416C433.7 384 448 398.3 448 416C448 433.7 433.7 448 416 448z"/></svg>
+</span>
+        </div>
+        <div
+          id="menu-wrapper"
+          class="invisible fixed inset-0 z-30 m-auto h-full w-full cursor-default overflow-auto bg-neutral-100/50 opacity-0 backdrop-blur-sm transition-opacity dark:bg-neutral-900/50"
+        >
+          <ul
+            class="mx-auto flex w-full max-w-7xl list-none flex-col overflow-visible px-6 py-6 text-end sm:px-14 sm:py-10 sm:pt-10 md:px-24 lg:px-32"
+          >
+            <li class="mb-1">
+              <span class="cursor-pointer hover:text-primary-600 dark:hover:text-primary-400"
+                ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path fill="currentColor" d="M310.6 361.4c12.5 12.5 12.5 32.75 0 45.25C304.4 412.9 296.2 416 288 416s-16.38-3.125-22.62-9.375L160 301.3L54.63 406.6C48.38 412.9 40.19 416 32 416S15.63 412.9 9.375 406.6c-12.5-12.5-12.5-32.75 0-45.25l105.4-105.4L9.375 150.6c-12.5-12.5-12.5-32.75 0-45.25s32.75-12.5 45.25 0L160 210.8l105.4-105.4c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25l-105.4 105.4L310.6 361.4z"/></svg>
+</span></span
+              >
+            </li>
+            
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="/posts/"
+                      title=""
+                      onclick="close_menu()"
+                      
+                      ><span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Blog</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="/categories/"
+                      title=""
+                      onclick="close_menu()"
+                      
+                      ><span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Categories</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="/tags/"
+                      title=""
+                      onclick="close_menu()"
+                      
+                      ><span
+                          class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                          >Tags</span
+                        >
+                      </a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    <a
+                      href="https://github.com/maritiren/blog"
+                      title=""
+                      onclick="close_menu()"
+                      target="_blank"
+                      >
+                        <span
+                          class="group-dark:hover:text-primary-400 transition-colors group-hover:text-primary-600"
+                        ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></span></a
+                    >
+                  
+                </li>
+              
+                
+                <li class="group mb-1">
+                  
+                    
+                    
+                  
+                </li>
+              
+                
+                  
+              
+            
+          </ul>
+        </div>
+      </label>
+      
+      <ul class="hidden list-none flex-row text-end sm:flex">
+        
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="/posts/"
+                  title=""
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Blog</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="/categories/"
+                  title=""
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Categories</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="/tags/"
+                  title=""
+                  
+                  ><span
+                      class="decoration-primary-500 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-2"
+                      >Tags</span
+                    >
+                  </a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                <a
+                  href="https://github.com/maritiren/blog"
+                  title=""
+                  target="_blank"
+                  >
+                    <span
+                      class="group-dark:hover:text-primary-400 transition-colors group-hover:text-primary-600"
+                    ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path fill="currentColor" d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+</span></span></a
+                >
+              
+            </li>
+          
+            
+            <li class="group mb-1 sm:mb-0 sm:me-7 sm:last:me-0">
+              
+                
+                
+              
+            </li>
+          
+            
+              
+          
+
+        
+      </ul>
+    
+  </nav>
+</header>
+
+    
+    <div class="relative flex grow flex-col">
+      <main id="main-content" class="grow">
+        
+  <article>
+    <header class="max-w-prose">
+      
+      <h1 class="mb-8 mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        Threat Modeling
+      </h1>
+      
+        <div class="mb-10 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
+          
+
+
+
+
+
+  
+  
+
+
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+    
+  
+
+  
+    
+  
+
+
+  <div class="flex flex-row flex-wrap items-center">
+    
+    
+      <span title="Reading time">15 mins</span><span class="px-2 text-primary-500">&middot;</span>
+
+
+  
+  
+
+<span class="mb-[2px]">
+  <a
+    href="https://github.com/maritiren/blog/posts/threat-modeling.md"
+    class="text-lg hover:text-primary-500"
+    rel="noopener noreferrer"
+    target="_blank"
+    title="Edit content"
+    ><span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M490.3 40.4C512.2 62.27 512.2 97.73 490.3 119.6L460.3 149.7L362.3 51.72L392.4 21.66C414.3-.2135 449.7-.2135 471.6 21.66L490.3 40.4zM172.4 241.7L339.7 74.34L437.7 172.3L270.3 339.6C264.2 345.8 256.7 350.4 248.4 353.2L159.6 382.8C150.1 385.6 141.5 383.4 135 376.1C128.6 370.5 126.4 361 129.2 352.4L158.8 263.6C161.6 255.3 166.2 247.8 172.4 241.7V241.7zM192 63.1C209.7 63.1 224 78.33 224 95.1C224 113.7 209.7 127.1 192 127.1H96C78.33 127.1 64 142.3 64 159.1V416C64 433.7 78.33 448 96 448H352C369.7 448 384 433.7 384 416V319.1C384 302.3 398.3 287.1 416 287.1C433.7 287.1 448 302.3 448 319.1V416C448 469 405 512 352 512H96C42.98 512 0 469 0 416V159.1C0 106.1 42.98 63.1 96 63.1H192z"/></svg>
+</span></a
+  >
+</span>
+    
+
+    
+    
+      <span class="ps-2"><span class="flex">
+  <span
+    class="ms-1 rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400"
+  >
+    Draft
+  </span>
+</span>
+</span>
+    
+  </div>
+
+  
+  
+
+
+        </div>
+      
+      
+    </header>
+    <section class="prose mt-0 flex max-w-full flex-col dark:prose-invert lg:flex-row">
+      
+        <div class="order-first px-0 lg:order-last lg:max-w-xs lg:ps-8">
+          <div class="toc pe-5 lg:sticky lg:top-10 print:hidden">
+            <details open class="-ms-5 mt-0 overflow-hidden rounded-lg ps-5">
+  <summary
+    class="block cursor-pointer bg-neutral-100 py-1 ps-5 text-lg font-semibold text-neutral-800 dark:bg-neutral-700 dark:text-neutral-100 lg:hidden"
+  >
+    Table of Contents
+  </summary>
+  <div class="border-s border-dotted border-neutral-300 py-2 ps-5 dark:border-neutral-600">
+    <nav id="TableOfContents">
+  <ul>
+    <li><a href="#what-is-threat-modeling">What is threat modeling?</a></li>
+    <li><a href="#threat-modeling-methods">Threat modeling methods</a></li>
+    <li><a href="#data-flow-diagrams">Data-flow diagrams</a></li>
+    <li><a href="#process-description">Process description</a></li>
+    <li><a href="#an-example-of-a-simple-threat-modeling-process">An example of a simple threat modeling process</a>
+      <ul>
+        <li><a href="#threat-modeling-for-super-cool-api">Threat modeling for &ldquo;Super cool API&rdquo;</a>
+          <ul>
+            <li><a href="#data-flow-diagram-2-min">Data-flow diagram (2 min)</a></li>
+            <li><a href="#data-dictionary-5-10-min">Data dictionary (5-10 min)</a></li>
+            <li><a href="#threat-scenarios-10-30-min">Threat scenarios (10-30 min)</a></li>
+            <li><a href="#concluding-3-min">Concluding (3 min)</a></li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#trainings-for-threat-modeling">Trainings for threat modeling</a></li>
+    <li><a href="#example-scenarios">Example scenarios</a></li>
+    <li><a href="#resources">Resources</a></li>
+  </ul>
+</nav>
+  </div>
+</details>
+
+          </div>
+        </div>
+      
+      <div class="min-h-0 min-w-0 max-w-prose grow">
+        <p>There are many activities that may be launched to improve application security
+in an organization. Threat modeling is one of them. Others are CI pipelines with
+security checks, or a vulnerability management system, creating standards or
+maybe development guides. There are so many activitites!</p>
+<p>Threat modeling might be one of the most important activities in application
+security. Still, a lot of organizations struggle to implement it and make it
+valuable enough for development teams. I have done a lot of thinking and some
+research to figure out why this is, and I have my hypothesis&rsquo; on this. However,
+I won&rsquo;t dive into that. Anyways, make sure to do your homework and ensure that
+you deliver something valuable in the first version. It is paramount to ask
+developers for their needs, their pain points, how it can be valuable for them
+to make this activity stick.</p>
+<details>
+<summary>Are you an AppSec personell, or a security architect or anyone that has
+been appointed to implement activities to dev teams? Open the drop-down and read
+this ^_^ </summary>
+<p>I want to emphasize one important thing, a misinterpretation I&rsquo;ve seen and that
+I think is <em>dangerous</em> for the important work of making AppSec a more common
+practice among development. If you are a person who is hired to improve
+application security at a company, you might think that the dev teams aren&rsquo;t
+delivering secure enough services (or in other words - not good enough
+services). No matter how true that is, do <strong>not</strong> say that when approaching the
+dev teams. Tell them that you see how <strong>skilled</strong> they are and that you are
+<strong>excited to work with them</strong>, that you will need <strong>their help</strong> to create
+something that works for them. Then ask them what they need help with or how
+they think things could be done differently to improve the process of delivering
+services with security in mind.</p>
+<p>Honestly, just think about it. Your expertise is security. The development
+landscape is shifting all the time and new development process methods,
+technology and expectations from developers changes all the time. Developers
+expected expertise is most likely so much wider than yours, and here you come
+adding to their workload. Not only are they expected to know their programming
+language, they have to get domain knowledge, know pipelines, ways of rolling out
+their services, cloud hosting, several kinds of testing, architecture, all
+should be good quality, they are already behind on technical debt due to
+prioritization, <em>and now they must at a deeper level consider</em>&hellip; security!!</p>
+<p>Your security work usually isn&rsquo;t as business critical as what the dev teams
+already are doing. They are creating what gives direct value to the company.
+You are there to assist them, not to save the world from their mistakes. You are
+definitely not there to tell devs that they suck in security by saying that they
+aren&rsquo;t good enough at the moment and make it seem like you are the hero assigned
+by the company to save the world and fix their mistakes. I am 100% sure that the
+company did not hire you to do that. <em>(Yes, I&rsquo;ve experienced this and after
+joining tons of security meetups it seems like this additude is a little more
+common than it should be.)</em></p>
+<p>It is OK to think you are a hero. I think you are! Doing this amazing work to
+protect users and organizations. Just keep it to yourself and make the
+developers feel like heros. And yes, imo they are too!</p>
+<p>In other words, your job is to help dev teams get the proper tooling to deliver
+more predictable and secure enough services. Tooling that should already have
+been there for the teams from the get-go. Tools that are necessary for dev teams
+to do what the job they are expected to do. Tools that are quick, easy, takes as
+little effort as possible. Preferably that removes workload. Find their pain
+points and use your expertise to figure out what tools the organization is
+missing that would be helpful. If that is your approach, they are more likely to
+welcome you.  Show them that you are there for them, not for management to tick
+of some compliance checks.</p>
+</details>
+<h2 id="what-is-threat-modeling" class="relative group">What is threat modeling? <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#what-is-threat-modeling" aria-label="Anchor">#</a></span></h2><p>This is a question I&rsquo;ve gotten a lot. In the beginning I wasn&rsquo;t really able to
+answer it. It is not very common and security people working in consulting seems
+to struggle to understand the value in it. Which is understandable, since it
+remains an activity that we don&rsquo;t see in most organizations (yet!).</p>
+<p>I like to say that threat modelling is like a fun risk analysis - apologizing to
+everyone who likes risk analysis - where you take out all the boring stuff and
+rather spend time on the fun part!</p>
+<p>It is also a valuable for newcomers in teams to get to understand the service
+they are working with, as it provides a good overview of how the service works,
+where the data flows, and how critical the service is.</p>
+<p>Let&rsquo;s quote <a href="https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/" target="_blank" rel="noreferrer">Microsoft</a>:</p>
+<blockquote>
+<p>Threat modeling is an effective way to help secure your systems, applications, networks, and services. It&rsquo;s an engineering technique that identifies potential threats and offers recommendations to help reduce risk and meet security objectives earlier in the development lifecycle.</p>
+</blockquote>
+<p>Threat modeling can be done both at system level and service level.</p>
+<p>I&rsquo;ll leave it to that, and then you can google a bit if you want to learn more
+about it in depth and move on to different threat modeling methods out there.</p>
+<h2 id="threat-modeling-methods" class="relative group">Threat modeling methods <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#threat-modeling-methods" aria-label="Anchor">#</a></span></h2><p>There is no such thing as one method that rules all. What&rsquo;s paramount for this
+activity to work, is to tailor it to the organization and allow teams to do it
+in a way that works for them. <strong>So that it gives value.</strong> It is better to use 15
+minutes to discuss threats during planning than doing nothing. Although, I would
+advice to use a little more thorough process.</p>
+<p>If you are an AppSec admin, please note that if the process is more in the way
+than the teams thinks it gives value, then it should be improved! Figure out the
+pain points and relieve them, check in with the teams and see if it got better.
+Do it in iterations and then you should find something that works for your
+organization. But, please, do your homework, gather information and put in
+effort to create a process you believe is valuable when you launch it. By
+launching a new activity, you are already making team&rsquo;s development process more
+involved and stressful. Try not to lose their faith straight away.</p>
+<p>I have previously worked with <a href="https://infosec.mozilla.org/guidelines/risk/rapid_risk_assessment.html" target="_blank" rel="noreferrer">Rapid Risk Assessment (RRA)</a>
+and implemented a tailored version of RRA for an organization. What I have not
+done is to implement the typical threat modeling method
+<a href="https://owasp.org/www-community/Threat_Modeling_Process#stride" target="_blank" rel="noreferrer">STRIDE</a>.
+The way of thinking during the process is the same for both methods. The goal is
+the same as well. The difference is how detailed the road to get there is. Also,
+how much effort is needed to get started with it. Microsoft also has their own
+tailored version of STRIDE.</p>
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M112.1 454.3c0 6.297 1.816 12.44 5.284 17.69l17.14 25.69c5.25 7.875 17.17 14.28 26.64 14.28h61.67c9.438 0 21.36-6.401 26.61-14.28l17.08-25.68c2.938-4.438 5.348-12.37 5.348-17.7L272 415.1h-160L112.1 454.3zM191.4 .0132C89.44 .3257 16 82.97 16 175.1c0 44.38 16.44 84.84 43.56 115.8c16.53 18.84 42.34 58.23 52.22 91.45c.0313 .25 .0938 .5166 .125 .7823h160.2c.0313-.2656 .0938-.5166 .125-.7823c9.875-33.22 35.69-72.61 52.22-91.45C351.6 260.8 368 220.4 368 175.1C368 78.61 288.9-.2837 191.4 .0132zM192 96.01c-44.13 0-80 35.89-80 79.1C112 184.8 104.8 192 96 192S80 184.8 80 176c0-61.76 50.25-111.1 112-111.1c8.844 0 16 7.159 16 16S200.8 96.01 192 96.01z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">Rapid Risk Assessment is very well explained with examples in <a href="https://www.rra.rocks/docs/podcasts" target="_blank" rel="noreferrer">this video</a>.</span>
+</div>
+
+<p>What is common for all the methods is that they do these stages:</p>
+<ol>
+<li>Gather information about the service and draw a data-flow diagram</li>
+<li>Use the diagram and knowledge of the service to find threats against the service</li>
+<li>Implement the mitigations from previous step (and verify it)</li>
+</ol>
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 32C114.6 32 .0272 125.1 .0272 240c0 49.63 21.35 94.98 56.97 130.7c-12.5 50.37-54.27 95.27-54.77 95.77c-2.25 2.25-2.875 5.734-1.5 8.734C1.979 478.2 4.75 480 8 480c66.25 0 115.1-31.76 140.6-51.39C181.2 440.9 217.6 448 256 448c141.4 0 255.1-93.13 255.1-208S397.4 32 256 32z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">I believe that most organizations aren&rsquo;t mature enough for involved threat
+modeling processes. To begin with, the process should to be low-effort and short
+in order to be valuable enough for dev teams in less mature organizations. When
+teams are familiar to the threat modeling way of thinking, they often welcome
+more involved processes and some suggest doing more thorough processes
+themselves.</span>
+</div>
+
+<p>To make the process low-effort, every organization should create tools
+supporting threat modeling, such as</p>
+<ul>
+<li>a process description for the threat modeling process, accompanied with a guided form to perfom the process</li>
+<li>a data classification table with examples, e.g. employee data is categorized as &ldquo;internal&rdquo;</li>
+<li>a minimum set of threat scenarios that the organization&rsquo;s services should cover <em>(this is the most valuable for orgs where teams aren&rsquo;t used to threat modeling)</em></li>
+<li>a threat analysis, who are likely to attack?</li>
+<li>a description of the organization&rsquo;s risk appetite, how much risk is the organization willing to take?</li>
+<li>a person to contact for help or clarifications</li>
+<li>a person to introduce the process the first time(s)</li>
+</ul>
+<p>Honestly, I don&rsquo;t expect all devs to read these documents. And I don&rsquo;t think
+anyone should expect that. However, some times teams come to a point where they
+get uncertain. Uncertainties is a big no-no and should be eliminated! Let&rsquo;s say
+a team is stuck discussing whether a threat scenario is in scope for the company
+or not. Or, whether their application should be classified as internal or
+confidential because a piece of data they don&rsquo;t quite know how to classify.
+Instead of having teams discussing without really knowing, which in turn can
+give the process negative vibes, give them the tools to look it up.</p>
+<p>To conclude this section about what method to chose, I&rsquo;ve so far always adviced
+to start with a short and sweet method such as the Rapid Risk Assessment and
+tailor it to suit the organization.</p>
+<h2 id="data-flow-diagrams" class="relative group">Data-flow diagrams <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#data-flow-diagrams" aria-label="Anchor">#</a></span></h2><p>Most threat model activities include a data-flow diagram. It is a helpful
+drawing of where the data flows in the service you are creating a threat model
+for. The drawing often includes trust zones and has different shapes to
+represent processes, data stores, external entities, data-flow and trust
+boundaries.</p>
+<p>The <a href="https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/" target="_blank" rel="noreferrer">Microsoft Learn path</a>
+is nice to learn more about the diagrams. It also brings up what depth of detail
+the drawing should have, by listing four depth layers. According to them, and I
+agree, most data-flow diagrams should contains both layers 0 and 1. They also
+point out that you should reach out to your security team in case you are
+unsure. They describe the depth layers 0 and 1 as follows:</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Depth layer</th>
+          <th style="text-align: left">Title</th>
+          <th style="text-align: left">Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">0</td>
+          <td style="text-align: left">System</td>
+          <td style="text-align: left">Starting point for any system. Data-flow diagram contains major system parts with enough context to help you understand how they work and interact with each other.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">1</td>
+          <td style="text-align: left">Process</td>
+          <td style="text-align: left">Focus on data-flow diagrams for each part of the system by using other data-flow diagrams. Use this layer for every system, especially if it handles sensitive data. The context at this layer helps you identify threats and ways to reduce or eliminate risks more efficiently.</td>
+      </tr>
+  </tbody>
+</table>
+<p>To see all four depth layers, check out the Learning path&rsquo;s first module
+&ldquo;Introduction to threat modeling&rdquo;, at <a href="https://learn.microsoft.com/en-us/training/modules/tm-introduction-to-threat-modeling/2-step-1-design-phase" target="_blank" rel="noreferrer">Step 1 - Design</a>
+in the section &ldquo;Diagram layers&rdquo;.</p>
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M112.1 454.3c0 6.297 1.816 12.44 5.284 17.69l17.14 25.69c5.25 7.875 17.17 14.28 26.64 14.28h61.67c9.438 0 21.36-6.401 26.61-14.28l17.08-25.68c2.938-4.438 5.348-12.37 5.348-17.7L272 415.1h-160L112.1 454.3zM191.4 .0132C89.44 .3257 16 82.97 16 175.1c0 44.38 16.44 84.84 43.56 115.8c16.53 18.84 42.34 58.23 52.22 91.45c.0313 .25 .0938 .5166 .125 .7823h160.2c.0313-.2656 .0938-.5166 .125-.7823c9.875-33.22 35.69-72.61 52.22-91.45C351.6 260.8 368 220.4 368 175.1C368 78.61 288.9-.2837 191.4 .0132zM192 96.01c-44.13 0-80 35.89-80 79.1C112 184.8 104.8 192 96 192S80 184.8 80 176c0-61.76 50.25-111.1 112-111.1c8.844 0 16 7.159 16 16S200.8 96.01 192 96.01z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300"><strong>Focus on making it easy to
+understand how the data flows to see where we need to ensure protection.</strong> Keep
+the diagram simple, don&rsquo;t add to many parts to it. At least for short and sweet
+threat modeling processes, the goal should be that by looking at it for a
+minute, you should have control of where the data flows.</span>
+</div>
+
+<p>I&rsquo;ve usually used <a href="https://draw.io" target="_blank" rel="noreferrer">draw.io</a> to create these diagrams. Microsoft
+suggests their own tools <a href="https://www.microsoft.com/en-US/microsoft-365/visio/flowchart-software" target="_blank" rel="noreferrer">Visio</a>
+and <a href="https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool" target="_blank" rel="noreferrer">Threat Modeling Tool</a>.</p>
+<h2 id="process-description" class="relative group">Process description <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#process-description" aria-label="Anchor">#</a></span></h2><p>I think two documents are necessary when implementing threat modelling across an
+organization. First, the process description, and then the guided form that
+teams fill when performing the process. In this section, I will summarize what
+I&rsquo;ve learned from creating such a description.</p>
+<h2 id="an-example-of-a-simple-threat-modeling-process" class="relative group">An example of a simple threat modeling process <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#an-example-of-a-simple-threat-modeling-process" aria-label="Anchor">#</a></span></h2><p>In order to go in further details on possible ways to tailor your threat
+modeling process, I would like to bring up an example process and walk us
+through it.</p>
+<details>
+<summary>Example threat modeling form</summary>
+<p><em>My example is heavily based of Mozilla&rsquo;s RRA, but modified to how I
+like it. You can use it as inspiration tailoring the process to your org.</em></p>
+<h3 id="threat-modeling-for-super-cool-api" class="relative group">Threat modeling for &ldquo;Super cool API&rdquo; <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#threat-modeling-for-super-cool-api" aria-label="Anchor">#</a></span></h3><table>
+  <thead>
+      <tr>
+          <th style="text-align: left"></th>
+          <th style="text-align: left"></th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>Service owner(s)</strong></td>
+          <td style="text-align: left">Team Awesome</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Risk owner</strong></td>
+          <td style="text-align: left">Mr. Risk Dude</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Service data classification</strong></td>
+          <td style="text-align: left">Confidential</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>Service description</strong></td>
+          <td style="text-align: left">A super cool API for sending automatic emails to employees and customers</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
+</table>
+<h4 id="data-flow-diagram-2-min" class="relative group">Data-flow diagram (2 min) <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#data-flow-diagram-2-min" aria-label="Anchor">#</a></span></h4><p><em>A <strong>simple</strong> illustration, e.g. a data-flow diagram to easily see how the data
+flows. Add this another time, not during the process.</em></p>
+<p>
+
+
+
+
+
+
+  
+  
+<figure><img src="./illustration.png" alt="Data Flow Diagram (DFD)" class="mx-auto my-0 rounded-md" />
+</figure>
+</p>
+<h4 id="data-dictionary-5-10-min" class="relative group">Data dictionary (5-10 min) <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#data-dictionary-5-10-min" aria-label="Anchor">#</a></span></h4><details>
+<summary>Instructions</summary>
+<ol>
+<li>List the data types that are <strong>processed</strong> and/or <strong>stored</strong>. Make the list short and by grouping data.</li>
+<li>Classify the data according to the organization&rsquo;s <strong>data classification</strong> policy (or take a look at <a href="https://www.rra.rocks/docs/data_classification" target="_blank" rel="noreferrer">RRA&rsquo;s data classification</a>).</li>
+<li>Set the <code>Service Data Classification</code> value in the table at the top of this document to the highest classification in this data dictionary.</li>
+</ol>
+<p>Any changes? Remember to update the list!</p>
+</details>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Data type</th>
+          <th style="text-align: left">Classification</th>
+          <th style="text-align: left">Comment</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Employee data</td>
+          <td style="text-align: left">Internal</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">User data</td>
+          <td style="text-align: left">Confidential</td>
+          <td style="text-align: left">Includes dietary restrictions</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">User data id</td>
+          <td style="text-align: left">Internal</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
+</table>
+<h4 id="threat-scenarios-10-30-min" class="relative group">Threat scenarios (10-30 min) <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#threat-scenarios-10-30-min" aria-label="Anchor">#</a></span></h4><details> 
+<summary>Instructions</summary>
+<p>Find appropriate scenarios affecting <strong>confidentiality</strong>, <strong>integrity</strong> and <strong>availability</strong>. Make sure to keep it realistic, <em>an EMP bomb might not be in scope</em>. Look at the <a href="#example-scenarios">example scenarios</a> for inspiration.</p>
+<ol>
+<li>(10-25 min) Start by filling the <strong>Scenario</strong>, <strong>Driver</strong> and <strong>Assessment</strong> columns</li>
+<li>When you are done, leave the <strong>Preventive measures</strong> column for now and head to the &ldquo;Concluding&rdquo; section</li>
+</ol>
+</details>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">Scenario</th>
+          <th style="text-align: left">Driver</th>
+          <th style="text-align: left">Assessment</th>
+          <th style="text-align: left">Preventive measures</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"></td>
+          <td style="text-align: left"><em>An advice is to think &ldquo;I am worried that&hellip;&rdquo;</em></td>
+          <td style="text-align: left"><em>What&rsquo;s the worst that may happen if controls aren&rsquo;t implemented?</em></td>
+          <td style="text-align: left"><em>Create an issue for each task, <strong>do not</strong> find or discuss solutions here (no time!)</em></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">An attacker sends phishing emails</td>
+          <td style="text-align: left">I am worried that sinc the authorization middleware isn&rsquo;t set by default on every endpoint, we have forgotten to do it on some endpoints</td>
+          <td style="text-align: left">The company looses tons of money because the CFO was phished during through our service</td>
+          <td style="text-align: left"><a href="some.link">Jira issue #1337</a></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">An attacker leaks the database, and we aren&rsquo;t be able to find out how</td>
+          <td style="text-align: left">We are using the same database password for all database users. Also, I do not think we log sufficiently to say for sure where the attack origined</td>
+          <td style="text-align: left">- Our customer data leaks and we end up in the news<br>- We aren&rsquo;t able to find an insider who did it due to lack of logging</td>
+          <td style="text-align: left">- <a href="link">Jira issue #4141 (create several DB users)</a><br>- <a href="link">Jira issue #4242 (add accountability logs)</a></td>
+      </tr>
+  </tbody>
+</table>
+<h4 id="concluding-3-min" class="relative group">Concluding (3 min) <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#concluding-3-min" aria-label="Anchor">#</a></span></h4><p>Appoint people to:</p>
+<ul>
+<li>Schedule the next meeting. Was there too little time to discuss? Don&rsquo;t wait to long until next time. Otherwise, it can be a good idea to schedule it in approximately 3-6 months</li>
+<li>Create issues for scenarios in your issue management system and add their link in the <strong>Preventive measures</strong> column</li>
+<li>Prioritise the issues (or send them to whomever prioritizes)</li>
+</ul>
+<hr>
+</details>
+<p>What I like to do is to create a guided document that teams fill during the
+process. At the top of this document, I put a <strong>table containing high level
+information</strong> about the service, such as the service owner(s), risk owner, service
+data classification, as well as a short description of the service.  In some
+cases, I like to add the business criticality of the service, if the
+organization has some business critical services that are not processing critical
+data.  These pieces of information already says a lot about the service, both for
+the team and for others that might need information about the service.</p>
+<p>Then comes the <strong>data-flow diagram</strong>, used to illustrate how the data flows
+through the service. The data is what we want to protect, so this diagram shows
+what points of the service might need more protections. These are spots that you
+can focus more on when utilizing the diagram later.</p>
+<p>Next, I like to add a <strong>table of data types</strong> that the service is process or
+store, and their data classification. To make it short and sweet, I prefer
+grouping data. For instance, instead of adding every data point for a user,
+write &ldquo;user data&rdquo; and the highest classification for the user data.</p>
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M112.1 454.3c0 6.297 1.816 12.44 5.284 17.69l17.14 25.69c5.25 7.875 17.17 14.28 26.64 14.28h61.67c9.438 0 21.36-6.401 26.61-14.28l17.08-25.68c2.938-4.438 5.348-12.37 5.348-17.7L272 415.1h-160L112.1 454.3zM191.4 .0132C89.44 .3257 16 82.97 16 175.1c0 44.38 16.44 84.84 43.56 115.8c16.53 18.84 42.34 58.23 52.22 91.45c.0313 .25 .0938 .5166 .125 .7823h160.2c.0313-.2656 .0938-.5166 .125-.7823c9.875-33.22 35.69-72.61 52.22-91.45C351.6 260.8 368 220.4 368 175.1C368 78.61 288.9-.2837 191.4 .0132zM192 96.01c-44.13 0-80 35.89-80 79.1C112 184.8 104.8 192 96 192S80 184.8 80 176c0-61.76 50.25-111.1 112-111.1c8.844 0 16 7.159 16 16S200.8 96.01 192 96.01z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">When describing how to fill in the data types table, it is appropriate to add a
+link to the data classification document</span>
+</div>
+
+<p>Then comes the <strong>threat modeling</strong> part of this activity, finding potential
+security issues in the service. In the Microsoft Learn path, two different ways
+of thinking are brought up, focusing on <strong>protecting the service</strong> or
+<strong>understanding the attacker</strong>. I like this approach, however I experience that
+most dev teams like to focus on protecting the system. Microsoft also states
+that <em>&ldquo;Microsoft product engineers mostly focus on protecting the system.
+Penetration testing teams focus on both.&rdquo;</em> (Wonder if an offensive security
+person has been working on this process at Microsoft:) ).</p>
+<p>When coming up with scenarios, I like add a scenario description, the driver
+for the scenario (whats the reason behind bringing it up) and thinking about how
+bad it might get. The latter to get an understanding of how important it is to
+fix the issue. For the scenarios, thinking &ldquo;I am worried that&hellip;&rdquo; works like a
+charm for many people.</p>
+<p>This part of the threat modeling process is probably the place you want to sit
+down and think very hard on what method is best for your teams. Do you want to
+go with STRIDE? Do you want to go with the <a href="https://www.rra.rocks/docs/threat_scenarios" target="_blank" rel="noreferrer">RRA way</a>,
+or the Marit (me) way? Maybe a mix between all of them? In my opinion it is all
+about finding the easiest approach for the teams is that still provides value.
+Just remember that to begin with, the teams needs to learn the way of thinking.
+Get a little warmed up. Then they are more likely to want to move on to a more
+thorough method.</p>
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M112.1 454.3c0 6.297 1.816 12.44 5.284 17.69l17.14 25.69c5.25 7.875 17.17 14.28 26.64 14.28h61.67c9.438 0 21.36-6.401 26.61-14.28l17.08-25.68c2.938-4.438 5.348-12.37 5.348-17.7L272 415.1h-160L112.1 454.3zM191.4 .0132C89.44 .3257 16 82.97 16 175.1c0 44.38 16.44 84.84 43.56 115.8c16.53 18.84 42.34 58.23 52.22 91.45c.0313 .25 .0938 .5166 .125 .7823h160.2c.0313-.2656 .0938-.5166 .125-.7823c9.875-33.22 35.69-72.61 52.22-91.45C351.6 260.8 368 220.4 368 175.1C368 78.61 288.9-.2837 191.4 .0132zM192 96.01c-44.13 0-80 35.89-80 79.1C112 184.8 104.8 192 96 192S80 184.8 80 176c0-61.76 50.25-111.1 112-111.1c8.844 0 16 7.159 16 16S200.8 96.01 192 96.01z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">I recommend providing a list of examples scenarios or your organization&rsquo;s base
+scenarios. This way, it is easier to get the threat modeling way of thinking
+started.</span>
+</div>
+
+<p>When you have a list of scenarios, the process is almost done. Then wrapping up
+the process can consist of activities such as:</p>
+<ul>
+<li>Setting up a new meeting (it is easy to forget)</li>
+<li>Create issues for all scenarios to start doing research on finding security controls and fix the threats</li>
+<li>Inform the risk owner about the scenarios, it might be useful for risk analysis</li>
+<li>Inform the project manager (or whomever prioritizes issues) about the new issues</li>
+</ul>
+<h2 id="trainings-for-threat-modeling" class="relative group">Trainings for threat modeling <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#trainings-for-threat-modeling" aria-label="Anchor">#</a></span></h2><p>There is a <a href="https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/" target="_blank" rel="noreferrer">Microsoft Learn path</a>
+for threat modeling. The training explains what threat modeling is and how to
+draw data-flow diagrams. They have separated the workflow in four stages,
+design, break, fix and verify, with respective questions about the service that
+is great to get</p>
+<p><a href="https://www.securecodewarrior.com/" target="_blank" rel="noreferrer">Secure Code Warrior</a>, a training platform
+for secure coding has a threat modeling course. I am about to test it soon.</p>
+<p>Some colleagues of mine participated in a training at the <a href="https://owasp.org/events/" target="_blank" rel="noreferrer">Global AppSec conference</a>.</p>
+<h2 id="example-scenarios" class="relative group">Example scenarios <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#example-scenarios" aria-label="Anchor">#</a></span></h2><h2 id="resources" class="relative group">Resources <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#resources" aria-label="Anchor">#</a></span></h2><ul>
+<li><a href="https://www.rra.rocks/" target="_blank" rel="noreferrer">rra.rocks</a></li>
+<li><a href="https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/" target="_blank" rel="noreferrer">Microsoft Learn path</a></li>
+<li><a href="https://infosec.mozilla.org/guidelines/risk/rapid_risk_assessment.html" target="_blank" rel="noreferrer">Mozilla&rsquo;s Rapid Risk Assessment (RRA)</a></li>
+</ul>
+
+      </div>
+    </section>
+    <footer class="max-w-prose pt-8 print:hidden">
+      
+
+      
+
+      
+  
+    
+    
+    
+      
+      
+    
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="flex justify-between pt-3">
+        <span>
+          
+        </span>
+        <span>
+          
+            <a class="group flex text-right" href="/posts/defectdojo/">
+              <span class="flex flex-col">
+                <span
+                  class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
+                  >DefectDojo with Trivy cluster reports</span
+                >
+                <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
+                  
+                </span>
+              </span>
+              <span
+                class="ms-2 text-neutral-700 transition-transform group-hover:-translate-x-[-2px] group-hover:text-primary-600 dark:text-neutral dark:group-hover:text-primary-400"
+                ><span class="ltr:inline rtl:hidden">&rarr;</span
+                ><span class="ltr:hidden rtl:inline">&larr;</span></span
+              >
+            </a>
+          
+        </span>
+      </div>
+    </div>
+  
+
+
+      
+    </footer>
+  </article>
+
+      </main>
+      
+        <div
+          class="pointer-events-none absolute bottom-0 end-0 top-[100vh] w-12"
+          id="to-top"
+          hidden="true"
+        >
+          <a
+            href="#the-top"
+            class="pointer-events-auto sticky top-[calc(100vh-5.5rem)] flex h-12 w-12 items-center justify-center rounded-full bg-neutral/50 text-xl text-neutral-700 backdrop-blur hover:text-primary-600 dark:bg-neutral-800/50 dark:text-neutral dark:hover:text-primary-400"
+            aria-label="Scroll to top"
+            title="Scroll to top"
+          >
+            &uarr;
+          </a>
+        </div>
+      <footer class="py-10 print:hidden">
+  
+  
+  <div class="flex items-center justify-between">
+    <div>
+      
+      
+        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+            &copy;
+            2024
+            Marit Iren R. Tokle
+        </p>
+      
+      
+      
+        <p class="text-xs text-neutral-500 dark:text-neutral-400">
+          
+          
+          Powered by <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500"
+            href="https://gohugo.io/" target="_blank" rel="noopener noreferrer">Hugo</a> &amp; <a class="hover:underline hover:decoration-primary-400 hover:text-primary-500" href="https://github.com/jpanther/congo" target="_blank" rel="noopener noreferrer">Congo</a>
+        </p>
+      
+    </div>
+    <div class="flex flex-row items-center">
+      
+      
+      
+      
+        <div
+          class="me-14 cursor-pointer text-sm text-neutral-700 hover:text-primary-600 dark:text-neutral dark:hover:text-primary-400"
+        >
+          <button id="appearance-switcher-0" type="button" aria-label="appearance switcher">
+            <div
+              class="flex h-12 w-12 items-center justify-center dark:hidden"
+              title="Switch to dark appearance"
+            >
+              <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M32 256c0-123.8 100.3-224 223.8-224c11.36 0 29.7 1.668 40.9 3.746c9.616 1.777 11.75 14.63 3.279 19.44C245 86.5 211.2 144.6 211.2 207.8c0 109.7 99.71 193 208.3 172.3c9.561-1.805 16.28 9.324 10.11 16.95C387.9 448.6 324.8 480 255.8 480C132.1 480 32 379.6 32 256z"/></svg>
+</span>
+            </div>
+            <div
+              class="hidden h-12 w-12 items-center justify-center dark:flex"
+              title="Switch to light appearance"
+            >
+              <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 159.1c-53.02 0-95.1 42.98-95.1 95.1S202.1 351.1 256 351.1s95.1-42.98 95.1-95.1S309 159.1 256 159.1zM509.3 347L446.1 255.1l63.15-91.01c6.332-9.125 1.104-21.74-9.826-23.72l-109-19.7l-19.7-109c-1.975-10.93-14.59-16.16-23.72-9.824L256 65.89L164.1 2.736c-9.125-6.332-21.74-1.107-23.72 9.824L121.6 121.6L12.56 141.3C1.633 143.2-3.596 155.9 2.736 164.1L65.89 256l-63.15 91.01c-6.332 9.125-1.105 21.74 9.824 23.72l109 19.7l19.7 109c1.975 10.93 14.59 16.16 23.72 9.824L256 446.1l91.01 63.15c9.127 6.334 21.75 1.107 23.72-9.822l19.7-109l109-19.7C510.4 368.8 515.6 356.1 509.3 347zM256 383.1c-70.69 0-127.1-57.31-127.1-127.1c0-70.69 57.31-127.1 127.1-127.1s127.1 57.3 127.1 127.1C383.1 326.7 326.7 383.1 256 383.1z"/></svg>
+</span>
+            </div>
+          </button>
+        </div>
+      
+    </div>
+  </div>
+  
+  
+</footer>
+
+    </div>
+  </body>
+</html>
