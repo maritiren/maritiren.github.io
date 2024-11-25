@@ -17,8 +17,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#FFFFFF" />
   
-  <title>Threat Modeling &middot; Techkroken</title>
-    <meta name="title" content="Threat Modeling &middot; Techkroken" />
+  <title>Threat Modeling - a low-effort and concise approach &middot; Techkroken</title>
+    <meta name="title" content="Threat Modeling - a low-effort and concise approach &middot; Techkroken" />
   
   
   
@@ -92,7 +92,7 @@
   
   <meta property="og:url" content="http://localhost:1313/posts/threat-modeling/">
   <meta property="og:site_name" content="Techkroken">
-  <meta property="og:title" content="Threat Modeling">
+  <meta property="og:title" content="Threat Modeling - a low-effort and concise approach">
   <meta property="og:description" content="I realized I needed a place to put my final notes, so here we are^_^">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
@@ -106,7 +106,7 @@
 
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Threat Modeling">
+  <meta name="twitter:title" content="Threat Modeling - a low-effort and concise approach">
   <meta name="twitter:description" content="I realized I needed a place to put my final notes, so here we are^_^">
 
   
@@ -115,8 +115,8 @@
     "@context": "https://schema.org",
     "@type": "Article",
     "articleSection": "Blog posts",
-    "name": "Threat Modeling",
-    "headline": "Threat Modeling",
+    "name": "Threat Modeling - a low-effort and concise approach",
+    "headline": "Threat Modeling - a low-effort and concise approach",
     
     
     "inLanguage": "en",
@@ -134,7 +134,7 @@
     "keywords": ["AppSec","Threat modeling","Rapid Risk Assessment (RRA)","STRIDE"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "3131"
+    "wordCount": "3470"
   }
   </script>
     
@@ -157,7 +157,7 @@
      },
      {
        "@type": "ListItem",
-       "name": "Threat Modeling",
+       "name": "Threat Modeling a Low Effort and Concise Approach",
        "position": 3
      }
    ]
@@ -413,7 +413,7 @@
     <header class="max-w-prose">
       
       <h1 class="mb-8 mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
-        Threat Modeling
+        Threat Modeling - a low-effort and concise approach
       </h1>
       
         <div class="mb-10 text-base text-neutral-500 dark:text-neutral-400 print:hidden">
@@ -449,7 +449,7 @@
   <div class="flex flex-row flex-wrap items-center">
     
     
-      <span title="Reading time">15 mins</span><span class="px-2 text-primary-500">&middot;</span>
+      <span title="Reading time">17 mins</span><span class="px-2 text-primary-500">&middot;</span>
 
 
   
@@ -495,9 +495,12 @@
   <ul>
     <li><a href="#what-is-threat-modeling">What is threat modeling?</a></li>
     <li><a href="#threat-modeling-methods">Threat modeling methods</a></li>
+    <li><a href="#choosing-the-method-for-your-organization">Choosing the method for your organization</a></li>
+    <li><a href="#launching-the-activity">Launching the activity!</a></li>
+    <li><a href="#supportive-tools-to-streamline-the-process">Supportive tools to streamline the process</a></li>
     <li><a href="#data-flow-diagrams">Data-flow diagrams</a></li>
     <li><a href="#process-description">Process description</a></li>
-    <li><a href="#an-example-of-a-simple-threat-modeling-process">An example of a simple threat modeling process</a>
+    <li><a href="#guided-form---the-process-itself">Guided form - The process itself</a>
       <ul>
         <li><a href="#threat-modeling-for-super-cool-api">Threat modeling for &ldquo;Super cool API&rdquo;</a>
           <ul>
@@ -522,10 +525,10 @@
       
       <div class="min-h-0 min-w-0 max-w-prose grow">
         <p><em>Note! This is still a work in progress^_^ 👷</em></p>
-<p>There are many activities that may be launched to improve application security
-in an organization. Threat modeling is one of them. Others are CI pipelines with
-security checks, or a vulnerability management system, creating standards or
-maybe development guides. There are so many activitites!</p>
+<p>Organizations undertake various activities to enhance application security, with
+threat modeling being one of the most impactful activities. Others are CI
+pipelines with security checks, or a vulnerability management system, creating
+standards or maybe development guides. There are so many activities!</p>
 <p>Threat modeling might be one of the most important activities in application
 security. Still, a lot of organizations struggle to implement it and make it
 valuable enough for development teams. I have done a lot of thinking and some
@@ -534,21 +537,34 @@ I won&rsquo;t dive into that. Anyways, make sure to do your homework and ensure 
 you deliver something valuable in the first version. It is paramount to ask
 developers for their needs, their pain points, how it can be valuable for them
 to make this activity stick.</p>
+<p>These are my own thoughts and experiences on setting up a threat modeling
+activity in an organization. Maybe it will come in handy for others :)</p>
 <details>
-<summary>Are you an AppSec personell, or a security architect or anyone that has
+<summary>Are you an AppSec personnel, or a security architect or anyone that has
 been appointed to implement activities to dev teams? Open this drop-down and read
 this ^_^ </summary>
 <p>I want to emphasize one important thing, a misinterpretation I&rsquo;ve seen and that
 I think is <em>dangerous</em> for the important work of making AppSec a more common
-practice among development. If you are a person who is hired to improve
-application security at a company, you might think that the dev teams aren&rsquo;t
-delivering secure enough services (or in other words - not good enough
-services). No matter how true that is, do <strong>not</strong> say that when approaching the
-dev teams. Tell them that you see how <strong>skilled</strong> they are and that you are
-<strong>excited to work with them</strong>, that you will need <strong>their help</strong> to create
+practice among development. As someone tasked with enhancing application
+security, it&rsquo;s easy to perceive that development teams may not be delivering
+sufficiently secure services. No matter how true that is, do <strong>not</strong> say that
+when approaching them!</p>
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" height="0.89em" viewBox="0 0 512 512"><path fill="currentColor" d="M88 0C74.7 0 64 10.7 64 24c0 38.9 23.4 59.4 39.1 73.1l1.1 1C120.5 112.3 128 119.9 128 136c0 13.3 10.7 24 24 24s24-10.7 24-24c0-38.9-23.4-59.4-39.1-73.1l-1.1-1C119.5 47.7 112 40.1 112 24c0-13.3-10.7-24-24-24zM32 192c-17.7 0-32 14.3-32 32V416c0 53 43 96 96 96H288c53 0 96-43 96-96h16c61.9 0 112-50.1 112-112s-50.1-112-112-112H352 32zm352 64h16c26.5 0 48 21.5 48 48s-21.5 48-48 48H384V256zM224 24c0-13.3-10.7-24-24-24s-24 10.7-24 24c0 38.9 23.4 59.4 39.1 73.1l1.1 1C232.5 112.3 240 119.9 240 136c0 13.3 10.7 24 24 24s24-10.7 24-24c0-38.9-23.4-59.4-39.1-73.1l-1.1-1C231.5 47.7 224 40.1 224 24z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">Have struggled to get the dev team&rsquo;s trust? Maybe it is time to change your
+approach?</span>
+</div>
+
+<p>Instead, acknowledge their <strong>skills</strong> and express your enthusiasm for
+collaboration. This fosters a positive environment and encourages open
+communication. Let the teams know that you will need <strong>their help</strong> to create
 something that works for them. Then ask them what they need help with or how
 they think things could be done differently to improve the process of delivering
-services with security in mind.</p>
+services with security in mind. Recognizing the pressures developers face can
+foster a collaborative spirit.</p>
 <p>Honestly, just think about it. Your expertise is security. The development
 landscape is shifting all the time and new development process methods,
 technology and expectations from developers changes all the time. Developers
@@ -558,58 +574,50 @@ language, they have to get domain knowledge, know pipelines, ways of rolling out
 their services, cloud hosting, several kinds of testing, architecture, all
 should be good quality, they are already behind on technical debt due to
 prioritization, <em>and now they must at a deeper level consider</em>&hellip; security!!</p>
-<p>Your security work usually isn&rsquo;t as business critical as what the dev teams
-already are doing. They are creating what gives direct value to the company.
-You are there to assist them, not to save the world from their mistakes. You are
-definitely not there to tell devs that they suck in security by saying that they
-aren&rsquo;t good enough at the moment and make it seem like you are the hero assigned
-by the company to save the world and fix their mistakes. I am 100% sure that the
-company did not hire you to do that. <em>(Yes, I&rsquo;ve experienced this and after
-joining tons of security meetups it seems like this additude is a little more
-common than it should be.)</em></p>
+<p>While security is essential, the immediate value often comes from the
+development team&rsquo;s efforts. They are the ones delivering products that drive the
+business forward. You are there to assist them, not to save the world from their
+mistakes. You are definitely not there to tell devs that they suck in security
+by saying that they aren&rsquo;t good enough at the moment and make it seem like you
+are the hero assigned by the company to save the world and fix their mistakes. I
+am 100% sure that the company did not hire you to do that. <em>(Yes, I&rsquo;ve
+experienced this and after joining tons of security meetups it seems like this
+attitude is a little more common than it should be.)</em></p>
 <p>It is OK to think you are a hero. I think you are! Doing this amazing work to
 protect users and organizations. Just keep it to yourself and make the
-developers feel like heros. And yes, imo they are too!</p>
-<p>In other words, your job is to help dev teams get the proper tooling to deliver
-more predictable and secure enough services. Tooling that should already have
-been there for the teams from the get-go. Tools that are necessary for dev teams
-to do what the job they are expected to do. Tools that are quick, easy, takes as
-little effort as possible. Preferably that removes workload. Find their pain
-points and use your expertise to figure out what tools the organization is
-missing that would be helpful. If that is your approach, they are more likely to
-welcome you.  Show them that you are there for them, not for management to tick
-of some compliance checks.</p>
+developers feel like heroes. And yes, imo they are too!</p>
+<p>Ultimately, your role is to equip development teams with the right tools to
+ensure they can deliver secure and reliable services efficiently.  Tooling that
+should already have been there for the teams from the get-go. Tools that are
+necessary for dev teams to do what the job they are expected to do. Tools that
+are quick, easy, takes as little effort as possible. Preferably that removes
+workload. Find their pain points and use your expertise to figure out what tools
+the organization is missing that would be helpful. If that is your approach,
+they are more likely to welcome you.  Show them that you are there for them, not
+for management to tick of some compliance checks.</p>
 </details>
-<h2 id="what-is-threat-modeling" class="relative group">What is threat modeling? <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#what-is-threat-modeling" aria-label="Anchor">#</a></span></h2><p>This is a question I&rsquo;ve gotten a lot. In the beginning I wasn&rsquo;t really able to
-answer it. It is not very common and security people working in consulting seems
-to struggle to understand the value in it. Which is understandable, since it
-remains an activity that we don&rsquo;t see in most organizations (yet!).</p>
-<p>I like to say that threat modelling is like a fun risk analysis - apologizing to
-everyone who likes risk analysis - where you take out all the boring stuff and
-rather spend time on the fun part!</p>
-<p>It is also a valuable for newcomers in teams to get to understand the service
+<h2 id="what-is-threat-modeling" class="relative group">What is threat modeling? <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#what-is-threat-modeling" aria-label="Anchor">#</a></span></h2><p>Threat modeling is a proactive approach to identifying and mitigating potential
+security threats in applications.</p>
+<p>I often describe threat modeling as a more engaging form of risk analysis,
+focusing on the aspects that are more fun and valuable to developers, while
+streamlining the process.</p>
+<p>It is also a valuable for newcomers in teams to easily understand the service
 they are working with, as it provides a good overview of how the service works,
 where the data flows, and how critical the service is.</p>
-<p>Let&rsquo;s quote <a href="https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/" target="_blank" rel="noreferrer">Microsoft</a>:</p>
+<p>To better understand threat modeling, let&rsquo;s look at how <a href="https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/" target="_blank" rel="noreferrer">Microsoft</a>
+defines it:</p>
 <blockquote>
 <p>Threat modeling is an effective way to help secure your systems, applications, networks, and services. It&rsquo;s an engineering technique that identifies potential threats and offers recommendations to help reduce risk and meet security objectives earlier in the development lifecycle.</p>
 </blockquote>
 <p>Threat modeling can be done both at system level and service level.</p>
-<p>I&rsquo;ll leave it to that, and then you can google a bit if you want to learn more
-about it in depth and move on to different threat modeling methods out there.</p>
-<h2 id="threat-modeling-methods" class="relative group">Threat modeling methods <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#threat-modeling-methods" aria-label="Anchor">#</a></span></h2><p>There is no such thing as one method that rules all. What&rsquo;s paramount for this
-activity to work, is to tailor it to the organization and allow teams to do it
-in a way that works for them. <strong>So that it gives value.</strong> It is better to use 15
-minutes to discuss threats during planning than doing nothing. Although, I would
-advice to use a little more thorough process.</p>
-<p>If you are an AppSec admin, please note that if the process is more in the way
-than the teams thinks it gives value, then it should be improved! Figure out the
-pain points and relieve them, check in with the teams and see if it got better.
-Do it in iterations and then you should find something that works for your
-organization. But, please, do your homework, gather information and put in
-effort to create a process you believe is valuable when you launch it. By
-launching a new activity, you are already making team&rsquo;s development process more
-involved and stressful. Try not to lose their faith straight away.</p>
+<p>For those interested in a deeper dive, I encourage you to explore various
+threat modeling methods available online. I recommend starting with RRA and
+STRIDE, which are briefly mentioned in the next section.</p>
+<h2 id="threat-modeling-methods" class="relative group">Threat modeling methods <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#threat-modeling-methods" aria-label="Anchor">#</a></span></h2><p>No single threat modeling method suits all organizations. Tailoring the approach
+is key to effective threat modeling. Also, allow teams to tailor it further
+themselves, enabling teams to adopt methods that provide <strong>real value</strong>. It is
+better to use 15 minutes to discuss threats during planning than doing nothing.
+Although, I would advice to use a little more thorough process.</p>
 <p>I have previously worked with <a href="https://infosec.mozilla.org/guidelines/risk/rapid_risk_assessment.html" target="_blank" rel="noreferrer">Rapid Risk Assessment (RRA)</a>
 and implemented a tailored version of RRA for an organization. What I have not
 done is to implement the typical threat modeling method
@@ -618,14 +626,9 @@ The way of thinking during the process is the same for both methods. The goal is
 the same as well. The difference is how detailed the road to get there is. Also,
 how much effort is needed to get started with it. Microsoft also has their own
 tailored version of STRIDE.</p>
-<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
-  <span class="pe-3 text-primary-400">
-    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M112.1 454.3c0 6.297 1.816 12.44 5.284 17.69l17.14 25.69c5.25 7.875 17.17 14.28 26.64 14.28h61.67c9.438 0 21.36-6.401 26.61-14.28l17.08-25.68c2.938-4.438 5.348-12.37 5.348-17.7L272 415.1h-160L112.1 454.3zM191.4 .0132C89.44 .3257 16 82.97 16 175.1c0 44.38 16.44 84.84 43.56 115.8c16.53 18.84 42.34 58.23 52.22 91.45c.0313 .25 .0938 .5166 .125 .7823h160.2c.0313-.2656 .0938-.5166 .125-.7823c9.875-33.22 35.69-72.61 52.22-91.45C351.6 260.8 368 220.4 368 175.1C368 78.61 288.9-.2837 191.4 .0132zM192 96.01c-44.13 0-80 35.89-80 79.1C112 184.8 104.8 192 96 192S80 184.8 80 176c0-61.76 50.25-111.1 112-111.1c8.844 0 16 7.159 16 16S200.8 96.01 192 96.01z"/></svg>
-</span>
-  </span>
-  <span class="dark:text-neutral-300">Rapid Risk Assessment is very well explained with examples in <a href="https://www.rra.rocks/docs/podcasts" target="_blank" rel="noreferrer">this video</a>.</span>
-</div>
-
+<p>Examples of other frameworks are Attack Trees, PASTA, DREAD and CVSS. While RRA
+is quick and adaptable, STRIDE and the other methods offers a more detailed
+framework for identifying threats.</p>
 <p>What is common for all the methods is that they do these stages:</p>
 <ol>
 <li>Gather information about the service and draw a data-flow diagram</li>
@@ -634,50 +637,93 @@ tailored version of STRIDE.</p>
 </ol>
 <div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
   <span class="pe-3 text-primary-400">
-    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M256 32C114.6 32 .0272 125.1 .0272 240c0 49.63 21.35 94.98 56.97 130.7c-12.5 50.37-54.27 95.27-54.77 95.77c-2.25 2.25-2.875 5.734-1.5 8.734C1.979 478.2 4.75 480 8 480c66.25 0 115.1-31.76 140.6-51.39C181.2 440.9 217.6 448 256 448c141.4 0 255.1-93.13 255.1-208S397.4 32 256 32z"/></svg>
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M112.1 454.3c0 6.297 1.816 12.44 5.284 17.69l17.14 25.69c5.25 7.875 17.17 14.28 26.64 14.28h61.67c9.438 0 21.36-6.401 26.61-14.28l17.08-25.68c2.938-4.438 5.348-12.37 5.348-17.7L272 415.1h-160L112.1 454.3zM191.4 .0132C89.44 .3257 16 82.97 16 175.1c0 44.38 16.44 84.84 43.56 115.8c16.53 18.84 42.34 58.23 52.22 91.45c.0313 .25 .0938 .5166 .125 .7823h160.2c.0313-.2656 .0938-.5166 .125-.7823c9.875-33.22 35.69-72.61 52.22-91.45C351.6 260.8 368 220.4 368 175.1C368 78.61 288.9-.2837 191.4 .0132zM192 96.01c-44.13 0-80 35.89-80 79.1C112 184.8 104.8 192 96 192S80 184.8 80 176c0-61.76 50.25-111.1 112-111.1c8.844 0 16 7.159 16 16S200.8 96.01 192 96.01z"/></svg>
 </span>
   </span>
-  <span class="dark:text-neutral-300">I believe that most organizations aren&rsquo;t mature enough for involved threat
-modeling processes. To begin with, the process should to be low-effort and short
-in order to be valuable enough for dev teams in less mature organizations. When
-teams are familiar to the threat modeling way of thinking, they often welcome
-more involved processes and some suggest doing more thorough processes
-themselves.</span>
+  <span class="dark:text-neutral-300">Rapid Risk Assessment is very well explained with examples in <a href="https://www.rra.rocks/docs/podcasts" target="_blank" rel="noreferrer">this video</a>.</span>
 </div>
 
-<p>To make the process low-effort, every organization should create tools
-supporting threat modeling, such as</p>
+<h2 id="choosing-the-method-for-your-organization" class="relative group">Choosing the method for your organization <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#choosing-the-method-for-your-organization" aria-label="Anchor">#</a></span></h2><p>When setting up threat modeling for the first time, start by asking yourself the following questions:</p>
 <ul>
-<li>a process description for the threat modeling process, accompanied with a guided form to perfom the process</li>
+<li>How critical are the services? Do they need extra attention to security?</li>
+<li>How mature is my organization? Is it naturally ready to use a more detailed framework?</li>
+<li>What will the dev teams prefer? A short and concise, or a longer and detailed framework?</li>
+<li>Do we have dedicated resources to help whenever teams are conducting a threat modeling activity?</li>
+</ul>
+<p>If you&rsquo;re dealing with military grade stuff that needs tons of security, then
+maybe it is better to go for a detailed framework. Then you have proper
+reasoning, and most likely have enough budget to make the process painless by
+assigning dedicated resources to both continuously improve the activity and help
+teams out when conducting it.</p>
+<p>Next step is asking the dev teams what their pain points are, and how to relieve
+them. What is it that makes threat modeling hard for dev teams in your
+organization? With this information, create a draft that avoids the pain points
+and includes supportive tools (see section <a href="#supportive-tools-to-streamline-the-process">Supportive tools to streamline the process</a>).
+Then ask teams for feedback.</p>
+<p>When you have a version you believe is good enough, do several test runs with a
+team. Maybe for different services, or several times for the same service. Maybe
+guide them yourself the first time, and then make the security champion do it
+the next time. Tag along, be a fly on the wall. And then gather feedback and
+further improve the activity.</p>
+<p>When this team approves, you can now be more certain that this activity is good
+enough for launching.</p>
+<p>In conclusion, as long as the organization doesn&rsquo;t have very critical services
+that require extra attention to security, I recommend starting with a short and
+concise method like Rapid Risk Assessment and tailor it to fit your
+organization&rsquo;s needs.</p>
+<h2 id="launching-the-activity" class="relative group">Launching the activity! <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#launching-the-activity" aria-label="Anchor">#</a></span></h2><p>First off, make sure you did your homework and created a valuable activity. By
+launching a new activity, you are already making team&rsquo;s development process more
+involved and stressful. Try not to lose their faith straight away.</p>
+<p>Then, plan a launching strategy. Maybe security champions should get training and
+guide their teams while you are watching and assisting? Should you do it the
+first time? Is it natural that the tech leads gets this training and they have
+backing from security champions in form of providing more security knowledge?</p>
+<p>After launching the activity, regularly check in with teams to assess
+improvements and gather feedback. As an AppSec admin, remember that if the
+process hinders more than helps, it&rsquo;s time for improvement.</p>
+<p>I believe that most &ldquo;normal&rdquo; organizations aren&rsquo;t mature enough for involved
+threat modeling processes. To begin with, the process should to be low-effort
+and short in order to be valuable enough for dev teams in less mature
+organizations. When teams are familiar to the threat modeling way of thinking,
+they often welcome more involved processes and some suggest doing more thorough
+processes themselves.</p>
+<div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+  <span class="pe-3 text-primary-400">
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" height="0.89em" viewBox="0 0 512 512"><path fill="currentColor" d="M88 0C74.7 0 64 10.7 64 24c0 38.9 23.4 59.4 39.1 73.1l1.1 1C120.5 112.3 128 119.9 128 136c0 13.3 10.7 24 24 24s24-10.7 24-24c0-38.9-23.4-59.4-39.1-73.1l-1.1-1C119.5 47.7 112 40.1 112 24c0-13.3-10.7-24-24-24zM32 192c-17.7 0-32 14.3-32 32V416c0 53 43 96 96 96H288c53 0 96-43 96-96h16c61.9 0 112-50.1 112-112s-50.1-112-112-112H352 32zm352 64h16c26.5 0 48 21.5 48 48s-21.5 48-48 48H384V256zM224 24c0-13.3-10.7-24-24-24s-24 10.7-24 24c0 38.9 23.4 59.4 39.1 73.1l1.1 1C232.5 112.3 240 119.9 240 136c0 13.3 10.7 24 24 24s24-10.7 24-24c0-38.9-23.4-59.4-39.1-73.1l-1.1-1C231.5 47.7 224 40.1 224 24z"/></svg>
+</span>
+  </span>
+  <span class="dark:text-neutral-300">Do dev teams have a way to provide feedback on the activities in your
+organization?</span>
+</div>
+
+<h2 id="supportive-tools-to-streamline-the-process" class="relative group">Supportive tools to streamline the process <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#supportive-tools-to-streamline-the-process" aria-label="Anchor">#</a></span></h2><p>To streamline the process and make it low-effort, organizations should develop
+supportive tools for threat modeling, such as</p>
+<ul>
+<li>a process description for the threat modeling process, accompanied with a guided form to perform the process</li>
 <li>a data classification table with examples, e.g. employee data is categorized as &ldquo;internal&rdquo;</li>
 <li>a minimum set of threat scenarios that the organization&rsquo;s services should cover <em>(this is the most valuable for orgs where teams aren&rsquo;t used to threat modeling)</em></li>
 <li>a threat analysis, who are likely to attack?</li>
 <li>a description of the organization&rsquo;s risk appetite, how much risk is the organization willing to take?</li>
-<li>a person to contact for help or clarifications</li>
+<li>a designated contact person for assistance and clarifications</li>
 <li>a person to introduce the process the first time(s)</li>
 </ul>
 <p>Honestly, I don&rsquo;t expect all devs to read these documents. And I don&rsquo;t think
 anyone should expect that. However, some times teams come to a point where they
 get uncertain. Uncertainties is a big no-no and should be eliminated! Let&rsquo;s say
 a team is stuck discussing whether a threat scenario is in scope for the company
-or not. Or, whether their application should be classified as internal or
-confidential because a piece of data they don&rsquo;t quite know how to classify.
-Instead of having teams discussing without really knowing, which in turn can
-give the process negative vibes, give them the tools to look it up.</p>
-<p>To conclude this section about what method to chose, I&rsquo;ve so far always adviced
-to start with a short and sweet method such as the Rapid Risk Assessment and
-tailor it to suit the organization.</p>
-<h2 id="data-flow-diagrams" class="relative group">Data-flow diagrams <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#data-flow-diagrams" aria-label="Anchor">#</a></span></h2><p>Most threat model activities include a data-flow diagram. It is a helpful
-drawing of where the data flows in the service you are creating a threat model
-for. The drawing often includes trust zones and has different shapes to
+or not. Or, whether a piece of data should be classified as internal or
+confidential because they don&rsquo;t quite know how to classify data. Instead of
+having teams discussing without really knowing, which in turn can give the
+process negative vibes, give them the tools to look it up.</p>
+<h2 id="data-flow-diagrams" class="relative group">Data-flow diagrams <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#data-flow-diagrams" aria-label="Anchor">#</a></span></h2><p>Data-flow diagrams are integral to most threat modeling activities. It is a
+helpful drawing of where the data flows in the service you are creating a threat
+model for. The drawing often includes trust zones and has different shapes to
 represent processes, data stores, external entities, data-flow and trust
 boundaries.</p>
 <p>The <a href="https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/" target="_blank" rel="noreferrer">Microsoft Learn path</a>
-is nice to learn more about the diagrams. It also brings up what depth of detail
-the drawing should have, by listing four depth layers. According to them, and I
-agree, most data-flow diagrams should contains both layers 0 and 1. They also
-point out that you should reach out to your security team in case you are
-unsure. They describe the depth layers 0 and 1 as follows:</p>
+is nice to learn more about the diagrams. Microsoft outlines four depth layers
+for data-flow diagrams, and I concur that most data-flow diagrams should include
+both layers 0 and 1:</p>
 <table>
   <thead>
       <tr>
@@ -699,7 +745,7 @@ unsure. They describe the depth layers 0 and 1 as follows:</p>
       </tr>
   </tbody>
 </table>
-<p>To see all four depth layers, check out the Learning path&rsquo;s first module
+<p>All four depth layers can be found in Learning path&rsquo;s first module
 &ldquo;Introduction to threat modeling&rdquo;, at <a href="https://learn.microsoft.com/en-us/training/modules/tm-introduction-to-threat-modeling/2-step-1-design-phase" target="_blank" rel="noreferrer">Step 1 - Design</a>
 in the section &ldquo;Diagram layers&rdquo;.</p>
 <div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
@@ -707,23 +753,27 @@ in the section &ldquo;Diagram layers&rdquo;.</p>
     <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><path fill="currentColor" d="M112.1 454.3c0 6.297 1.816 12.44 5.284 17.69l17.14 25.69c5.25 7.875 17.17 14.28 26.64 14.28h61.67c9.438 0 21.36-6.401 26.61-14.28l17.08-25.68c2.938-4.438 5.348-12.37 5.348-17.7L272 415.1h-160L112.1 454.3zM191.4 .0132C89.44 .3257 16 82.97 16 175.1c0 44.38 16.44 84.84 43.56 115.8c16.53 18.84 42.34 58.23 52.22 91.45c.0313 .25 .0938 .5166 .125 .7823h160.2c.0313-.2656 .0938-.5166 .125-.7823c9.875-33.22 35.69-72.61 52.22-91.45C351.6 260.8 368 220.4 368 175.1C368 78.61 288.9-.2837 191.4 .0132zM192 96.01c-44.13 0-80 35.89-80 79.1C112 184.8 104.8 192 96 192S80 184.8 80 176c0-61.76 50.25-111.1 112-111.1c8.844 0 16 7.159 16 16S200.8 96.01 192 96.01z"/></svg>
 </span>
   </span>
-  <span class="dark:text-neutral-300"><strong>Focus on making it easy to
-understand how the data flows to see where we need to ensure protection.</strong> Keep
-the diagram simple, don&rsquo;t add to many parts to it. At least for short and sweet
-threat modeling processes, the goal should be that by looking at it for a
-minute, you should have control of where the data flows.</span>
+  <span class="dark:text-neutral-300"><strong>Focus on making it easy to understand how the data flows to see where we need
+to ensure protection.</strong> Keep the diagram simple; avoid overcrowding it with
+unnecessary details. For short and sweet threat modeling processes, the goal
+should be that by looking at it for a minute, you should have control of where
+the data flows.</span>
 </div>
 
 <p>I&rsquo;ve usually used <a href="https://draw.io" target="_blank" rel="noreferrer">draw.io</a> to create these diagrams. Microsoft
 suggests their own tools <a href="https://www.microsoft.com/en-US/microsoft-365/visio/flowchart-software" target="_blank" rel="noreferrer">Visio</a>
 and <a href="https://learn.microsoft.com/en-us/azure/security/develop/threat-modeling-tool" target="_blank" rel="noreferrer">Threat Modeling Tool</a>.</p>
-<h2 id="process-description" class="relative group">Process description <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#process-description" aria-label="Anchor">#</a></span></h2><p>I think two documents are necessary when implementing threat modelling across an
-organization. First, the process description, and then the guided form that
-teams fill when performing the process. In this section, I will summarize what
-I&rsquo;ve learned from creating such a description.</p>
-<h2 id="an-example-of-a-simple-threat-modeling-process" class="relative group">An example of a simple threat modeling process <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#an-example-of-a-simple-threat-modeling-process" aria-label="Anchor">#</a></span></h2><p>In order to go in further details on possible ways to tailor your threat
+<h2 id="process-description" class="relative group">Process description <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#process-description" aria-label="Anchor">#</a></span></h2><p>In addition to a guided form that dev teams use when conducting the threat
+modeling activity (see section <a href="#guided-form---the-process-itself">Guided form - The process itself</a>),
+I believe a process description is useful.</p>
+<p>A good process description describes what the objective is, who should the
+participants be and when should the activity be performed? What is the purpose and
+scope? Is the activity required by compliance with regulations? What should
+be focused on, what teams refrain from using time on?</p>
+<p>Other supportive documents are also suitable here.</p>
+<h2 id="guided-form---the-process-itself" class="relative group">Guided form - The process itself <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#guided-form---the-process-itself" aria-label="Anchor">#</a></span></h2><p>In order to go in further details on possible ways to tailor your threat
 modeling process, I would like to bring up an example process and walk us
-through it.</p>
+through it. It is based on RRA.</p>
 <details>
 <summary>Example threat modeling form</summary>
 <p><em>My example is heavily based of Mozilla&rsquo;s RRA, but modified to how I
@@ -838,13 +888,13 @@ flows. Add this another time, not during the process.</em></p>
       </tr>
       <tr>
           <td style="text-align: left">An attacker sends phishing emails</td>
-          <td style="text-align: left">I am worried that sinc the authorization middleware isn&rsquo;t set by default on every endpoint, we have forgotten to do it on some endpoints</td>
+          <td style="text-align: left">I am worried that since the authorization middleware isn&rsquo;t set by default on every endpoint, we have forgotten to do it on some endpoints</td>
           <td style="text-align: left">The company looses tons of money because the CFO was phished during through our service</td>
           <td style="text-align: left"><a href="some.link">Jira issue #1337</a></td>
       </tr>
       <tr>
           <td style="text-align: left">An attacker leaks the database, and we aren&rsquo;t be able to find out how</td>
-          <td style="text-align: left">We are using the same database password for all database users. Also, I do not think we log sufficiently to say for sure where the attack origined</td>
+          <td style="text-align: left">We are using the same database password for all database users. Also, I do not think we log sufficiently to say for sure where the attack originated</td>
           <td style="text-align: left">- Our customer data leaks and we end up in the news<br>- We aren&rsquo;t able to find an insider who did it due to lack of logging</td>
           <td style="text-align: left">- <a href="link">Jira issue #4141 (create several DB users)</a><br>- <a href="link">Jira issue #4242 (add accountability logs)</a></td>
       </tr>
@@ -854,7 +904,7 @@ flows. Add this another time, not during the process.</em></p>
 <ul>
 <li>Schedule the next meeting. Was there too little time to discuss? Don&rsquo;t wait to long until next time. Otherwise, it can be a good idea to schedule it in approximately 3-6 months</li>
 <li>Create issues for scenarios in your issue management system and add their link in the <strong>Preventive measures</strong> column</li>
-<li>Prioritise the issues (or send them to whomever prioritizes)</li>
+<li>Prioritize the issues (or send them to whomever prioritizes)</li>
 </ul>
 <hr>
 </details>
