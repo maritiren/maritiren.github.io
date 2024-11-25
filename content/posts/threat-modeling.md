@@ -1,9 +1,11 @@
 +++
 title = 'Threat Modeling'
 date = 2024-11-15T17:40:58+01:00
-draft = true
+draft = false
 tags = ["AppSec", "Threat modeling", "Rapid Risk Assessment (RRA)", "STRIDE"]
 +++
+
+_Note! This is still a work in progress^\_^ 👷_
 
 There are many activities that may be launched to improve application security
 in an organization. Threat modeling is one of them. Others are CI pipelines with
@@ -21,7 +23,7 @@ to make this activity stick.
 
 <details>
 <summary>Are you an AppSec personell, or a security architect or anyone that has
-been appointed to implement activities to dev teams? Open the drop-down and read
+been appointed to implement activities to dev teams? Open this drop-down and read
 this ^_^ </summary>
 
 I want to emphasize one important thing, a misinterpretation I've seen and that
@@ -201,7 +203,7 @@ organization. First, the process description, and then the guided form that
 teams fill when performing the process. In this section, I will summarize what
 I've learned from creating such a description. 
 
-
+[Coming soon]
 
 ## An example of a simple threat modeling process
 In order to go in further details on possible ways to tailor your threat
@@ -347,6 +349,7 @@ for secure coding has a threat modeling course. I am about to test it soon.
 Some colleagues of mine participated in a training at the [Global AppSec conference](https://owasp.org/events/).
 
 ## Example scenarios
+[coming soon ^_^]
 
 ## Resources
 - [rra.rocks](https://www.rra.rocks/)
