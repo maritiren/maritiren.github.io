@@ -134,7 +134,7 @@
     "keywords": ["k8s","kind","defectdojo","trivy-dojo-report-operator","trivy","owasp"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1540"
+    "wordCount": "1589"
   }
   </script>
     
@@ -470,15 +470,6 @@
 
     
     
-      <span class="ps-2"><span class="flex">
-  <span
-    class="ms-1 rounded-md border border-primary-400 px-1 py-[1px] text-xs font-normal text-primary-700 dark:border-primary-600 dark:text-primary-400"
-  >
-    Draft
-  </span>
-</span>
-</span>
-    
   </div>
 
   
@@ -530,13 +521,17 @@
         </div>
       
       <div class="min-h-0 min-w-0 max-w-prose grow">
-        <p><a href="https://www.defectdojo.org/" target="_blank" rel="noreferrer">DefectDojo</a> is an <a href="https://owasp.org/" target="_blank" rel="noreferrer">OWASP (Open Worldwide Application Security Project)</a> project for vulnerability management.</p>
-<p>It is free, but also has paid SaaS solutions.</p>
-<p>First, the goal is to set up DefectDojo and receive data from Trivy reports in my Kubernetes cluster.
-I also want to configure DefectDojo to fit a certain organization structure and see how SBOM fits in the platform.
-Then, I want to add scans from pipelines.</p>
+        <p>👷👷 NOTE! This is a WIP 👷👷</p>
+<p><a href="https://www.defectdojo.org/" target="_blank" rel="noreferrer">DefectDojo</a> is an <a href="https://owasp.org/" target="_blank" rel="noreferrer">OWASP (Open Worldwide Application Security Project)</a> project for vulnerability management.</p>
+<p>It is free, but also has a paid SaaS solutions.</p>
+<p>First, the goal is to set up DefectDojo and receive data from Trivy reports in
+my Kubernetes cluster, using the <a href="https://github.com/telekom-mms/trivy-dojo-report-operator" target="_blank" rel="noreferrer">trivy-dojo-report-operator</a>.
+I also want to configure DefectDojo to fit a certain hierarchy and see how SBOM
+fits in the platform. Then, I want to add scans from pipelines.</p>
+<p>This blog post will cover the first, sending Trivy data from the cluster to
+DefectDojo.</p>
 <h2 id="prerequisites-to-follow-these-steps" class="relative group">Prerequisites to follow these steps <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#prerequisites-to-follow-these-steps" aria-label="Anchor">#</a></span></h2><ul>
-<li>A local cluster (I use Kind)</li>
+<li>A cluster (I use Kind)</li>
 <li><a href="http://localhost:1313/posts/trivy-operator/">The Trivy Operator running in the cluster</a></li>
 </ul>
 <div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
@@ -550,14 +545,19 @@ Then, I want to add scans from pipelines.</p>
 <h2 id="installation-of-defectdojo" class="relative group">Installation of DefectDojo <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#installation-of-defectdojo" aria-label="Anchor">#</a></span></h2><h3 id="docker-compose" class="relative group">Docker Compose <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#docker-compose" aria-label="Anchor">#</a></span></h3><p>It is very easy to run DefectDojo using Docker Compose.
 I just cloned the repo, ran it and it was all good.
 <a href="https://defectdojo.github.io/django-DefectDojo/getting_started/installation/" target="_blank" rel="noreferrer">Here are the instructions</a>.</p>
-<p>However, due to local networking, it is easier to setup with Kubernetes.
-Therefore, Kubernetes installation and configuring is the focus here.</p>
+<p>However, if you are working on a local cluster, I recommend setting up with
+Kubernetes. This is due to local networking. You know, localhost for Kubernetes
+is within the cluster, and if we setup DefectDojo locally, that also gets
+localhost and such. Therefore, Kubernetes installation and configuring is the
+focus here.</p>
 <h3 id="kubernetes" class="relative group">Kubernetes <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#kubernetes" aria-label="Anchor">#</a></span></h3><div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
   <span class="pe-3 text-primary-400">
-    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
+    <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><path fill="currentColor" d="M172.5 131.1C228.1 75.51 320.5 75.51 376.1 131.1C426.1 181.1 433.5 260.8 392.4 318.3L391.3 319.9C381 334.2 361 337.6 346.7 327.3C332.3 317 328.9 297 339.2 282.7L340.3 281.1C363.2 249 359.6 205.1 331.7 177.2C300.3 145.8 249.2 145.8 217.7 177.2L105.5 289.5C73.99 320.1 73.99 372 105.5 403.5C133.3 431.4 177.3 435 209.3 412.1L210.9 410.1C225.3 400.7 245.3 404 255.5 418.4C265.8 432.8 262.5 452.8 248.1 463.1L246.5 464.2C188.1 505.3 110.2 498.7 60.21 448.8C3.741 392.3 3.741 300.7 60.21 244.3L172.5 131.1zM467.5 380C411 436.5 319.5 436.5 263 380C213 330 206.5 251.2 247.6 193.7L248.7 192.1C258.1 177.8 278.1 174.4 293.3 184.7C307.7 194.1 311.1 214.1 300.8 229.3L299.7 230.9C276.8 262.1 280.4 306.9 308.3 334.8C339.7 366.2 390.8 366.2 422.3 334.8L534.5 222.5C566 191 566 139.1 534.5 108.5C506.7 80.63 462.7 76.99 430.7 99.9L429.1 101C414.7 111.3 394.7 107.1 384.5 93.58C374.2 79.2 377.5 59.21 391.9 48.94L393.5 47.82C451 6.731 529.8 13.25 579.8 63.24C636.3 119.7 636.3 211.3 579.8 267.7L467.5 380z"/></svg>
 </span>
   </span>
-  <span class="dark:text-neutral-300"><a href="https://github.com/DefectDojo/django-DefectDojo/blob/dev/readme-docs/KUBERNETES.md" target="_blank" rel="noreferrer">Here&rsquo;s the Kubernetes installation documentation</a>. Note that the Kubernetes documentation is old and not maintained. It wasn&rsquo;t straight forward to setup either.</span>
+  <span class="dark:text-neutral-300"><a href="https://github.com/DefectDojo/django-DefectDojo/blob/dev/readme-docs/KUBERNETES.md" target="_blank" rel="noreferrer">Here&rsquo;s the Kubernetes installation documentation</a>.
+Note that the Kubernetes documentation is old and not maintained. It wasn&rsquo;t
+straight forward to setup either.</span>
 </div>
 
 <p>A downside of the Kubernetes setup is that we cannot simply add the Helm chart using Kubernets manifest files. This is what I did in the end:</p>
@@ -638,20 +638,18 @@ Therefore, Kubernetes installation and configuring is the focus here.</p>
     <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
 </span>
   </span>
-  <span class="dark:text-neutral-300">Different ways of installing is described <a href="https://github.com/telekom-mms/trivy-dojo-report-operator?tab=readme-ov-file#installation-and-usage" target="_blank" rel="noreferrer">here</a>.
+  <span class="dark:text-neutral-300">Different ways of installing are described <a href="https://github.com/telekom-mms/trivy-dojo-report-operator?tab=readme-ov-file#installation-and-usage" target="_blank" rel="noreferrer">here</a>.
 We are deploying with Helm, so none of the options in the docs correspond to these steps. See step 3 in this note for Helm setup.</span>
 </div>
 
 <ol>
 <li>
-<p>Clone repo, <code>git clone git@github.com:telekom-mms/trivy-dojo-report-operator.git</code></p>
-</li>
-<li>
-<p>Fetch the API key. Go to DefectDojo and click the person-icon, and then press &ldquo;API v2 Key&rdquo;. Then &ldquo;Generate New Key&rdquo; and you got it!</p>
+<p>Fetch the API key. Go to DefectDojo and click the person-icon,
+and then press &ldquo;API v2 Key&rdquo;. Then &ldquo;Generate New Key&rdquo; and you got it!</p>
 </li>
 <li>
 <p>Add the API key and the DefectDojo URL to the setup of your choice configuration and apply the changes.
-I chose to apply the Helm chart as manifests:
+I chose to apply the Helm chart as manifests:</p>
 <div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
   <span class="pe-3 text-primary-400">
     <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
@@ -659,7 +657,7 @@ I chose to apply the Helm chart as manifests:
   </span>
   <span class="dark:text-neutral-300">Note that the URL is the internal cluster URL</span>
 </div>
-</p>
+
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># trivy-dojo-report-operator.yaml</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nn">---</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">v1</span><span class="w">
@@ -804,7 +802,7 @@ I chose to apply the Helm chart as manifests:
               <span class="flex flex-col">
                 <span
                   class="mt-[0.1rem] leading-6 group-hover:underline group-hover:decoration-primary-500"
-                  >Threat Modeling</span
+                  >Threat Modeling - a low-effort and concise approach</span
                 >
                 <span class="mt-[0.1rem] text-xs text-neutral-500 dark:text-neutral-400">
                   

@@ -1,23 +1,29 @@
 +++
 title = 'DefectDojo with Trivy cluster reports'
 date = 2024-10-15T15:13:28+02:00
-draft = true
+draft = false 
 description = "Setting up DefectDojo and receiving data from Trivy Operator with trivy-dojo-report-operator."
 summary = "A step-by-step guide to set up DefectDojo in a local Kind cluster and receive data from the Trivy Operator reports, using the trivy-dojo-report-operator."
 slug = "defectdojo"
 tags = ["k8s", "kind", "defectdojo", "trivy-dojo-report-operator", "trivy", "owasp"]
 +++
 
+👷👷 NOTE! This is a WIP 👷👷
+
 [DefectDojo](https://www.defectdojo.org/) is an [OWASP (Open Worldwide Application Security Project)](https://owasp.org/) project for vulnerability management. 
 
-It is free, but also has paid SaaS solutions. 
+It is free, but also has a paid SaaS solutions. 
 
-First, the goal is to set up DefectDojo and receive data from Trivy reports in my Kubernetes cluster.
-I also want to configure DefectDojo to fit a certain organization structure and see how SBOM fits in the platform. 
-Then, I want to add scans from pipelines. 
+First, the goal is to set up DefectDojo and receive data from Trivy reports in
+my Kubernetes cluster, using the [trivy-dojo-report-operator](https://github.com/telekom-mms/trivy-dojo-report-operator). 
+I also want to configure DefectDojo to fit a certain hierarchy and see how SBOM
+fits in the platform. Then, I want to add scans from pipelines. 
+
+This blog post will cover the first, sending Trivy data from the cluster to
+DefectDojo.
 
 ## Prerequisites to follow these steps
-- A local cluster (I use Kind)
+- A cluster (I use Kind)
 - [The Trivy Operator running in the cluster]({{< ref "trivy-operator" >}})
 
 {{< alert >}}
@@ -30,12 +36,17 @@ It is very easy to run DefectDojo using Docker Compose.
 I just cloned the repo, ran it and it was all good. 
 [Here are the instructions](https://defectdojo.github.io/django-DefectDojo/getting_started/installation/).
 
-However, due to local networking, it is easier to setup with Kubernetes. 
-Therefore, Kubernetes installation and configuring is the focus here.
+However, if you are working on a local cluster, I recommend setting up with
+Kubernetes. This is due to local networking. You know, localhost for Kubernetes
+is within the cluster, and if we setup DefectDojo locally, that also gets
+localhost and such. Therefore, Kubernetes installation and configuring is the
+focus here.
 
 ### Kubernetes
-{{< alert >}}
-[Here's the Kubernetes installation documentation](https://github.com/DefectDojo/django-DefectDojo/blob/dev/readme-docs/KUBERNETES.md). Note that the Kubernetes documentation is old and not maintained. It wasn't straight forward to setup either.
+{{< alert "link" >}}
+[Here's the Kubernetes installation documentation](https://github.com/DefectDojo/django-DefectDojo/blob/dev/readme-docs/KUBERNETES.md). 
+Note that the Kubernetes documentation is old and not maintained. It wasn't
+straight forward to setup either.
 {{< /alert >}}
 
 A downside of the Kubernetes setup is that we cannot simply add the Helm chart using Kubernets manifest files. This is what I did in the end:
@@ -115,21 +126,22 @@ A downside of the Kubernetes setup is that we cannot simply add the Helm chart u
 ## Send Trivy report data to DefectDojo
 This involves setting up [trivy-dojo-report-operator](https://github.com/telekom-mms/trivy-dojo-report-operator) to automatically send report data created by the Trivy Operator to DefectDojo when they are created.
 
-
 {{< alert >}}
-Different ways of installing is described [here](https://github.com/telekom-mms/trivy-dojo-report-operator?tab=readme-ov-file#installation-and-usage). 
+Different ways of installing are described [here](https://github.com/telekom-mms/trivy-dojo-report-operator?tab=readme-ov-file#installation-and-usage). 
 We are deploying with Helm, so none of the options in the docs correspond to these steps. See step 3 in this note for Helm setup. 
 {{< /alert >}}
 
-1. Clone repo, `git clone git@github.com:telekom-mms/trivy-dojo-report-operator.git`
-2. Fetch the API key. Go to DefectDojo and click the person-icon, and then press "API v2 Key". Then "Generate New Key" and you got it!
-3. Add the API key and the DefectDojo URL to the setup of your choice configuration and apply the changes. 
-    I chose to apply the Helm chart as manifests:
+1. Fetch the API key. Go to DefectDojo and click the person-icon, 
+  and then press "API v2 Key". Then "Generate New Key" and you got it!
+2. Add the API key and the DefectDojo URL to the setup of your choice configuration and apply the changes. 
+  I chose to apply the Helm chart as manifests:
+
     {{< alert >}}
 Note that the URL is the internal cluster URL
     {{< /alert >}}
-	```yaml
-	# trivy-dojo-report-operator.yaml
+
+    ```yaml
+    # trivy-dojo-report-operator.yaml
     ---
     apiVersion: v1
     kind: Namespace
@@ -173,7 +185,7 @@ Note that the URL is the internal cluster URL
       install:
         crds: CreateReplace
         createNamespace: true
-	```
+    ```
 
 4. Something isn't working as supposed to, with the following error message. It is a normal error message (as far as I know) when Python requests do not work correctly.
    ```sh
