@@ -5,7 +5,7 @@ draft: false
 description: "How to setup the Trivy Operator in K8s"
 summary: "A step-by-step guide to setup the Trivy Operator in Kubernetes."
 slug: "trivy-operator"
-tags: ["K8s", "Trivy"]
+tags: ["Kubernetes", "Trivy", "Trivy Operator"]
 ---
 
 I am currently working with automated security testing to get control of the known vulnerabilities in our applications. As part of this, I am scanning a Kubernetes cluster and it's images, as well as application code. We want to cover the whole width, not only application code. Now, we look at a Infrastructure as Code (IaC) scanning tool, [Trivy](https://trivy.dev/).
@@ -192,6 +192,25 @@ licitly define the required security parameters (such as runAsNonRoot, capabilit
     Title:        Default security context configured
 ```
 
+#### Filter findings
+There can be quite a lot of findings to filter through. Using `jq` is super nice for that. 
+
+```sh
+# Filtering config audit report
+k get ConfigAuditReport -n namespace my-configaudit-report -ojson | jq '.report.checks[] | select(.severity=="CRITICAL")''
+```
+
+All in all.. This is not a great way to traverse the findings. Using some kind of vulnerability management tool is more or less a must imo. E.g. DefectDojo. I have written a blog post on a way of sending Trivy Operator findings to DefectDojo. 
+
+### Review whether Trivy Operator is useful
+Should you use the Trivy Operator? To decide on this, I've done some thinking and research.
+
+- **Are the findings different from the CI pipeline scans?** - The findings are absolutely different. There were _a bunch_ more findings with Trivy Operator compared to the CI pipeline scan. I would do both scans (as long as the in-cluster scanning is useful).
+- **Are the findings valuable for us?** - Many K8s platforms have at least two different types of consumers, the platform team and the teams owning applications set up.
+  - **Now, for sure the platform team should have control of their findings**, but then how many of the resources are really under the platform team's control? Let's say you run `k get vulnerabilityreport --all-namespaces -o wide` and see that Calico has five different reports with four high criticality vulnerabilities and twentyfour medium criticality vulnerabilities. How does that help you? It is a nice way to evaluate the risk of using the tool, but most of us cannot do much more than that. Without some kind of vulnerability management tool, all you get is an overview where many of the findings are not actionable. It is nearly impossible to use it regularly. So then, should you disable scanning of the Calico namespaces and loose the visibility? Should you use a vulnerability management tool where you can manage the finding and show that you have reviewed it? Or should you just keep it the reports for an available overview? My conclusion is these findings are not useful without the possibility to mark them as accepted.  
+  - **That brings us to the teams hosting their applications in the cluster**. For the findings to be valuable for them, some kind of reporting or vulnerability management tool might be necessary. Especially if they do not have access to query the cluster, have been taught to check the findings with kubectl and are OK with such a simple solution. I would not be OK with that. If there are no tools to handle this, maybe scanning those namespaces aren't valuable to you?
+- **Which of the K8s resources should be scanned?** - The Trivy Operator does not have a way of caching images, it recognizes the running K8s resources and scans the image in that resource. So if a cron job or some automation is running and using the same image, it will scan it _every_ time. I would put those in a separate namespace and exclude scanning of those. 
+- **Is image scanning done in pipelines?** - If so, is it worth it in the cluster? Well, the containers running in the cluster is what's running in production. This is where the real risk is. Also, teams can choose not to scan their images in their own pipelines. Cluster scanning is a way to enforce scans are performed. If the organization has some central data collection to keep track of the known vulnerabilities in the systems they own, then scanning images in the cluster or in your container repository might prove useful. 
 
 ### Setup Trivy Operator in production
 #### Trivy Operator manifest files
