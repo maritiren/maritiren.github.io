@@ -1,89 +1,37 @@
 +++
-title = 'Threat Modeling - a low-effort and concise approach'
+title = 'Threat Modeling with Rapid Risk Assessment - a low-effort and concise approach'
 date = 2024-11-15T17:40:58+01:00
 draft = false
 tags = ["AppSec", "Threat modeling", "Rapid Risk Assessment (RRA)", "STRIDE"]
 +++
 
-_Note! This is still a work in progress^\_^ 👷_
+Organizations can undertake various activities to enhance application security,
+with threat modeling being one of the most impactful activities in the early
+stages of development. Other similar activities are risk analysis or security
+architecture review, and some times mistaken as vulnerability analysis. 
 
-Organizations undertake various activities to enhance application security, with
-threat modeling being one of the most impactful activities. Others are CI
-pipelines with security checks, or a vulnerability management system, creating
-standards or maybe development guides. There are so many activities! 
+Even though threat modeling is a valuable activity, a lot of organizations
+struggle to implement it and make it good enough for development teams to
+perform it reglarly.
 
-Threat modeling might be one of the most important activities in application
-security. Still, a lot of organizations struggle to implement it and make it
-valuable enough for development teams. I have done a lot of thinking and some
-research to figure out why this is, and I have my hypothesis' on this. However,
-I won't dive into that. Anyways, make sure to do your homework and ensure that
-you deliver something valuable in the first version. It is paramount to ask
-developers for their needs, their pain points, how it can be valuable for them
-to make this activity stick.
+In this article, I will share my own thoughts and experiences on implementing
+the threat modeling activity in organizations. Although the scope is
+organization wide, this article should be useful for implementation in just one
+team as well.
 
-These are my own thoughts and experiences on setting up a threat modeling
-activity in an organization. Maybe it will come in handy for others :)
+## Benefits of performing threat modeling regularly
+First, I would like to list the main benefits of the threat modeling activity.
 
-<details>
-<summary>Are you an AppSec personnel, or a security architect or anyone that has
-been appointed to implement activities to dev teams? Open this drop-down and read
-this ^_^ </summary>
-
-I want to emphasize one important thing, a misinterpretation I've seen and that
-I think is _dangerous_ for the important work of making AppSec a more common
-practice among development. As someone tasked with enhancing application
-security, it's easy to perceive that development teams may not be delivering
-sufficiently secure services. No matter how true that is, do **not** say that
-when approaching them! 
-
-{{< alert "coffee" >}}
-Have struggled to get the dev team's trust? Maybe it is time to change your
-approach?
-{{< /alert >}}
-
-Instead, acknowledge their **skills** and express your enthusiasm for
-collaboration. This fosters a positive environment and encourages open
-communication. Let the teams know that you will need **their help** to create
-something that works for them. Then ask them what they need help with or how
-they think things could be done differently to improve the process of delivering
-services with security in mind. Recognizing the pressures developers face can
-foster a collaborative spirit.
-
-Honestly, just think about it. Your expertise is security. The development
-landscape is shifting all the time and new development process methods,
-technology and expectations from developers changes all the time. Developers
-expected expertise is most likely so much wider than yours, and here you come
-adding to their workload. Not only are they expected to know their programming
-language, they have to get domain knowledge, know pipelines, ways of rolling out
-their services, cloud hosting, several kinds of testing, architecture, all
-should be good quality, they are already behind on technical debt due to
-prioritization, _and now they must at a deeper level consider_... security!! 
-
-While security is essential, the immediate value often comes from the 
-development team's efforts. They are the ones delivering products that drive the
-business forward. You are there to assist them, not to save the world from their
-mistakes. You are definitely not there to tell devs that they suck in security
-by saying that they aren't good enough at the moment and make it seem like you
-are the hero assigned by the company to save the world and fix their mistakes. I
-am 100% sure that the company did not hire you to do that. _(Yes, I've
-experienced this and after joining tons of security meetups it seems like this
-attitude is a little more common than it should be.)_
-
-It is OK to think you are a hero. I think you are! Doing this amazing work to 
-protect users and organizations. Just keep it to yourself and make the
-developers feel like heroes. And yes, imo they are too!
-
-Ultimately, your role is to equip development teams with the right tools to
-ensure they can deliver secure and reliable services efficiently.  Tooling that
-should already have been there for the teams from the get-go. Tools that are
-necessary for dev teams to do what the job they are expected to do. Tools that
-are quick, easy, takes as little effort as possible. Preferably that removes
-workload. Find their pain points and use your expertise to figure out what tools
-the organization is missing that would be helpful. If that is your approach,
-they are more likely to welcome you.  Show them that you are there for them, not
-for management to tick of some compliance checks.
-
-</details>
+- Gain understanding of the attack points of your application
+- Avoid possible reimplementation if threat modeling is performed before
+  implementation
+- Find architectural mistakes or improvements if threat modeling is performed
+  after implementation
+- Valuable documentation for both newcomers to the team, and management, the
+  data protection department or other entities that might want to understand
+  your system quickly, such as pentesters. (Documentation showing among other
+  things where the data flows, how important the data is, and a simple
+  architecture drawing)
 
 ## What is threat modeling?
 Threat modeling is a proactive approach to identifying and mitigating potential
@@ -93,102 +41,125 @@ I often describe threat modeling as a more engaging form of risk analysis,
 focusing on the aspects that are more fun and valuable to developers, while
 streamlining the process.
 
-It is also a valuable for newcomers in teams to easily understand the service
-they are working with, as it provides a good overview of how the service works,
-where the data flows, and how critical the service is.
-
-To better understand threat modeling, let's look at how [Microsoft](https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/)
+Let's look at how [Microsoft](https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/)
 defines it: 
 > Threat modeling is an effective way to help secure your systems, applications, networks, and services. It's an engineering technique that identifies potential threats and offers recommendations to help reduce risk and meet security objectives earlier in the development lifecycle.
 
-Threat modeling can be done both at system level and service level.
-
-For those interested in a deeper dive, I encourage you to explore various
-threat modeling methods available online. I recommend starting with RRA and
-STRIDE, which are briefly mentioned in the next section.
+For those interested in a deeper dive, I recommend starting with Rapid Risk
+Assessment (RRA) and STRIDE. RRA is a short and sweet method and STRIDE is the
+most known method. 
 
 ## Threat modeling methods 
-No single threat modeling method suits all organizations. Tailoring the approach
-is key to effective threat modeling. Also, allow teams to tailor it further
-themselves, enabling teams to adopt methods that provide **real value**. It is
-better to use 15 minutes to discuss threats during planning than doing nothing.
-Although, I would advice to use a little more thorough process.
+I have previously worked with [Rapid Risk Assessment
+(RRA)](https://infosec.mozilla.org/guidelines/risk/rapid_risk_assessment.html)
+and implemented a tailored version for an organization. What I have not done is
+to implement the typical threat modeling method
+[STRIDE](https://owasp.org/www-community/Threat_Modeling_Process#stride). The
+way of thinking during the process is the same for both methods. The goal is
+the same as well. The difference is the road getting there. Both for the
+process itself, and the effort needed to get started with it. Microsoft has
+their own tailored version of STRIDE.
 
-I have previously worked with [Rapid Risk Assessment (RRA)](https://infosec.mozilla.org/guidelines/risk/rapid_risk_assessment.html) 
-and implemented a tailored version of RRA for an organization. What I have not
-done is to implement the typical threat modeling method
-[STRIDE](https://owasp.org/www-community/Threat_Modeling_Process#stride). 
-The way of thinking during the process is the same for both methods. The goal is
-the same as well. The difference is how detailed the road to get there is. Also,
-how much effort is needed to get started with it. Microsoft also has their own
-tailored version of STRIDE.
+Examples of other frameworks are Attack Trees, PASTA, DREAD and CVSS.
 
-Examples of other frameworks are Attack Trees, PASTA, DREAD and CVSS. While RRA
-is quick and adaptable, STRIDE and the other methods offers a more detailed
-framework for identifying threats.
-
-What is common for all the methods is that they do these stages:
+These stages are common for all the methods:
 1. Gather information about the service and draw a data-flow diagram
-2. Use the diagram and knowledge of the service to find threats against the service
+2. Use the diagram and knowledge of the service to find threats against the
+   service
 3. Implement the mitigations from previous step (and verify it)
 
 {{< alert "lightbulb" >}}
-Rapid Risk Assessment is very well explained with examples in [this video](https://www.rra.rocks/docs/podcasts).
+Rapid Risk Assessment is well explained with examples in [this video](https://www.rra.rocks/docs/podcasts).
 {{< /alert >}}
 
-## Choosing the method for your organization
-When setting up threat modeling for the first time, start by asking yourself the following questions:
-- How critical are the services? Do they need extra attention to security?
-- How mature is my organization? Is it naturally ready to use a more detailed framework?
-- What will the dev teams prefer? A short and concise, or a longer and detailed framework?
-- Do we have dedicated resources to help whenever teams are conducting a threat modeling activity?
+## Choosing and tailoring threat modeling for your organization/team
+No single threat modeling method suits all organizations and all of their
+teams. Tailoring the approach is key to effective threat modeling. Also, if
+implementing threat modeling for an entire organization, consider allowing
+teams to tailor it further themselves, enabling them to adopt methods that
+provide **real value**. Even if their way is using 15 minutes to discuss
+threats during planning, it is better than nothing. Depending on the risk level
+of the system, it might just be sufficient (usally not though!).
 
-If you're dealing with military grade stuff that needs tons of security, then
+When setting up threat modeling for the first time, start by asking yourself:
+
+- How critical are the services? Do they need extra attention to security?
+- How mature is my organization? Is it naturally ready to use a more detailed
+  framework?
+- What will the dev teams prefer? A short and concise, or a longer and detailed
+  framework?
+- Do we have dedicated resources to plan and help teams conducting threat
+  modeling activities?
+- What governing documents support or can be integrated to the process
+  description? E.g. A threat analysis showing who expected attackers are,
+  Secure Development Procedure describing the process for threat modeling, etc.
+
+If you're dealing with military grade systems that needs tons of security, then
 maybe it is better to go for a detailed framework. Then you have proper
 reasoning, and most likely have enough budget to make the process painless by
-assigning dedicated resources to both continuously improve the activity and help
-teams out when conducting it. 
+assigning dedicated resources to both continuously improve the activity and
+help teams out when conducting it. 
 
-Next step is asking the dev teams what their pain points are, and how to relieve
-them. What is it that makes threat modeling hard for dev teams in your
-organization? With this information, create a draft that avoids the pain points
-and includes supportive tools (see section [Supportive tools to streamline the process](#supportive-tools-to-streamline-the-process)). 
-Then ask teams for feedback. 
+As long as the organization doesn't have very critical services that require
+extra attention to security, or the organization isn't a very mature one in
+regards to AppSec, I recommend starting with a short and concise, low-effort,
+method like Rapid Risk Assessment (RRA) and tailor it to the organization/team.
+When teams are familiar to the threat modeling way of thinking, they often
+welcome more involved processes and some suggest doing more thorough processes
+themselves. Rapid Risk Assessment is the one we continue with in this article.
 
-When you have a version you believe is good enough, do several test runs with a
-team. Maybe for different services, or several times for the same service. Maybe
-guide them yourself the first time, and then make the security champion do it 
-the next time. Tag along, be a fly on the wall. And then gather feedback and 
-further improve the activity. 
+Next, ask for the pain points, and how to relieve them. Do developers think
+threat modeling seems useful? If not, why? What makes threat modeling hard for
+development teams in the organization? 
 
-When this team approves, you can now be more certain that this activity is good
-enough for launching.
+{{< alert "lightbulb" >}}
+If you are lucky, there will be some especially interested with many opinions! 
+Write a post about your work in the company public place and let everyone know 
+that you are open for feedback and suggestions.
+{{< /alert >}}
 
-In conclusion, as long as the organization doesn't have very critical services 
-that require extra attention to security, I recommend starting with a short and
-concise method like Rapid Risk Assessment and tailor it to fit your
-organization's needs.
+After doing you research, create a draft that avoids as many pain points as
+possible and includes supportive tools (see section [Supportive tools to
+streamline the process](#supportive-tools-to-streamline-the-process)). Go to
+section [Process description](#process-description) and [Guided form](#guided-form---the-process-itself)
+to see an example of a tailored version of Rapid Risk Assessment.
+
+Get feedback continuously and ask whenever new questions pops up. Ask one or
+more of the people that has gotten involved so far for feedback. Then you
+should be ready for test runs! Maybe guide one team through the activity the
+first time. Implement the feedback you gathered and do another test round.
+This time, make one person in the team lead the meeting. Tag along, but be a
+fly on the wall. That way, it will be clearer which parts needs improvement.
+
+Repeat the feedback process with a subset of teams or developers until you are
+confident in your delivery, and both you and the organization can stand behind
+the activity.
 
 ## Launching the activity!
-First off, make sure you did your homework and created a valuable activity. By
-launching a new activity, you are already making team's development process more
-involved and stressful. Try not to lose their faith straight away. 
+By launching a new activity, you are making team's development process more
+involved and stressful. Especially in regards to threat modeling. With a
+process the organization can stand behind, it is time to plan the launch!
 
-Then, plan a launching strategy. Maybe security champions should get training and
-guide their teams while you are watching and assisting? Should you do it the
-first time? Is it natural that the tech leads gets this training and they have
-backing from security champions in form of providing more security knowledge? 
+There are many possible approaches. Consider assigning a responsible in each
+team, or create a process to ensure the team feels enough ownership to perform
+the activity. If you have security champions, maybe they should get training
+and guide their teams? Maybe during the launch phase, you should watch and
+assist? Should you guide them the first time? Is it natural that the tech leads
+gets this training and they have backing from security champions in form of
+providing more security knowledge? Figure out what suits the organization
+best.
 
-After launching the activity, regularly check in with teams to assess
+I recommend the upper management to make an announcement about the activity to
+show that this is what the organization wants and that development teams are
+expected to perform the activity. Showing that this is not some charity work
+that teams can do because some security people told them. It actually has value
+to the business. Upper management communication including "why" also helps if
+there is general resistance for implementing new activities. 
+
+After launching the activity, do regular check-ins with teams to assess
 improvements and gather feedback. As an AppSec admin, remember that if the
-process hinders more than helps, it's time for improvement. 
-
-I believe that most "normal" organizations aren't mature enough for involved
-threat modeling processes. To begin with, the process should to be low-effort
-and short in order to be valuable enough for dev teams in less mature
-organizations. When teams are familiar to the threat modeling way of thinking,
-they often welcome more involved processes and some suggest doing more thorough
-processes themselves.
+process hinders more than helps, it's time for improvement or discarding the
+process. 
 
 {{< alert "coffee" >}}
 Do dev teams have a way to provide feedback on the activities in your
@@ -198,22 +169,32 @@ organization?
 ## Supportive tools to streamline the process
 To streamline the process and make it low-effort, organizations should develop
 supportive tools for threat modeling, such as
-- a process description for the threat modeling process, accompanied with a guided form to perform the process
-- a data classification table with examples, e.g. employee data is categorized as "internal" 
-- a minimum set of threat scenarios that the organization's services should cover _(this is the most valuable for orgs where teams aren't used to threat modeling)_
-- a threat analysis, who are likely to attack? 
-- a description of the organization's risk appetite, how much risk is the organization willing to take?
+
+- a process description for the threat modeling process, accompanied with a
+  guided form to perform the process
+- a data classification table with examples, e.g. employee data is classified
+  as "internal", while Protected Health Information (PHI) is classified as
+  "critical"
+- a minimum set of threat scenarios that the organization's services should
+  think through _(this very useful for orgs where teams aren't used to threat
+  modeling)_
+- a threat analysis, who are likely to attack? This document might make it
+  easier to understand why to defend the system
+- a description of the organization's risk appetite, how much risk is the
+  organization willing to take?
 - a designated contact person for assistance and clarifications
 - a person to introduce the process the first time(s)
 
-Honestly, I don't expect all devs to read these documents. And I don't think 
-anyone should expect that. However, some times teams come to a point where they
-get uncertain. Uncertainties is a big no-no and should be eliminated! Let's say
-a team is stuck discussing whether a threat scenario is in scope for the company
-or not. Or, whether a piece of data should be classified as internal or
-confidential because they don't quite know how to classify data. Instead of
-having teams discussing without really knowing, which in turn can give the
-process negative vibes, give them the tools to look it up. 
+I don't expect all developers to read these documents. And I don't think anyone
+should expect that. However, experience show that some prefer having proper
+documentation with proper reasoning and boundaries.
+
+I have experienced teams stuck discussing whether a threat scenario is is
+scope for their company, and also discussing whether a data type is "internal"
+or "protected". Both times, they seemed annoyed and I ended 
+be classified as internal or confidential. Instead of having this uncertainty,
+define and document the boundaries. With well-made processes and boundaries, 
+negative vibes are avoided 
 
 ## Data-flow diagrams
 Data-flow diagrams are integral to most threat modeling activities. It is a
@@ -253,10 +234,10 @@ In addition to a guided form that dev teams use when conducting the threat
 modeling activity (see section [Guided form - The process itself](#guided-form---the-process-itself)), 
 I believe a process description is useful. 
 
-A good process description describes what the objective is, who should the
-participants be and when should the activity be performed? What is the purpose and
-scope? Is the activity required by compliance with regulations? What should 
-be focused on, what teams refrain from using time on? 
+A good process description describes what the objective is, who the
+participants should and when should the activity be performed. As well as the
+purpose and scope. Why should the teams use their time on this? What should be
+focused on, and what should teams refrain from using time on? 
 
 Other supportive documents are also suitable here.
 
@@ -329,38 +310,37 @@ Appoint people to:
 ---
 </details>
 
-What I like to do is to create a guided document that teams fill during the
-process. At the top of this document, I put a **table containing high level
-information** about the service, such as the service owner(s), risk owner, service
-data classification, as well as a short description of the service.  In some
-cases, I like to add the business criticality of the service, if the
-organization has some business critical services that are not processing critical
-data.  These pieces of information already says a lot about the service, both for
-the team and for others that might need information about the service.
-
-Then comes the **data-flow diagram**, used to illustrate how the data flows
-through the service. The data is what we want to protect, so this diagram shows
-what points of the service might need more protections. These are spots that you
-can focus more on when utilizing the diagram later. 
-
-Next, I like to add a **table of data types** that the service is process or
-store, and their data classification. To make it short and sweet, I prefer
-grouping data. For instance, instead of adding every data point for a user,
-write "user data" and the highest classification for the user data. 
+One of my approaches has been to create a guided document that teams fill
+during the process, like the example above. This was done in Confluence, which
+worked well. We tried with a Markdown version in the repositories too, but that
+did not work as well.
 
 {{< alert "lightbulb" >}}
-When describing how to fill in the data types table, it is appropriate to add a
-link to the data classification document
+I think the best process is using a web form, but that requires a more time and
+resources. Even better if the form auto-fills whatever data is already known to the
+organization. For instance the service name, service owner, risk owner, etc.
 {{< /alert >}}
 
-Then comes the **threat modeling** part of this activity, finding potential
-security issues in the service. In the Microsoft Learn path, two different ways
-of thinking are brought up, focusing on **protecting the service** or
-**understanding the attacker**. I like this approach, however I experience that
-most dev teams like to focus on protecting the system. Microsoft also states
-that _"Microsoft product engineers mostly focus on protecting the system.
-Penetration testing teams focus on both."_ (Wonder if an offensive security
-person has been working on this process at Microsoft:) ).
+In the example, I have included information that is useful for thinking about
+threat scenarios and keeping it minimal, such as the service description, data
+types that is processed by the service (what to protect) and the data-flow
+diagram showing where the data flows (where to protect). Also, I think every
+section should include instructions to minimize confusion and effort.
+
+{{< alert "lightbulb" >}}
+When describing the process, consider linking to supporting documents. E.g.
+the internal data classification.
+{{< /alert >}}
+
+The **threat modeling** part of this activity might be the most difficult,
+especially in the beginning. This is when finding potential security issues in
+the service. In the Microsoft Learn path, two different ways of thinking are
+brought up, focusing on **protecting the service** or **understanding the
+attacker**. I like this approach, however I experience that most dev teams like
+to focus on protecting the system. Microsoft also states that _"Microsoft
+product engineers mostly focus on protecting the system. Penetration testing
+teams focus on both."_ (Wonder if an offensive security person has been working
+on this process at Microsoft:) ).
 
 When coming up with scenarios, I like add a scenario description, the driver 
 for the scenario (whats the reason behind bringing it up) and thinking about how
@@ -368,28 +348,17 @@ bad it might get. The latter to get an understanding of how important it is to
 fix the issue. For the scenarios, thinking "I am worried that..." works like a
 charm for many people. 
 
-This part of the threat modeling process is probably the place you want to sit
-down and think very hard on what method is best for your teams. Do you want to 
-go with STRIDE? Do you want to go with the [RRA way](https://www.rra.rocks/docs/threat_scenarios),
-or the Marit (me) way? Maybe a mix between all of them? In my opinion it is all
-about finding the easiest approach for the teams is that still provides value.
-Just remember that to begin with, the teams needs to learn the way of thinking.
-Get a little warmed up. Then they are more likely to want to move on to a more
-thorough method.
-
 {{< alert "lightbulb" >}}
 I recommend providing a list of examples scenarios or your organization's base
 scenarios. This way, it is easier to get the threat modeling way of thinking
 started. 
 {{< /alert >}}
 
-When you have a list of scenarios, the process is almost done. Then wrapping up 
-the process can consist of activities such as: 
+When wrapping up, the process can consist of activities such as: 
 - Setting up a new meeting (it is easy to forget)
 - Create issues for all scenarios to start doing research on finding security controls and fix the threats
 - Inform the risk owner about the scenarios, it might be useful for risk analysis
 - Inform the project manager (or whomever prioritizes issues) about the new issues
-
 
 ## Trainings for threat modeling
 There is a [Microsoft Learn path](https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/) 
@@ -404,9 +373,10 @@ for secure coding has a threat modeling course. I am about to test it soon.
 Some colleagues of mine participated in a training at the [Global AppSec conference](https://owasp.org/events/).
 
 ## Example scenarios
-[coming soon ^_^]
+[maybe coming soon ^_^]
 
 ## Resources
 - [rra.rocks](https://www.rra.rocks/)
 - [Microsoft Learn path](https://learn.microsoft.com/en-us/training/paths/tm-threat-modeling-fundamentals/)
 - [Mozilla's Rapid Risk Assessment (RRA)](https://infosec.mozilla.org/guidelines/risk/rapid_risk_assessment.html)
+
