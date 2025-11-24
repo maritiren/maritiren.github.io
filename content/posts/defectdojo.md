@@ -1,5 +1,5 @@
 +++
-title = 'DefectDojo with Trivy cluster reports'
+title = 'DefectDojo with Trivy Operator cluster reports'
 date = 2024-10-15T15:13:28+02:00
 draft = false 
 description = "Setting up DefectDojo and receiving data from Trivy Operator with trivy-dojo-report-operator."
@@ -8,52 +8,48 @@ slug = "defectdojo"
 tags = ["k8s", "kind", "defectdojo", "trivy-dojo-report-operator", "trivy", "owasp"]
 +++
 
-👷👷 NOTE! This is a WIP 👷👷
+[DefectDojo](https://www.defectdojo.org/) is an [OWASP](https://owasp.org/)
+vulnerability management platform. It's free and open-source, with a paid SaaS
+option available.
 
-[DefectDojo](https://www.defectdojo.org/) is an [OWASP (Open Worldwide Application Security Project)](https://owasp.org/) project for vulnerability management. 
+This guide shows you how to set up DefectDojo in a local Kind cluster and
+automatically send Trivy Operator scan results to it using
+[trivy-dojo-report-operator](https://github.com/telekom-mms/trivy-dojo-report-operator).
 
-It is free, but also has a paid SaaS solutions. 
-
-First, the goal is to set up DefectDojo and receive data from Trivy reports in
-my Kubernetes cluster, using the [trivy-dojo-report-operator](https://github.com/telekom-mms/trivy-dojo-report-operator). 
-I also want to configure DefectDojo to fit a certain hierarchy and see how SBOM
-fits in the platform. Then, I want to add scans from pipelines. 
-
-This blog post will cover the first, sending Trivy data from the cluster to
-DefectDojo.
-
-## Prerequisites to follow these steps
-- A cluster (I use Kind)
-- [The Trivy Operator running in the cluster]({{< ref "trivy-operator" >}})
+## Prerequisites
+- A Kubernetes cluster (I'm using Kind)
+- [Trivy Operator installed]({{< ref "trivy-operator" >}})
+- Helm
 
 {{< alert >}}
-To understand my Kubernetes setup, checkout my posts about [running local Kind cluster with local registry and Flux]({{< ref "flux-with-local-registry" >}}).
+Using Kind? Check out my post on [setting up Kind with a local registry and Flux]({{< ref "flux-with-local-registry" >}}).
 {{< /alert >}}
 
-## Installation of DefectDojo
+## Installing DefectDojo
 ### Docker Compose
-It is very easy to run DefectDojo using Docker Compose. 
-I just cloned the repo, ran it and it was all good. 
-[Here are the instructions](https://defectdojo.github.io/django-DefectDojo/getting_started/installation/).
+DefectDojo is straightforward to run with Docker Compose—just clone the repo and
+go. [See the official instructions](https://defectdojo.github.io/django-DefectDojo/getting_started/installation/).
 
-However, if you are working on a local cluster, I recommend setting up with
-Kubernetes. This is due to local networking. You know, localhost for Kubernetes
-is within the cluster, and if we setup DefectDojo locally, that also gets
-localhost and such. Therefore, Kubernetes installation and configuring is the
-focus here.
+However, for local cluster work, I recommend installing it directly in
+Kubernetes to avoid networking headaches. When DefectDojo runs outside the
+cluster, you'll need to deal with localhost routing between your machine and the
+cluster. Much simpler to keep everything in Kubernetes.
+
+Therefore, this guide will _not_ use Docker Compose.
 
 ### Kubernetes
 {{< alert "link" >}}
-[Here's the Kubernetes installation documentation](https://github.com/DefectDojo/django-DefectDojo/blob/dev/readme-docs/KUBERNETES.md). 
-Note that the Kubernetes documentation is old and not maintained. It wasn't
-straight forward to setup either.
+[Official Kubernetes installation docs](https://github.com/DefectDojo/django-DefectDojo/blob/dev/readme-docs/KUBERNETES.md).
+Fair warning: the docs are a bit dated and the setup isn't entirely
+straightforward.
 {{< /alert >}}
 
-A downside of the Kubernetes setup is that we cannot simply add the Helm chart using Kubernets manifest files. This is what I did in the end:
-1. [Add cluster config to Kind](https://kind.sigs.k8s.io/docs/user/ingress/#create-cluster) and run cluster. _Note! This is already done if you setup your cluster like step 1 [in this post]({{< ref "flux-with-local-registry">}})_.
-2. [Setup NGINX Ingress controller](https://kind.sigs.k8s.io/docs/user/ingress/#ingress-nginx) and apply it. _I chose to just copy the files to create the Ingress controller with Flux in my local cluster._
-3. Create and apply namespace `defectdojo`. I chose to do so as a manifest file.
-4. Write and run bash script to setup DefectDojo with Helm locally:
+Since we can't simply add the Helm chart via Kubernetes manifests, here's what worked for me:
+
+1. [Configure Kind for ingress](https://kind.sigs.k8s.io/docs/user/ingress/#create-cluster) and create the cluster. _Already done if you followed [my Kind setup post]({{< ref "flux-with-local-registry">}})._
+2. [Install NGINX Ingress controller](https://kind.sigs.k8s.io/docs/user/ingress/#ingress-nginx). _I used Flux to deploy it in my cluster._
+3. Create the `defectdojo` namespace.
+4. Run this bash script to install DefectDojo with Helm:
     ```sh
     #!/bin/sh
 
@@ -121,23 +117,20 @@ A downside of the Kubernetes setup is that we cannot simply add the Helm chart u
     echo "You should now (or as soon as the Kubernetes resources are finished setting up) be able to open http://defectdojo.default.minikube.local:8080."
     ```
 
-
-
-## Send Trivy report data to DefectDojo
-This involves setting up [trivy-dojo-report-operator](https://github.com/telekom-mms/trivy-dojo-report-operator) to automatically send report data created by the Trivy Operator to DefectDojo when they are created.
+## Sending Trivy Reports to DefectDojo
+Now let's set up [trivy-dojo-report-operator](https://github.com/telekom-mms/trivy-dojo-report-operator)
+to automatically forward Trivy Operator scans to DefectDojo.
 
 {{< alert >}}
-Different ways of installing are described [here](https://github.com/telekom-mms/trivy-dojo-report-operator?tab=readme-ov-file#installation-and-usage). 
-We are deploying with Helm, so none of the options in the docs correspond to these steps. See step 3 in this note for Helm setup. 
+The [official installation docs](https://github.com/telekom-mms/trivy-dojo-report-operator?tab=readme-ov-file#installation-and-usage)
+cover various methods, but we'll use Helm with Flux manifests here.
 {{< /alert >}}
 
-1. Fetch the API key. Go to DefectDojo and click the person-icon, 
-  and then press "API v2 Key". Then "Generate New Key" and you got it!
-2. Add the API key and the DefectDojo URL to the setup of your choice configuration and apply the changes. 
-  I chose to apply the Helm chart as manifests:
+1. **Get your DefectDojo API key**: Click the person icon in DefectDojo, then "API v2 Key" → "Generate New Key".
+2. **Configure the operator**: Add your API key and DefectDojo URL to the Helm values. Here's my Flux manifest:
 
     {{< alert >}}
-Note that the URL is the internal cluster URL
+**Important**: Use the internal cluster URL (`defectdojo-django.defectdojo.svc.cluster.local`), not the external one.
     {{< /alert >}}
 
     ```yaml
@@ -176,34 +169,45 @@ Note that the URL is the internal cluster URL
         defectDojoApiCredentials:
           apiKey: "fa9b2d02...5a9c739b"
           url: "http://defectdojo-django.defectdojo.svc.cluster.local"  # For internal K8s routing 
-        operator.trivyDojoReportOperator.env.defectDojoEvalEngagementName: "true"
+        operator.trivyDojoReportOperator.env.defectDojoEngagementName: 'Trivy Operator'
+        operator.trivyDojoReportOperator.env.defectDojoEvalTestTitle: "true"
         operator.trivyDojoReportOperator.env.defectDojoEvalProductName: "true"
         operator.trivyDojoReportOperator.env.defectDojoEvalProductTypeName: "true"
-        operator.trivyDojoReportOperator.env.defectDojoEngagementName: 'body["report"]["artifact"]["tag"]'
-        operator.trivyDojoReportOperator.env.defectDojoProductName: 'body[name]'
-        operator.trivyDojoReportOperator.env.defectDojoProductTypeName: 'body["namespace"'
+        operator.trivyDojoReportOperator.env.defectDojoTestTitle: 'f"{body[\'report'\][\'artifact\'][\'repository\']}:{body[\'report'\][\'artifact\'][\'tag\']}"'
+        operator.trivyDojoReportOperator.env.defectDojoProductName: 'meta["labels"]["trivy-operator.resource.name"]'
+        operator.trivyDojoReportOperator.env.defectDojoProductTypeName: 'meta["namespace"]'
       install:
         crds: CreateReplace
         createNamespace: true
     ```
 
-4. Something isn't working as supposed to, with the following error message. It is a normal error message (as far as I know) when Python requests do not work correctly.
-   ```sh
-   [2024-08-02 07:00:39,022] kopf.objects         [ERROR   ] [flux-system/replicaset-image-reflector-controller-565565d549-manager] Handler 'send_to_dojo' failed temporarily: Other error occurred: HTTPConnectionPool(host='defectdojo.default.minikube.local', port=80): Max retries exceeded with url: /api/v2/reimport-scan/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7bb95574d430>: Failed to establish a new connection: [Errno 111] Connection refused')). Retrying in 60 seconds
-   ```
+And that's it! The operator will now automatically send new Trivy reports to
+DefectDojo.
 
-## Debugging
-### `Handler 'send_to_dojo' failed temporarily`
+## Troubleshooting
+
+### Connection Refused Error
+If you see `Handler 'send_to_dojo' failed temporarily` with a connection error,
+you're likely using the wrong URL.
+
 {{< alert >}}
-I used the incorrect DefectDojo API URL in the config. The correct one was `http://defectdojo-django.defectdojo.svc.cluster.local`. It was previously `http://defectdojo.default.minikube.local` which works from outside the cluster. However, Kubernetes didn't route the request out of the cluster, only within.
+**Fix**: Use the internal cluster URL `http://defectdojo-django.defectdojo.svc.cluster.local` 
+instead of the external one. Kubernetes routes traffic internally within the
+cluster, so external URLs like `defectdojo.default.minikube.local` won't work
+from pods.
 {{< /alert >}}
 
-Something isn't working as supposed to, with the following error message. It is a normal error message (as far as I know) when Python requests do not work correctly.
+<details>
+<summary><strong>Debugging walkthrough</strong> (click to expand)</summary>
+
+Here's the error you might encounter:
 ```sh
-[2024-08-02 07:00:39,022] kopf.objects         [ERROR   ] [flux-system/replicaset-image-reflector-controller-565565d549-manager] Handler 'send_to_dojo' failed temporarily: Other error occurred: HTTPConnectionPool(host='defectdojo.default.minikube.local', port=80): Max retries exceeded with url: /api/v2/reimport-scan/ (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7bb95574d430>: Failed to establish a new connection: [Errno 111] Connection refused')). Retrying in 60 seconds
+[2024-08-02 07:00:39,022] kopf.objects [ERROR] Handler 'send_to_dojo' failed temporarily: 
+HTTPConnectionPool(host='defectdojo.default.minikube.local', port=80): 
+Max retries exceeded with url: /api/v2/reimport-scan/
 ```
 
-To debug this, I created a script to verify that the DefectDojo API could receive requests:
+**Debugging approach**: First, verify the DefectDojo API is accessible:
 ```python
 import requests
 
@@ -218,9 +222,12 @@ for key, value in r.__dict__.items():
   print(f"'{key}': '{value}'")
   print('------------------'
 ```
-This simple endpoint worked just fine. Now I want to test the endpoint that the report operator is using, `/api/v2/reimport-scan`.  To do this, we need to attach a report file, and so we need to figure out the expected format. Therefore, I looked more into the report operator code. 
-   
-The report operator uses [kopf](https://kopf.readthedocs.io/en/latest), a Python framework for creating operators. The framework relies on creating handlers, and the report operator has a handler that fires when a new Trivy scan pod, named for instance `vulnerabilityreport.aquasecurity.github.io` is created:
+This endpoint worked fine. Next, test `/api/v2/reimport-scan`, which requires a
+report file. 
+
+The operator uses [kopf](https://kopf.readthedocs.io/en/latest), a Python
+operator framework. It has a handler that triggers when Trivy creates scan
+reports:
 ```python
 # handlers.py
 @REQUEST_TIME.time()
@@ -233,26 +240,31 @@ def send_to_dojo(body, meta, logger, **_):
    ...
 ```
 
-The handler is called per report type. What's interesting here is to see what is sent as a file to DefectDojo.
-   
-To do this, I had to turn on DEBUG, but there was no config option. After struggling with the updated chart not working, I tried adding the LOG_LEVEL env var to the manifest and running manifests instead. Nothing really worked... Then I realized that either something magical is happening to the LOG_LEVEL (maybe through kopf is reading the environment variable and setting the level), or it is never set. So I tried to set it manually with `logger.setLevel("DEBUG")`. That didn't work either. I just need to see the object, so I ended up changing the log statement to `log.info` instead of `log.debug`. (Although I really wanted to do it the proper way, I guess I must realize when it is time to throw in the towel). The log now contains all the request data that is sent with the request. 
-   
-In addition, I stored the `report.json` to the filesystem in the pod, so that I could copy it to the host with `k cp -n defectdojo-report trivy-dojo-report-operator-operator-769978f8d5-rcklv:/tmp/report.json ./report.json`.
-   
-Now that I have everything I need to make the request from the host machine, I tried and it worked perfectly. Therefore, my suspicions (and fear) that this would be network related has been confirmed. 
-   
-#### Figure out network issue
-To send requests from the Trivy Dojo Report Operator, we need to install cURL. However, we don't have sudo on the pod. Therefore, we did the following:
-1. `pgrep kopf`. All processes in Kubernetes is visible to the host machine, so we can fetch the pid of the process. In our case, the kopf process.
-2. `sudo nsenter -a -t $(pgrep kopf)`. We use the ID to enter the Docker container namespace with `nsenter`.
-3. `apt update && apt install -y curl` 
+To see what's being sent to DefectDojo, I needed debug logs. Since the LOG_LEVEL
+config wasn't working, I changed the operator code from `log.debug` to `log.info` 
+to capture the request data. I also saved the report to `/tmp/report.json` in
+the pod and copied it out:
 
-OK, now we've got cURL on the pod. Let's go!
+```sh
+kubectl cp -n defectdojo-report <pod-name>:/tmp/report.json ./report.json
+```
 
-#### Solution
-The problem was that Kubernetes didn't route the request out of the cluster, it deals with the routing internally. That means, the Trivy Dojo Report Operator couldn't find the FQDN of DefectDojo, as it is running in another namespace and didn't use the internal routing FQDN. It should be `defectdojo-django.defectdojo.svc.cluster.local`.  
+Testing this request from my host machine worked perfectly—confirming it was a
+networking issue, not a problem with the report format or API authentication.
+   
+**Testing from inside the pod**: To verify the operator couldn't reach DefectDojo,
+I installed curl in the pod using `nsenter` from the host:
+```sh
+# Get the kopf process ID and enter its namespace
+sudo nsenter -a -t $(pgrep kopf)
 
-DefectDojo doesn't allow this sort of host by default, so we must add it to an allow list upon start of DefectDojo.
+# Install curl
+apt update && apt install -y curl
+```
+
+**The solution**: Kubernetes handles routing internally, so the operator needs
+the internal cluster FQDN. Add it to DefectDojo's allowed hosts during
+installation:
 ```sh
 helm install \
   defectdojo \
@@ -265,11 +277,12 @@ helm install \
   --set createPostgresqlSecret=true \
   --set createMysqlSecret=false \
   --set createRedisSecret=false \
-  --set "alternativeHosts={defectdojo-django.defectdojo.svc.cluster.local}"  # <----
+  --set "alternativeHosts={defectdojo-django.defectdojo.svc.cluster.local}" <----
 ```
 
-Woho! It worked! Trivy Dojo Report Operator is now sending all reports! 
+Success! The operator now sends all Trivy reports to DefectDojo. 🎉
 
+</details>
 
 ## Resources
 - https://www.defectdojo.org/

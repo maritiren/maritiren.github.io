@@ -134,7 +134,7 @@
     "keywords": ["k8s","kind","defectdojo","trivy-dojo-report-operator","trivy","owasp"],
     
     "mainEntityOfPage": "true",
-    "wordCount": "1589"
+    "wordCount": "1610"
   }
   </script>
     
@@ -503,6 +503,7 @@
     <li><a href="#send-trivy-report-data-to-defectdojo">Send Trivy report data to DefectDojo</a></li>
     <li><a href="#debugging">Debugging</a>
       <ul>
+        <li><a href="#helm-chart-version">Helm chart version</a></li>
         <li><a href="#handler-send_to_dojo-failed-temporarily"><code>Handler 'send_to_dojo' failed temporarily</code></a>
           <ul>
             <li><a href="#figure-out-network-issue">Figure out network issue</a></li>
@@ -708,7 +709,8 @@ I chose to apply the Helm chart as manifests:</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-sh" data-lang="sh"><span class="line"><span class="cl"><span class="o">[</span>2024-08-02 07:00:39,022<span class="o">]</span> kopf.objects         <span class="o">[</span>ERROR   <span class="o">]</span> <span class="o">[</span>flux-system/replicaset-image-reflector-controller-565565d549-manager<span class="o">]</span> Handler <span class="s1">&#39;send_to_dojo&#39;</span> failed temporarily: Other error occurred: HTTPConnectionPool<span class="o">(</span><span class="nv">host</span><span class="o">=</span><span class="s1">&#39;defectdojo.default.minikube.local&#39;</span>, <span class="nv">port</span><span class="o">=</span>80<span class="o">)</span>: Max retries exceeded with url: /api/v2/reimport-scan/ <span class="o">(</span>Caused by NewConnectionError<span class="o">(</span><span class="s1">&#39;&lt;urllib3.connection.HTTPConnection object at 0x7bb95574d430&gt;: Failed to establish a new connection: [Errno 111] Connection refused&#39;</span><span class="o">))</span>. Retrying in <span class="m">60</span> seconds
 </span></span></code></pre></div></li>
 </ol>
-<h2 id="debugging" class="relative group">Debugging <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#debugging" aria-label="Anchor">#</a></span></h2><h3 id="handler-send_to_dojo-failed-temporarily" class="relative group"><code>Handler 'send_to_dojo' failed temporarily</code> <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#handler-send_to_dojo-failed-temporarily" aria-label="Anchor">#</a></span></h3><div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
+<h2 id="debugging" class="relative group">Debugging <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#debugging" aria-label="Anchor">#</a></span></h2><h3 id="helm-chart-version" class="relative group">Helm chart version <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#helm-chart-version" aria-label="Anchor">#</a></span></h3><p>I think there was an issue with the version. I couldn&rsquo;t choose the latest version. Need to verify.</p>
+<h3 id="handler-send_to_dojo-failed-temporarily" class="relative group"><code>Handler 'send_to_dojo' failed temporarily</code> <span class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100"><a class="group-hover:text-primary-300 dark:group-hover:text-neutral-700" style="text-decoration-line: none !important;" href="#handler-send_to_dojo-failed-temporarily" aria-label="Anchor">#</a></span></h3><div class="flex rounded-md bg-primary-100 px-4 py-3 dark:bg-primary-900">
   <span class="pe-3 text-primary-400">
     <span class="icon relative inline-block px-1 align-text-bottom"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M506.3 417l-213.3-364c-16.33-28-57.54-28-73.98 0l-213.2 364C-10.59 444.9 9.849 480 42.74 480h426.6C502.1 480 522.6 445 506.3 417zM232 168c0-13.25 10.75-24 24-24S280 154.8 280 168v128c0 13.25-10.75 24-23.1 24S232 309.3 232 296V168zM256 416c-17.36 0-31.44-14.08-31.44-31.44c0-17.36 14.07-31.44 31.44-31.44s31.44 14.08 31.44 31.44C287.4 401.9 273.4 416 256 416z"/></svg>
 </span>
