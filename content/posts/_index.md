@@ -9,11 +9,6 @@ cascade:
   invertPagination: true
 ---
 
-{{< lead >}}
-Heyyo
-{{< /lead >}}
-
-
 This section contains whatever I think is useful when I do computer stuff. 
 
 ---

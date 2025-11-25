@@ -9,14 +9,14 @@ title = "Techkroken"
 [params]
   dateFormat = "2 January 2006"
 
-  mainSections = ["blog"]
-  description = "I realized I needed a place to put my final notes, so here we are^_^"
+  mainSections = ["posts"]
+  description = "I write to remember. Here's my collection of technical notes"
 
 [params.author]
   name = "Marit Iren R. Tokle"
   image = "img/author.jpg"
-  headline = "Blip blop"
-  bio = "Whoop whoooop~~"
+  headline = "Senior Software Engineer | Application Security & Developer Experience"
+  bio = "I specialize in application security and DevOps practices, focusing on integrating security into development workflows. Here I document solutions to problems I've solved—mainly for future me, but hopefully useful to you too."
   links = [
     { email = "mailto:marit@tokle.dev" },
   #   { link = "https://link-to-some-website.com/" },

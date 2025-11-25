@@ -1,8 +1,7 @@
 ---
 title: "About the author"
-description: "Blip blop"
+description: ""
 ---
 
 {{< lead >}}
-Blip blop
 {{< /lead >}}
