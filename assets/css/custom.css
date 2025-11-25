@@ -1,0 +1,11 @@
+/* Add space above profile picture */
+img.rounded-full {
+    margin-top: 3rem !important;
+}
+
+/* Narrow the Recent section on homepage to make it look more centered */
+article + section {
+    max-width: 40rem;
+    margin-left: auto;
+    margin-right: auto;
+}
