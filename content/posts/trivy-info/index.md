@@ -3,9 +3,10 @@ title: 'Trivy Infrastructure as Code (IaC) Scanning'
 date: 2024-10-01T17:00:04+02:00
 draft: false
 description: "About the Trivy IaC scanning."
-summary: "Contains several guides for applying Trivy to your project"
+summary: "Guides for applying Trivy to your project"
 slug: "trivy"
-tags: ["Trivy", "IaC scan", "quality"]
+tags: ["Trivy", "IaC scan"]
+categories: ["devops"]
 ---
 
 I am currently working with automated security testing to get control of the known vulnerabilities in our applications. As part of this, I am scanning a Kubernetes cluster and it's images, as well as application code. We want to cover the whole width, not only application code. Now, we look at a Infrastructure as Code (IaC) scanning tool, [Trivy](https://trivy.dev/).

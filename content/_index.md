@@ -1,16 +1,20 @@
 ---
-title: "Welcome to my notes! :tada:"
-description: "I realized I need to put my final notes somewhere, because when I go back, I don't remember how finished they really are. If I put them publicly, they have to be done^_^"
+title: "Welcome!"
+description: "Technical notes on Kubernetes, AppSec, and DevOps"
 ---
 
-{{< lead >}}
-Welcome to my notebook!
-{{< /lead >}}
+Documenting solutions to problems I've solved - mainly for future me, but hopefully useful to you too.
 
-<div class="flex px-4 py-2 mb-8 text-base rounded-md bg-primary-100 dark:bg-primary-900">
-  <span class="flex items-center justify-between grow dark:text-neutral-300">
-    I realized I need to put my final notes somewhere. When I go back to something I've taken notes about, I don't remember how finished they really are. If I publish them publicly, they have to be somewhat done! ^_^
-  </span>
-</div>
+## Explore by Topic
 
-{{< figure src="festivities.svg" class="m-auto mt-6 max-w-prose" >}}
+{{< button href="/categories/kubernetes" target="_self" >}}
+📦 Kubernetes
+{{< /button >}}
+{{< button href="/categories/appsec" target="_self" >}}
+🔒 AppSec  
+{{< /button >}}
+{{< button href="/categories/devops" target="_self" >}}
+🚀 DevOps
+{{< /button >}}
+
+---

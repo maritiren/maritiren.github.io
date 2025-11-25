@@ -16,19 +16,29 @@
   weight = 10
 
 [[main]]
-  name = "Categories"
-  pageRef = "categories"
+  name = "Kubernetes"
+  pageRef = "categories/kubernetes"
   weight = 20
+
+[[main]]
+  name = "AppSec"
+  pageRef = "categories/appsec"
+  weight = 30
+
+[[main]]
+  name = "DevOps"
+  pageRef = "categories/devops"
+  weight = 40
 
 [[main]]
   name = "Tags"
   pageRef = "tags"
-  weight = 30
+  weight = 50
 
 [[main]]
   name = "GitHub"
   url = "https://github.com/maritiren/blog"
-  weight = 40
+  weight = 60
   [main.params]
     icon = "github"
     showName = false

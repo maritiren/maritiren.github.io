@@ -6,6 +6,7 @@ description: "How to setup the Trivy Operator in K8s"
 summary: "A step-by-step guide to setup the Trivy Operator in Kubernetes."
 slug: "trivy-operator"
 tags: ["Kubernetes", "Trivy", "Trivy Operator"]
+categories: ["kubernetes"]
 ---
 
 I am currently working with automated security testing to get control of the known vulnerabilities in our applications. As part of this, I am scanning a Kubernetes cluster and it's images, as well as application code. We want to cover the whole width, not only application code. Now, we look at a Infrastructure as Code (IaC) scanning tool, [Trivy](https://trivy.dev/).

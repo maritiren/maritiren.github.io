@@ -33,8 +33,8 @@ fingerprintAlgorithm = "sha256"
 
 [homepage]
   layout = "profile" # valid options: page, profile, custom
-  showRecent = false
-  recentLimit = 5
+  showRecent = true
+  recentLimit = 3
 
 [article]
   showDate = true
@@ -50,16 +50,16 @@ fingerprintAlgorithm = "sha256"
   invertPagination = false
   showReadingTime = true
   showTableOfContents = true
-  showTaxonomies = false
+  showTaxonomies = true
   showWordCount = false
   showComments = false
   # sharingLinks = ["facebook", "x-twitter", "mastodon", "pinterest", "reddit", "linkedin", "email", "threads", "telegram", "line", "weibo"]
 
 [list]
-  showBreadcrumbs = false
+  showBreadcrumbs = true
   showSummary = true
   showTableOfContents = false
-  showTaxonomies = false
+  showTaxonomies = true
   groupByYear = true
   paginationWidth = 1
 

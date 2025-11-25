@@ -6,6 +6,7 @@ description: "How to setup Kind with local registry"
 summary: "A script to set up Kind and a local registry, with containerd patches to make it work for Flux"
 slug: "kind-localregistry"
 tags: ["k8s", "kind", "local registry", "flux"]
+categories: ["kubernetes"]
 ---
 
 Setting up a local registry for Kind clusters requires settings to be applied when creating the cluster. It should work to just run the script provided in [the Kind docs](https://kind.sigs.k8s.io/docs/user/local-registry).

@@ -4,6 +4,7 @@ date = 2024-10-03T11:42:15+02:00
 draft = true
 slug = "trivy-pipeline"
 tags = ["Trivy", "IaC scan", "CI", "pipeline"]
+categories = ["devops"]
 +++
 
 I am currently working with automated security testing to get control of the known vulnerabilities in our applications. As part of this, I am scanning a Kubernetes cluster and it's images, as well as application code. We want to cover the whole width, not only application code. Now, we look at a Infrastructure as Code (IaC) scanning tool, [Trivy](https://trivy.dev/).

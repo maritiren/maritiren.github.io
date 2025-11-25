@@ -6,6 +6,7 @@ description = "Setting up DefectDojo and receiving data from Trivy Operator with
 summary = "A step-by-step guide to set up DefectDojo in a local Kind cluster and receive data from the Trivy Operator reports, using the trivy-dojo-report-operator."
 slug = "defectdojo"
 tags = ["k8s", "kind", "defectdojo", "trivy-dojo-report-operator", "trivy", "owasp"]
+categories = ["kubernetes"]
 +++
 
 [DefectDojo](https://www.defectdojo.org/) is an [OWASP](https://owasp.org/)

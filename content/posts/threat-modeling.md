@@ -3,6 +3,7 @@ title = 'Threat Modeling with Rapid Risk Assessment - a low-effort and concise a
 date = 2024-11-15T17:40:58+01:00
 draft = false
 tags = ["AppSec", "Threat modeling", "Rapid Risk Assessment (RRA)", "STRIDE"]
+categories = ["appsec"]
 +++
 
 Organizations can undertake various activities to enhance application security,
