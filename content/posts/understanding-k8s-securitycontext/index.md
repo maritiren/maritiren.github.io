@@ -38,9 +38,9 @@ posture.
 ## Pod-level vs. Container-level 
 
 The [Kubernetes documentation for SecurityContext](https://kubernetes.io/docs/tasks/configure-pod-container/security-context/)
-is excellent, but the scope can be a bit confusing. Most examples show `kind: Pod`,
-which made me wonder: how does this work with Deployments? Since I rarely write
-Pod manifests directly, it wasn't immediately clear.
+is excellent, but the scope can be a bit confusing. Most examples show 
+`kind: Pod`, which made me wonder: how does this work with Deployments? Since I
+rarely write Pod manifests directly, it wasn't immediately clear.
 
 Here's what you need to know:
 
@@ -49,14 +49,14 @@ Here's what you need to know:
 SecurityContext can be configured at two levels:
 
 **Pod-level** (`spec.securityContext`): Applies to all containers in the Pod.
-Common settings include `fsGroup`, `runAsUser`, and `runAsGroup`.
+Common settings include `runAsUser` and `runAsGroup`.
 
 **Container-level** (`spec.containers[].securityContext`): Applies to a specific
 container. Settings like `readOnlyRootFilesystem`, `capabilities`, and
 `allowPrivilegeEscalation` go here.
 
 **Important**: Container-level settings override pod-level settings when both
-*are defined.
+are defined.
 
 ### Example: Pod with Both Levels
 
@@ -124,10 +124,11 @@ Each configuration option is explained in detail in the sections below.
 
 ### Which Options Go Where?
 
-Not all SecurityContext options can be set at both levels. Rather than listing them all here,
-I recommend checking the official API documentation when configuring your SecurityContext:
+Not all SecurityContext options can be set at both levels. Rather than listing
+them all here, I recommend checking the official API documentation when
+configuring your SecurityContext:
 
-For complete details, see:
+For complete details, see the Kubernetes API documentation:
 - [Pod-level options](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.34/#podsecuritycontext-v1-core)
 - [Container-level options](https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.34/#securitycontext-v1-core)
 
@@ -137,7 +138,7 @@ This section explains common SecurityContext options and when you should apply
 them. Implementation of each config is thoroughly explained in my other article
 [Implementing Kubernetes SecurityContext best practices using the Trivy VS Code extension]({{< ref "k8s-securitycontext-trivy-vscode" >}})
 
-### readOnlyRootFilesystem
+### readOnlyRootFilesystem {#readonlyrootfilesystem}
 
 **What it does:** Makes the container's root filesystem read-only.
 
@@ -155,14 +156,15 @@ securityContext:
 
 [See implementation guide →]({{< ref "k8s-securitycontext-trivy-vscode#readonlyrootfilesystem" >}})
 
-### runAsNonRoot
+### runAsNonRoot {#runasnonroot}
 
 **What it does:** Prevents the container from running as the root user (UID 0).
 
-**Why it matters:** Running as root gives attackers full control if they compromise your container.
-This is one of the most critical security settings.
+**Why it matters:** Running as root gives attackers full control if they
+compromise your container. This is one of the most critical security settings.
 
-**When to use:** Always. There are very few legitimate reasons to run containers as root.
+**When to use:** Always. There are very few legitimate reasons to run containers
+as root.
 
 ```yaml
 securityContext:
@@ -171,11 +173,12 @@ securityContext:
 
 [See implementation guide →]({{< ref "k8s-securitycontext-trivy-vscode#runasnonroot" >}})
 
-### runAsUser / runAsGroup
+### runAsUser / runAsGroup {#runasuser-runasgroup}
 
 **What it does:** Explicitly sets the UID and GID for the container process.
 
-**Why it matters:** `runAsNonRoot` only prevents root, but doesn't specify which user to use.
+**Why it matters:** `runAsNonRoot` only prevents root, but doesn't specify which
+user to use.
 
 **When to use:** Always specify both. 
 
@@ -194,7 +197,7 @@ securityContext:
 
 [See implementation guide →]({{< ref "k8s-securitycontext-trivy-vscode#runasuser-runasgroup" >}})
 
-### allowPrivilegeEscalation
+### allowPrivilegeEscalation {#allowprivilegeescalation}
 
 **What it does:** Prevents processes from gaining more privileges than their
 parent process.
@@ -212,16 +215,16 @@ securityContext:
 
 [See implementation guide →]({{< ref "k8s-securitycontext-trivy-vscode#allowprivilegeescalation" >}})
 
-### capabilities
+### capabilities {#capabilities}
 
-**What it does:** Controls which Linux capabilities the container has. Dropping `ALL` removes
-unnecessary privileges.
+**What it does:** Controls which Linux capabilities the container has. Dropping
+`ALL` removes unnecessary privileges.
 
-**Why it matters:** Containers often inherit capabilities they don't need. Removing them reduces
-what attackers can do.
+**Why it matters:** Containers often inherit capabilities they don't need.
+Removing them reduces what attackers can do.
 
-**When to use:** Always drop `ALL` first. Add back only specific capabilities if your application
-needs them (like `NET_BIND_SERVICE` for binding to ports below 1024).
+**When to use:** Always drop `ALL` first. Add back only specific capabilities if
+your application needs them (like `NET_BIND_SERVICE` for binding to ports below 1024).
 
 ```yaml
 securityContext:
@@ -232,18 +235,22 @@ securityContext:
     #   - NET_BIND_SERVICE  # Only if needed
 ```
 
-**Pro tip:** Most applications don't need any capabilities if running on non-privileged ports.
+**Pro tip:** Most applications don't need any capabilities if running on
+non-privileged ports.
 
 [See implementation guide →]({{< ref "k8s-securitycontext-trivy-vscode#capabilities" >}})
 
-### seccompProfile
+### seccompProfile {#seccompprofile}
 
-**What it does:** Applies a seccomp (secure computing mode) profile to restrict system calls.
+**What it does:** Applies a seccomp (secure computing mode) profile to restrict
+system calls.
 
-**Why it matters:** Limits which kernel system calls the container can make, reducing attack surface.
+**Why it matters:** Limits which kernel system calls the container can make,
+reducing attack surface.
 
-**When to use:** Use `RuntimeDefault` for most applications - it's a safe, general-purpose profile.
-Custom profiles are rarely needed unless you have specific security requirements.
+**When to use:** Use `RuntimeDefault` for most applications - it's a safe,
+general-purpose profile. Custom profiles are rarely needed unless you have
+specific security requirements.
 
 ```yaml
 securityContext:
@@ -251,8 +258,8 @@ securityContext:
     type: RuntimeDefault
 ```
 
-**Note:** This is increasingly becoming a default in Kubernetes, but explicitly setting it ensures
-consistency across clusters.
+**Note:** This is increasingly becoming a default in Kubernetes, but explicitly
+setting it ensures consistency across clusters.
 
 [See implementation guide →]({{< ref "k8s-securitycontext-trivy-vscode#seccompprofile" >}})
 
