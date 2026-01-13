@@ -9,3 +9,53 @@ article + section {
     margin-left: auto;
     margin-right: auto;
 }
+
+/* Example form container styling */
+.example-form {
+    background-color: rgba(0, 0, 0, 0.03);
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1.5rem 0;
+}
+
+.dark .example-form {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.example-form summary {
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin: -0.5rem;
+    border-radius: 0.25rem;
+}
+
+.example-form summary small {
+    font-weight: 400;
+    opacity: 0.7;
+    font-size: 0.85em;
+}
+
+.example-form summary:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark .example-form summary:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.example-form[open] {
+    padding: 1.5rem;
+}
+
+.example-form[open] summary {
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.dark .example-form[open] summary {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+}
