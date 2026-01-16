@@ -4,6 +4,7 @@ date = 2025-07-26T01:40:33+01:00
 draft = false 
 slug = "understanding-k8s-securitycontext"
 tags = ["Kubernetes", "SecurityContext"]
+relatedPosts = ["securitycontext-trivy-vscode-extension"]
 categories = ["kubernetes"]
 +++
 

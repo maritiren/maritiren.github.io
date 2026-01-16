@@ -6,6 +6,7 @@ description = "Integrating Trivy security scanning into your CI/CD pipeline"
 summary = "A guide to setting up Trivy for Infrastructure as Code scanning in your CI pipeline to catch vulnerabilities early."
 slug = "trivy-pipeline"
 tags = ["Trivy", "IaC scan", "CI", "pipeline"]
+relatedPosts = ["trivy-operator"]
 categories = ["devops"]
 +++
 

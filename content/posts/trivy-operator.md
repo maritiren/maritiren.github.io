@@ -6,6 +6,7 @@ description: "How to setup the Trivy Operator in K8s"
 summary: "A step-by-step guide to setup the Trivy Operator in Kubernetes."
 slug: "trivy-operator"
 tags: ["Kubernetes", "Trivy", "Trivy Operator"]
+relatedPosts: ["trivy-pipeline"]
 categories: ["kubernetes"]
 ---
 
