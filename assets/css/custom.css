@@ -10,6 +10,12 @@ article + section {
     margin-right: auto;
 }
 
+/* Add spacing between homepage category buttons */
+.prose a.inline-block {
+    margin: 0.5rem 0.5rem 0.5rem 0;
+    display: inline-block;
+}
+
 /* Increase article width for code blocks and tables */
 .max-w-prose {
     max-width: 85ch !important;
