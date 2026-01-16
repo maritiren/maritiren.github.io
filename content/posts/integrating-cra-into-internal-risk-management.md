@@ -1,8 +1,10 @@
 +++
 title = 'Why Mixing CRA Criticality Levels with Internal Risk Classifications Is a Bad Idea'
 date = 2025-11-02T08:46:34+01:00
-draft = false 
-slug = "trivy-pipeline"
+draft = false
+description = "Understanding why EU Cyber Resilience Act criticality levels and internal risk classifications should remain separate"
+summary = "The EU Cyber Resilience Act and internal security risk levels answer different questions. Keep them separate and apply them together when needed."
+slug = "cra-and-criticality-levels"
 tags = ["AppSec", "CRA", "Governance"]
 categories = ["appsec"]
 +++

@@ -2,6 +2,8 @@
 title = 'Trivy in CI Pipeline'
 date = 2024-10-03T11:42:15+02:00
 draft = true
+description = "Integrating Trivy security scanning into your CI/CD pipeline"
+summary = "A guide to setting up Trivy for Infrastructure as Code scanning in your CI pipeline to catch vulnerabilities early."
 slug = "trivy-pipeline"
 tags = ["Trivy", "IaC scan", "CI", "pipeline"]
 categories = ["devops"]
