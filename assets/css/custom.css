@@ -10,6 +10,19 @@ article + section {
     margin-right: auto;
 }
 
+/* Increase article width for code blocks and tables */
+.max-w-prose {
+    max-width: 85ch !important;
+}
+
+/* Wrap tables in scrollable container to prevent TOC overlap */
+.prose table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+    width: max-content;
+}
+
 /* Example form container styling */
 .example-form {
     background-color: rgba(0, 0, 0, 0.03);
