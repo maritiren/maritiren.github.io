@@ -1,3 +1,7 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://tokle.dev/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'Techkroken'
+theme = 'congo'
+
+[pagination]
+    pagerSize = 10
