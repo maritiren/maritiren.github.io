@@ -33,7 +33,7 @@ team as well.
 
 - **Identify attack points**: Understand where your service is vulnerable to attacks
 - **Catch architectural issues early**: Find design flaws before they become expensive to fix, or identify improvements in existing systems
-- **Create valuable documentation**: Data-flow diagrams and threat scenarios help onboard new team members and provide quick context for management, security teams, and external auditors like pentesters
+- **Create valuable documentation**: Data-flow diagrams and threat scenarios help onboard new team members and provide quick context for management, security teams, and external auditors like pentesters. Also threat scenarios might be useful input to risk analysis 
 - **Builds security awareness**: Teams develop security thinking that carries into daily work
 - **Creates shared understanding**: Gets everyone on the same page about what's worth protecting
 - **Prioritizes security work**: Helps teams distinguish between critical risks and theoretical edge cases, so they can focus where it matters
@@ -59,9 +59,9 @@ most known method.
 Technically, what I describe in this article is closer to **threat
 identification** than comprehensive threat modeling. Traditional threat modeling
 frameworks like STRIDE involve deep analysis of attack paths and detailed threat
-categorization. The approach I recommend—using Rapid Risk Assessment—is actually
-a hybrid between risk assessment and threat modeling. It's simpler and more
-focused on identifying threats that teams can act on.
+categorization. The approach in this article—using Rapid Risk Assessment—is
+actually a hybrid between risk assessment and threat modeling. It's simpler and
+more focused on identifying threats that teams can act on.
 
 So why do I call it threat modeling? Because for most organizations without
 advanced AppSec maturity, this simpler approach is what I believe is best to
