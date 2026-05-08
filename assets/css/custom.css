@@ -146,6 +146,8 @@ article + section {
 
 .alert-body {
     font-size: 0.9em;
+    /* Establish a block formatting context so floated figures stay inside */
+    display: flow-root;
 }
 .alert-body > :first-child { margin-top: 0; }
 .alert-body > :last-child  { margin-bottom: 0; }
@@ -472,4 +474,28 @@ article + section {
 .dark .code-expand-minimize:hover {
     background: rgba(45, 30, 70, 0.95);
     color: rgb(221, 214, 254);
+}
+
+/* Float a small figure to the left inside an alert so text wraps around it.
+   Used for tall, narrow screenshots (e.g. GitHub sidebar menus). */
+.alert-figure-left {
+    float: left;
+    width: 40%;
+    max-width: 220px;
+    margin: 0 1.25rem 0.75rem 0;
+}
+.alert-figure-left figure {
+    margin: 0;
+}
+.alert-figure-left img {
+    width: 100%;
+    height: auto;
+}
+@media (max-width: 640px) {
+    .alert-figure-left {
+        float: none;
+        width: 100%;
+        max-width: 100%;
+        margin: 0 0 0.75rem;
+    }
 }
