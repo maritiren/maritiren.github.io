@@ -1,0 +1,29 @@
+{{ $icon := .Get 0 | default "circle-info" }}
+{{ $title := .Get 1 }}
+{{ $typeClasses := dict
+  "triangle-exclamation" "alert-warning"
+  "circle-info"          "alert-info"
+  "lightbulb"            "alert-tip"
+  "coffee"               "alert-coffee"
+  "link"                 "alert-link"
+  "fire"                 "alert-danger"
+  "hand-raised"          "alert-danger"
+}}
+{{ $defaultLabels := dict
+  "triangle-exclamation" "Warning"
+  "circle-info"          "Note"
+  "lightbulb"            "Keep in mind"
+  "fire"                 "Important"
+  "hand-raised"          "Caution"
+}}
+{{ $typeClass := index $typeClasses $icon | default "alert-info" }}
+{{ $displayTitle := $title | default (index $defaultLabels $icon) }}
+<div class="alert-blob {{ $typeClass }}">
+  <div class="alert-header">
+    <span class="alert-icon">{{ partial "icon.html" $icon }}</span>
+    {{ with $displayTitle }}<span class="alert-title">{{ . }}</span>{{ end }}
+  </div>
+  <div class="alert-body">
+    {{- .Inner | markdownify -}}
+  </div>
+</div>
