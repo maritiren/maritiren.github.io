@@ -1,0 +1,98 @@
+{{ $filename := .Get 0 }}
+{{ $lang     := .Get 1 | default "yaml" }}
+{{ $label    := .Get 2 | default "Show full workflow" }}
+{{ $id       := printf "ce-%s" (substr ($filename | md5) 0 10) }}
+{{ $res      := .Page.Resources.GetMatch $filename }}
+{{ if not $res }}
+  {{ errorf "code-expand-file: resource %q not found in page bundle" $filename }}
+{{ end }}
+<div class="code-expand" id="{{ $id }}">
+  <div class="code-expand-wrapper">
+    <button type="button" class="code-expand-copy"
+      onclick="var btn=this;var code=document.getElementById('{{ $id }}').querySelector('code');navigator.clipboard.writeText(code.textContent.replace(/\n$/,'')).then(function(){btn.classList.add('copied');setTimeout(function(){btn.classList.remove('copied')},2000)}).catch(function(){btn.classList.add('copy-failed');setTimeout(function(){btn.classList.remove('copy-failed')},2000)})"
+      aria-label="Copy code">
+      <svg class="code-expand-copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="9" y="9" width="13" height="13" rx="2"/>
+        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+      </svg>
+      <svg class="code-expand-check-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd"/>
+      </svg>
+      <span class="code-expand-copy-label">Copy</span>
+      <span class="code-expand-copied-label">Copied!</span>
+      <span class="code-expand-failed-label">Failed</span>
+    </button>
+    <div class="code-expand-content">
+      {{ highlight $res.Content $lang "" }}
+    </div>
+    <div class="code-expand-overlay">
+      <button type="button" class="code-expand-btn"
+        onclick="document.getElementById('{{ $id }}').classList.add('expanded');document.getElementById('{{ $id }}').scrollIntoView({behavior:'smooth',block:'start'})"
+        aria-label="{{ $label }}">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+        </svg>
+        {{ $label }}
+      </button>
+    </div>
+    <div class="code-expand-bottom-anchor">
+      <button type="button" class="code-expand-minimize"
+        onclick="var w=document.getElementById('{{ $id }}');w.classList.remove('expanded');(w.closest('.tabs-container')||w).scrollIntoView({behavior:'smooth',block:'start'})"
+        aria-label="Minimize">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+        </svg>
+        Minimize
+      </button>
+    </div>
+  </div>
+</div>
+{{ if not (.Page.Store.Get "ceStickyScriptAdded") }}
+{{ .Page.Store.Set "ceStickyScriptAdded" true }}
+<script>
+(function () {
+  function updateAll() {
+    document.querySelectorAll('.code-expand').forEach(function (ce) {
+      var btn = ce.querySelector('.code-expand-copy');
+      if (!btn) return;
+      if (!ce.classList.contains('expanded')) {
+        btn.classList.remove('is-sticky');
+        btn.style.right = '';
+        btn.style.top = '';
+        return;
+      }
+      var rect = ce.getBoundingClientRect();
+      var targetTop = 8;
+      if (rect.top < 0) {
+        var btnRect = btn.getBoundingClientRect();
+        if (!btn.classList.contains('is-sticky') && btnRect.top <= targetTop) {
+          btn.style.top = targetTop + 'px';
+          btn.style.right = (document.documentElement.clientWidth - btnRect.right) + 'px';
+          btn.classList.add('is-sticky');
+        } else if (btn.classList.contains('is-sticky') && btnRect.top > targetTop + 40) {
+          btn.classList.remove('is-sticky');
+          btn.style.right = '';
+          btn.style.top = '';
+        }
+      } else {
+        btn.classList.remove('is-sticky');
+        btn.style.right = '';
+        btn.style.top = '';
+      }
+    });
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function () {
+    if (!ticking) {
+      requestAnimationFrame(function () { updateAll(); ticking = false; });
+      ticking = true;
+    }
+  }, { passive: true });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateAll);
+  } else {
+    updateAll();
+  }
+})();
+</script>
+{{ end }}
