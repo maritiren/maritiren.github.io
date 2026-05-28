@@ -1,0 +1,25 @@
+title = "Application Security in GitHub Enterprise"
+description = "A practical AppSec program on GitHub Enterprise, built one piece at a time."
+
+[[posts]]
+slug = "appsec-program-github-intro"
+title = "Introduction and Important Concepts"
+
+[[posts]]
+slug = "appsec-kpis"
+
+[[posts]]
+slug = "github-enterprise-system-inventory"
+title = "Building a System Inventory"
+
+[[posts]]
+slug = "handling-secret-exposures-github-enterprise"
+title = "Handling Secret Exposures"
+
+[[posts]]
+slug = "github-enterprise-repository-hygiene"
+title = "Repository Hygiene Defaults"
+
+[[posts]]
+slug = "github-enterprise-system-inventory-in-practice"
+title = "Putting the System Inventory to Work"

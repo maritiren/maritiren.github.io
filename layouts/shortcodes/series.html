@@ -1,0 +1,59 @@
+{{/*
+  Series navigation shortcode.
+
+  Usage:
+    {{< series "appsec_github" >}}
+    {{< series >}}            (falls back to .Page.Params.series)
+
+  Reads ordered post slugs from `data/series/<name>.toml` and renders a
+  styled overview. Pulls each post's title automatically via site.GetPage,
+  so renames in the source post propagate here. The current page is
+  highlighted; missing/draft posts are shown as "coming soon". Previous/next
+  navigation is rendered automatically at the bottom of the article by the
+  article-pagination partial when `series` is set in the page's front matter.
+*/}}
+{{ $name := .Get 0 | default .Page.Params.series }}
+{{ if not $name }}
+  {{ errorf "series shortcode: no series name provided and no `series` set in front matter (%s)" .Page.Path }}
+{{ end }}
+{{ $series := index site.Data.series $name }}
+{{ if not $series }}
+  {{ errorf "series shortcode: no data file found at data/series/%s.toml" $name }}
+{{ end }}
+
+{{ $currentSlug := .Page.Slug }}
+
+<aside class="series-box" aria-label="Series navigation">
+  <div class="series-header">
+    <span class="series-icon">{{ partial "icon.html" "list" }}</span>
+    <div>
+      <div class="series-eyebrow">Part of a series</div>
+      <div class="series-title">{{ $series.title }}</div>
+      {{ with $series.description }}<div class="series-description">{{ . }}</div>{{ end }}
+    </div>
+  </div>
+  <ol class="series-list">
+    {{ range $index, $entry := $series.posts }}
+      {{ $page := or (site.GetPage (printf "posts/%s" $entry.slug)) (site.GetPage (printf "review/%s" $entry.slug)) }}
+      {{ $isCurrent := eq $entry.slug $currentSlug }}
+      <li class="series-item{{ if $isCurrent }} series-item-current{{ end }}">
+        <span class="series-number">{{ add $index 1 }}.</span>
+        <span class="series-content">
+          {{ if $page }}
+            {{ $displayTitle := or $entry.title $page.Title }}
+            {{ if $isCurrent }}
+              <span class="series-link series-link-current">{{ $displayTitle }}</span>
+              <span class="series-badge">You are here</span>
+            {{ else }}
+              <a class="series-link" href="{{ $page.RelPermalink }}">{{ $displayTitle }}</a>
+            {{ end }}
+          {{ else }}
+            <span class="series-link series-link-pending">{{ or $entry.title $entry.slug }}</span>
+            <span class="series-badge series-badge-pending">Coming soon</span>
+          {{ end }}
+          {{ with $entry.note }}<span class="series-note">{{ . }}</span>{{ end }}
+        </span>
+      </li>
+    {{ end }}
+  </ol>
+</aside>

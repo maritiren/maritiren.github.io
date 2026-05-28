@@ -1,15 +1,77 @@
 {{ if .Params.showPagination | default (.Site.Params.article.showPagination | default true) }}
   {{ $categoryName := "" }}
   {{ $categoryLink := "" }}
-  
+
   {{/* Get the category for fallback link */}}
   {{ range .Params.categories }}
     {{ $categoryName = . }}
     {{ $categoryLink = printf "/categories/%s" (. | urlize) }}
   {{ end }}
-  
-  {{/* Check if relatedPosts are defined in front matter */}}
-  {{ if .Params.relatedPosts }}
+
+  {{/* Resolve series prev/next if the post is part of one */}}
+  {{ $seriesName := .Params.series }}
+  {{ $seriesData := false }}
+  {{ $seriesTitle := "" }}
+  {{ $prevPage := false }}
+  {{ $nextPage := false }}
+  {{ if $seriesName }}
+    {{ $seriesData = index site.Data.series $seriesName }}
+    {{ if $seriesData }}
+      {{ $seriesTitle = $seriesData.title }}
+      {{ $currentSlug := .Slug }}
+      {{ $currentIndex := -1 }}
+      {{ range $i, $entry := $seriesData.posts }}
+        {{ if eq $entry.slug $currentSlug }}{{ $currentIndex = $i }}{{ end }}
+      {{ end }}
+      {{ if ge $currentIndex 0 }}
+        {{ if gt $currentIndex 0 }}
+          {{ $prevSlug := (index $seriesData.posts (sub $currentIndex 1)).slug }}
+          {{ $prevPage = or (site.GetPage (printf "posts/%s" $prevSlug)) (site.GetPage (printf "review/%s" $prevSlug)) }}
+        {{ end }}
+        {{ if lt $currentIndex (sub (len $seriesData.posts) 1) }}
+          {{ $nextSlug := (index $seriesData.posts (add $currentIndex 1)).slug }}
+          {{ $nextPage = or (site.GetPage (printf "posts/%s" $nextSlug)) (site.GetPage (printf "review/%s" $nextSlug)) }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+
+  {{ if or $prevPage $nextPage }}
+    {{/* Series pagination — prev/next within the series */}}
+    <div class="pt-8">
+      <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
+      <div class="pt-3">
+        <h3 class="text-sm font-semibold text-neutral-500 dark:text-neutral-400 mb-3">
+          Continue the series{{ with $seriesTitle }}: <span class="font-normal">{{ . }}</span>{{ end }}
+        </h3>
+        <nav class="series-nav" aria-label="Series previous and next">
+          <div class="series-nav-cell series-nav-prev">
+            {{ with $prevPage }}
+              <a href="{{ .RelPermalink }}">
+                <span class="series-nav-label">← Previous</span>
+                <span class="series-nav-title">{{ .Title | emojify }}</span>
+              </a>
+            {{ end }}
+          </div>
+          <div class="series-nav-cell series-nav-next">
+            {{ with $nextPage }}
+              <a href="{{ .RelPermalink }}">
+                <span class="series-nav-label">Next →</span>
+                <span class="series-nav-title">{{ .Title | emojify }}</span>
+              </a>
+            {{ end }}
+          </div>
+        </nav>
+        {{ if $categoryName }}
+          <div class="mt-4">
+            <a href="{{ $categoryLink }}" class="text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">
+              View all {{ $categoryName }} posts →
+            </a>
+          </div>
+        {{ end }}
+      </div>
+    </div>
+  {{ else if .Params.relatedPosts }}
     <div class="pt-8">
       <hr class="border-dotted border-neutral-300 dark:border-neutral-600" />
       <div class="pt-3">
