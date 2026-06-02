@@ -13,12 +13,12 @@ slug = "github-enterprise-system-inventory"
 title = "Building a System Inventory"
 
 [[posts]]
-slug = "handling-secret-exposures-github-enterprise"
-title = "Handling Secret Exposures"
+slug = "github-enterprise-repository-hygiene"
+title = "Repository Defaults and Rulesets"
 
 [[posts]]
-slug = "github-enterprise-repository-hygiene"
-title = "Repository Hygiene Defaults"
+slug = "handling-secret-exposures-github-enterprise"
+title = "Handling Secret Exposures"
 
 [[posts]]
 slug = "github-enterprise-system-inventory-in-practice"
