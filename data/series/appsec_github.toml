@@ -21,6 +21,10 @@ slug = "scan-coverage-github-enterprise"
 title = "Scan Coverage"
 
 [[posts]]
+slug = "sla-compliance-github-enterprise"
+title = "SLA Compliance and Automated Escalation"
+
+[[posts]]
 slug = "handling-secret-exposures-github-enterprise"
 title = "Handling Secret Exposures"
 
