@@ -1,0 +1,20 @@
+{{- /*
+  Renders an anchor tag whose href is personalised client-side by the
+  `org-input` shortcode. The `path` argument is the part after the org
+  segment (no leading slash), e.g. `settings/apps/new`. The `text`
+  argument is the visible link label.
+
+  The href falls back to `YOUR-ORG` for readers who have not entered an
+  org slug yet, so the link is still readable and navigates to a clear
+  404 instead of a misleading page. The shortcode never interpolates
+  reader input into HTML directly: JS uses setAttribute + encoded slug.
+*/ -}}
+{{- $path := .Get "path" -}}
+{{- $text := .Get "text" -}}
+{{- $base := .Get "base" | default "https://github.com/organizations" -}}
+{{- $template := printf "%s/{org}/%s" $base $path -}}
+{{- $placeholder := replace $template "{org}" "YOUR-ORG" -}}
+<a class="org-link org-link-placeholder"
+   data-template="{{ $template }}"
+   href="{{ $placeholder }}"
+   rel="noopener">{{ $text }}</a>

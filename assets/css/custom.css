@@ -3,6 +3,61 @@ img.rounded-full {
     margin-top: 3rem !important;
 }
 
+/* Org-slug input used by the org-input / org-link shortcodes. */
+.org-input-blob {
+    border: 1px solid rgb(var(--color-neutral-300));
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+    margin: 1.5rem 0;
+    background: rgb(var(--color-neutral-50));
+}
+
+.dark .org-input-blob {
+    border-color: rgb(var(--color-neutral-700));
+    background: rgb(var(--color-neutral-800));
+}
+
+.org-input-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.org-input-blob input {
+    width: 100%;
+    max-width: 24rem;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid rgb(var(--color-neutral-400));
+    border-radius: 0.375rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: white;
+    color: inherit;
+}
+
+.dark .org-input-blob input {
+    background: rgb(var(--color-neutral-900));
+    border-color: rgb(var(--color-neutral-600));
+}
+
+.org-input-blob input:invalid {
+    border-color: rgb(var(--color-warning-500, 234 179 8));
+}
+
+.org-input-hint {
+    font-size: 0.85em;
+    color: rgb(var(--color-neutral-600));
+    margin: 0.4rem 0 0;
+}
+
+.dark .org-input-hint {
+    color: rgb(var(--color-neutral-400));
+}
+
+.org-link-placeholder {
+    text-decoration-style: dashed;
+}
+
+
 /* Narrow the Recent section on homepage to make it look more centered */
 article + section {
     max-width: 40rem;

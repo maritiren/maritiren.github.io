@@ -1,0 +1,86 @@
+{{- /*
+  Renders an input where the reader types their GitHub org slug, plus a small
+  inline script that updates every `.org-link[data-template]` on the page.
+  The value is validated client-side (GitHub org slugs are
+  `[A-Za-z0-9][A-Za-z0-9-]{0,38}`) and never leaves the browser. It is kept
+  in sessionStorage so navigating between sections of the post does not
+  require retyping, but it is cleared when the tab closes.
+*/ -}}
+<div class="org-input-blob">
+  <label class="org-input-label" for="org-slug-input">
+    Your GitHub org slug
+  </label>
+  <input id="org-slug-input"
+         type="text"
+         placeholder="acme-corp"
+         autocomplete="off"
+         spellcheck="false"
+         maxlength="39"
+         pattern="[A-Za-z0-9][A-Za-z0-9-]{0,38}"
+         aria-describedby="org-input-hint" />
+  <p id="org-input-hint" class="org-input-hint">
+    The slug is the part after <code>github.com/</code> in your org URL, e.g.
+    <code>acme-corp</code> for <code>github.com/acme-corp</code>. Enter it
+    once and every GitHub settings link on this page jumps straight to your
+    org. The value stays in this browser tab and is never sent anywhere.
+  </p>
+</div>
+<script>
+(function () {
+  if (window.__orgInputInit) { return; }
+  window.__orgInputInit = true;
+
+  var ORG_RE = /^[A-Za-z0-9][A-Za-z0-9-]{0,38}$/;
+  var PLACEHOLDER = 'YOUR-ORG';
+  var STORAGE_KEY = 'blog.orgSlug';
+
+  function isValid(value) {
+    return typeof value === 'string' && ORG_RE.test(value);
+  }
+
+  function update(slug) {
+    var safe = isValid(slug) ? slug : null;
+    var displayValue = safe || PLACEHOLDER;
+    var encoded = safe ? encodeURIComponent(safe) : PLACEHOLDER;
+
+    document.querySelectorAll('.org-link[data-template]').forEach(function (a) {
+      var template = a.getAttribute('data-template');
+      if (!template) { return; }
+      a.setAttribute('href', template.split('{org}').join(encoded));
+      a.classList.toggle('org-link-placeholder', !safe);
+    });
+    document.querySelectorAll('.org-slug-display').forEach(function (el) {
+      el.textContent = displayValue;
+    });
+  }
+
+  function init() {
+    var input = document.getElementById('org-slug-input');
+    if (!input) { return; }
+
+    var stored = null;
+    try { stored = sessionStorage.getItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+    if (stored && isValid(stored)) { input.value = stored; }
+
+    update(input.value);
+
+    input.addEventListener('input', function () {
+      var v = input.value.trim();
+      update(v);
+      try {
+        if (isValid(v)) {
+          sessionStorage.setItem(STORAGE_KEY, v);
+        } else {
+          sessionStorage.removeItem(STORAGE_KEY);
+        }
+      } catch (e) { /* ignore */ }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
