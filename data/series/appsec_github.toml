@@ -17,6 +17,10 @@ slug = "github-enterprise-repository-hygiene"
 title = "Repository Defaults and Rulesets"
 
 [[posts]]
+slug = "scan-coverage-github-enterprise"
+title = "Scan Coverage"
+
+[[posts]]
 slug = "handling-secret-exposures-github-enterprise"
 title = "Handling Secret Exposures"
 
