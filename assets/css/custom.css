@@ -313,6 +313,26 @@ article + section {
 .dark .alert-danger .alert-header { color: rgba(252, 165, 165, 0.85); }
 .dark .alert-danger .alert-body  { color: rgba(254, 202, 202, 0.7); }
 
+/* Neutral — gray, for collapsed configuration / reference blocks */
+.alert-neutral {
+    background-color: rgba(249, 250, 251, 1);
+    border-color: rgba(156, 163, 175, 0.3);
+    padding: 0.6rem 0.85rem;
+}
+.alert-neutral .alert-header {
+    color: rgba(75, 85, 99, 1);
+    font-size: 0.85em;
+    font-weight: 500;
+}
+.alert-neutral .alert-icon { display: none; }
+.alert-neutral .alert-body { font-size: 0.85em; }
+.dark .alert-neutral {
+    background-color: rgba(31, 41, 55, 0.4);
+    border-color: rgba(156, 163, 175, 0.25);
+}
+.dark .alert-neutral .alert-header { color: rgba(209, 213, 219, 0.8); }
+.dark .alert-neutral .alert-body  { color: rgba(209, 213, 219, 0.7); }
+
 /* Tabs component */
 .tabs-container {
     margin: 1.5rem 0;
