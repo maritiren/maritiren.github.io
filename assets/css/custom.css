@@ -207,6 +207,34 @@ article + section {
 .alert-body > :first-child { margin-top: 0; }
 .alert-body > :last-child  { margin-bottom: 0; }
 
+/* Collapsible alert variant — alert-blob rendered as <details> */
+.alert-collapsible > summary.alert-header {
+    cursor: pointer;
+    user-select: none;
+    margin-bottom: 0;
+    list-style: none;
+}
+.alert-collapsible > summary.alert-header::-webkit-details-marker {
+    display: none;
+}
+.alert-collapsible[open] > summary.alert-header {
+    margin-bottom: 0.5rem;
+}
+.alert-chevron {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+    opacity: 0.7;
+}
+.alert-chevron svg {
+    width: 1em;
+    height: 1em;
+}
+.alert-collapsible[open] > summary .alert-chevron {
+    transform: rotate(90deg);
+}
+
 /* Note / Info — theme violet (primary) */
 .alert-info {
     background-color: rgba(245, 243, 255, 1);

@@ -1,5 +1,6 @@
 {{ $icon := .Get 0 | default "circle-info" }}
 {{ $title := .Get 1 }}
+{{ $collapse := .Get 2 }}
 {{ $typeClasses := dict
   "triangle-exclamation" "alert-warning"
   "circle-info"          "alert-info"
@@ -15,9 +16,26 @@
   "lightbulb"            "Keep in mind"
   "fire"                 "Important"
   "hand-raised"          "Caution"
+  "list"                 "Details"
 }}
 {{ $typeClass := index $typeClasses $icon | default "alert-info" }}
 {{ $displayTitle := $title | default (index $defaultLabels $icon) }}
+{{ if $collapse }}
+{{ $openAttr := "" }}
+{{ if eq $collapse "open" }}{{ $openAttr = "open" }}{{ end }}
+<details class="alert-blob alert-collapsible {{ $typeClass }}" {{ $openAttr | safeHTMLAttr }}>
+  <summary class="alert-header">
+    <span class="alert-icon">{{ partial "icon.html" $icon }}</span>
+    {{ with $displayTitle }}<span class="alert-title">{{ . }}</span>{{ end }}
+    <span class="alert-chevron" aria-hidden="true">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8.22 5.22a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 0 1 0 1.06l-4.25 4.25a.75.75 0 0 1-1.06-1.06L11.94 10 8.22 6.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" /></svg>
+    </span>
+  </summary>
+  <div class="alert-body">
+    {{- .Inner | markdownify -}}
+  </div>
+</details>
+{{ else }}
 <div class="alert-blob {{ $typeClass }}">
   <div class="alert-header">
     <span class="alert-icon">{{ partial "icon.html" $icon }}</span>
@@ -27,3 +45,4 @@
     {{- .Inner | markdownify -}}
   </div>
 </div>
+{{ end }}
